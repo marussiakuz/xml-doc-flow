@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema version="1.0.0" targetNamespace="http://idActs/AIGE.xsd"
+  elementFormDefault="qualified"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:cf="http://idActs/AIGE.xsd"
+  xmlns:ct="http://types/CommonTypes.xsd"
+  xmlns:bt="http://types/BaseTypes.xsd"
+  xmlns:bd="http://types/BaseDocument.xsd"
+>
+  <xs:import schemaLocation="../types/CommonTypes.xsd" namespace="http://types/CommonTypes.xsd" />
+  <xs:import schemaLocation="../types/BaseTypes.xsd" namespace="http://types/BaseTypes.xsd" />
+  <xs:import schemaLocation="../types/BaseDocument.xsd" namespace="http://types/BaseDocument.xsd" />
+
+  <xs:complexType name="aige">
+    <xs:annotation>
+      <xs:documentation>
+        Акт испытания гидропневматической емкости
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="bd:baseDocument">
+        <xs:sequence>
+          <xs:element name="actInfo">
+            <xs:annotation>
+              <xs:documentation>Подписываемая часть</xs:documentation>
+            </xs:annotation>
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="documentDetails" type="ct:actRequisites">
+                  <xs:annotation>
+                    <xs:documentation>Реквизиты акта</xs:documentation>
+                  </xs:annotation>
+                </xs:element>
+                <xs:element name="permanentObjectInfo" type="ct:permanentObjectInfo">
+                  <xs:annotation>
+                    <xs:documentation>Объект капитального строительства</xs:documentation>
+                  </xs:annotation>
+                </xs:element>
+                <xs:choice>
+                  <xs:element name="developer" type="ct:individualEntrepreneurOrLegalEntityOrIndividualAndId">
+                    <xs:annotation>
+                      <xs:documentation>Застройщик</xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                  <xs:element name="technicalCustomer" type="ct:organizationWithOptionalSroAndId">
+                    <xs:annotation>
+                      <xs:documentation>Технический заказчик</xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                  <xs:element name="operatingPerson" type="ct:individualEntrepreneurOrLegalEntityOrIndividualAndId">
+                    <xs:annotation>
+                      <xs:documentation>Лицо, ответственное за эксплуатацию здания, сооружения</xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                  <xs:element name="regionalOperator" type="ct:organizationWithOptionalSroAndId">
+                    <xs:annotation>
+                      <xs:documentation>Региональный оператор</xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                </xs:choice>
+                <xs:element name="buildingContractor" type="ct:organizationWithOptionalSroAndId">
+                  <xs:annotation>
+                    <xs:documentation>Лицо, осуществляющее строительство</xs:documentation>
+                  </xs:annotation>
+                </xs:element>
+                <xs:element name="workExecutor" type="ct:organizationWithOptionalSroAndId" minOccurs="0">
+                  <xs:annotation>
+                    <xs:documentation>Лицо, выполнившее работы/конструкции/участки сетей</xs:documentation>
+                  </xs:annotation>
+                </xs:element> 
+                <xs:element name="participantControlRepresentative" type="ct:representativeWithIDNRAndOrganization">
+                  <xs:annotation>
+                    <xs:documentation>
+                      Представитель застройщика / технического заказчика / лица, ответственного за эксплуатацию здания, сооружения / регионального оператора по вопросам строительного контроля (в зависимости от выбора участника)
+                    </xs:documentation>
+                  </xs:annotation>
+                </xs:element>
+                <xs:element name="buildingContractorRepresentative" type="ct:actsRepresentativeWithIdAndOrder">
+                  <xs:annotation>
+                    <xs:documentation>Представитель лица, осуществляющего строительство</xs:documentation>
+                  </xs:annotation>
+                </xs:element>
+                <xs:element name="buildingContractorControlRepresentative" type="ct:actsRepresentativeWithIdAndOrderAndIDNR">
+                  <xs:annotation>
+                    <xs:documentation>
+                      Представитель лица, осуществляющего строительство, по вопросам строительного контроля
+                    </xs:documentation>
+                  </xs:annotation>
+                </xs:element>
+                <xs:element name="workExecutorRepresentative" type="ct:actsRepresentativeWithIdAndOrder" minOccurs="0">
+                  <xs:annotation>
+                    <xs:documentation>Представитель лица, выполнившего работы/конструкции/участки сетей</xs:documentation>
+                  </xs:annotation>
+                </xs:element>
+                <xs:element name="otherRepresentativesList" minOccurs="0">
+                  <xs:annotation>
+                    <xs:documentation>Иные представители лиц, участвующих в освидетельствовании</xs:documentation>
+                  </xs:annotation>
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element name="otherRepresentative" type="ct:representativeWithOrganization" maxOccurs="unbounded">
+                        <xs:annotation>
+                          <xs:documentation>Иной представитель лица, участвующего в освидетельствовании</xs:documentation>
+                        </xs:annotation>
+                      </xs:element>
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+                <xs:element name="testingWorksInfo" type="ct:testingWorksInfo">
+                  <xs:annotation>
+                    <xs:documentation>
+                      Сведения о работе по испытанию смонтированного оборудования/системы
+                    </xs:documentation>
+                  </xs:annotation>
+                </xs:element>
+                <xs:element name="worksInfoList" type="ct:worksInfoList" minOccurs="0">
+                  <xs:annotation>
+                    <xs:documentation>Работы / скрытые работы, выполненные в отношении конструкции / участка сетей</xs:documentation>
+                  </xs:annotation>
+                </xs:element>
+                <xs:element name="hydropneumaticCapacityTestsList">
+                  <xs:annotation>
+                    <xs:documentation>Испытания гидропневматической емкости</xs:documentation>
+                  </xs:annotation>
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element name="hydropneumaticCapacityTest" maxOccurs="unbounded">
+                        <xs:annotation>
+                          <xs:documentation>Испытаниe гидропневматической емкости</xs:documentation>
+                        </xs:annotation>
+                        <xs:complexType>
+                          <xs:sequence>
+                            <xs:element name="containerName" type="bt:notEmptyString">
+                              <xs:annotation>
+                                <xs:documentation>Наименование емкости</xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                            <xs:element name="controlSubjectDescription" type="ct:subjectDescription" minOccurs="0">
+                              <xs:annotation>
+                                <xs:documentation>Описание предмета контроля (работа, ОКС или элемент ОКС)</xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                            <xs:element name="testedPressure">
+                              <xs:annotation>
+                                <xs:documentation>Испытанное давление</xs:documentation>
+                              </xs:annotation>
+                              <xs:complexType>
+                                <xs:sequence>
+                                  <xs:element name="value" type="bt:positiveDecimals">
+                                    <xs:annotation>
+                                      <xs:documentation>Значение</xs:documentation>
+                                    </xs:annotation>
+                                  </xs:element>
+                                  <xs:element name="unit">
+                                    <xs:annotation>
+                                      <xs:documentation>
+                                        Единица измерения
+                                        Допустимые значения:
+                                        - МПа
+                                        - кгс/см^2
+                                      </xs:documentation>
+                                    </xs:annotation>
+                                    <xs:simpleType>
+                                      <xs:restriction base="xs:string">
+                                        <xs:enumeration value="МПа" />
+                                        <xs:enumeration value="кгс/см^2" />
+                                      </xs:restriction>
+                                    </xs:simpleType>
+                                  </xs:element>
+                                </xs:sequence>
+                              </xs:complexType>
+                            </xs:element>
+                            <xs:element name="factoryNumber" type="bt:notEmptyString">
+                              <xs:annotation>
+                                <xs:documentation>Заводской номер</xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                            <xs:element name="containerPassedTheTest" type="xs:boolean">
+                              <xs:annotation>
+                                <xs:documentation>
+                                  Дефектов и течи в емкости не обнаружено, емкость выдержала испытание
+                                  Логический тип данных:
+                                  - true - дефекты и течи не обнаружены, испытание выдержано
+                                  - false - обнаружены дефекты и/или течи, испытание не пройдено
+                                </xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                          </xs:sequence>
+                        </xs:complexType>
+                      </xs:element>
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+                <xs:element name="testRegulatingDocumentsList">
+                  <xs:annotation>
+                    <xs:documentation>Сведения о документах, регламентирующих испытание</xs:documentation>
+                  </xs:annotation>
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element name="testRegulatingDocument" type="ct:docBaseInfoWithOptionalFileAndOptionalId" maxOccurs="unbounded">
+                        <xs:annotation>
+                          <xs:documentation>Сведения о документе, регламентирующем испытание</xs:documentation>
+                        </xs:annotation>
+                      </xs:element>
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+              </xs:sequence>
+              <xs:attribute name="id" type="bt:GUIDandUnderscore" use="required">
+                <xs:annotation>
+                  <xs:documentation>Id подписываемой части</xs:documentation>
+                </xs:annotation>
+              </xs:attribute>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="participantControlRepresentativeSignature" type="ct:signature" minOccurs="0">
+            <xs:annotation>
+              <xs:documentation>
+                Подпись представителя застройщика / технического заказчика / лица, ответственного за эксплуатацию здания, сооружения / регионального оператора по вопросам строительного контроля (в зависимости от выбора участника)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="buildingContractorRepresentativeSignature" type="ct:signature" minOccurs="0">
+            <xs:annotation>
+              <xs:documentation>
+                Подпись представителя лица, осуществляющего строительство
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="buildingContractorControlRepresentativeSignature" type="ct:signature" minOccurs="0">
+            <xs:annotation>
+              <xs:documentation>
+                Подпись представителя лица, осуществляющего строительство по вопросам строительного контроля
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="workExecutorRepresentativeSignature" type="ct:signature" minOccurs="0">
+            <xs:annotation>
+              <xs:documentation>Подпись представителя лица, выполнившего работы/конструкции/участки сетей</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="otherRepresentativesSignaturesList" minOccurs="0">
+            <xs:annotation>
+              <xs:documentation>Подписи представителей иных лиц</xs:documentation>
+            </xs:annotation>
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="otherRepresentativeSignature" type="ct:signature" maxOccurs="unbounded">
+                  <xs:annotation>
+                    <xs:documentation>Подпись представителя иного лица</xs:documentation>
+                  </xs:annotation>
+                </xs:element>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="actsServiceAttributes" type="ct:docServiceAttributes">
+            <xs:annotation>
+              <xs:documentation>Служебные атрибуты документа ИД</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="extraParametersList" type="ct:extraParametersList" minOccurs="0">
+            <xs:annotation>
+              <xs:documentation>Список дополнительных параметров</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="aige" type="cf:aige" />
+</xs:schema>

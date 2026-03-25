@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="5286f33c-ab8b-446b-97e1-422915fb7980" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dbnavigator.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/jpa-buddy.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/java/ru/artwell/contractor/api/ContractorApi.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/AOGROOKS/AOGROOKS.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/AOGROOKS/AOGROOKS.xsl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/AOGROOKS/idActs/AOGROOKS.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/AOGROOKS/types/BaseDocument.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/AOGROOKS/types/BaseTypes.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/AOGROOKS/types/CommonTypes.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/AOGROOKS/types/Xmldsig.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/AOGROOKS/Описание xml-схемы AOGROOKS.docx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/AOOK/AOOK.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/AOOK/AOOK.xsl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/AOOK/idActs/AOOK.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/AOOK/types/BaseDocument.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/AOOK/types/BaseTypes.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/AOOK/types/CommonTypes.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/AOOK/types/Xmldsig.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/AOOK/Описание xml-схемы AOOK.docx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/AOSR/AOSR.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/AOSR/AOSR.xsl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/AOSR/idActs/AOSR.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/AOSR/types/BaseDocument.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/AOSR/types/BaseTypes.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/AOSR/types/CommonTypes.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/AOSR/types/Xmldsig.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/AOSR/Описание xml-схемы AOSR.docx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/AOUSITO/AOUSITO.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/AOUSITO/AOUSITO.xsl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/AOUSITO/idActs/AOUSITO.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/AOUSITO/types/BaseDocument.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/AOUSITO/types/BaseTypes.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/AOUSITO/types/CommonTypes.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/AOUSITO/types/Xmldsig.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/AOUSITO/Описание xml-схемы AOUSITO.docx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/AROOKSNM/AROOKSNM.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/AROOKSNM/AROOKSNM.xsl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/AROOKSNM/idActs/AROOKSNM.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/AROOKSNM/types/BaseDocument.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/AROOKSNM/types/BaseTypes.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/AROOKSNM/types/CommonTypes.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/AROOKSNM/types/Xmldsig.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/AROOKSNM/Описание xml-схемы AROOKSNM.docx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/gsn221/gsn/gsn221.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/gsn221/gsn221.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/gsn221/gsn221.xsl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/gsn221/types/BaseDocument.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/gsn221/types/BaseTypes.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/gsn221/types/CommonTypes.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/gsn221/types/Xmldsig.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/gsn221/Описание xml-схемы gsn221.docx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/gsn222/gsn/gsn222.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/gsn222/gsn222.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/gsn222/gsn222.xsl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/gsn222/types/BaseDocument.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/gsn222/types/BaseTypes.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/gsn222/types/CommonTypes.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/gsn222/types/Xmldsig.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/gsn222/Описание xml-схемы gsn222.docx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/gsn31/gsn/gsn31.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/gsn31/gsn31.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/gsn31/gsn31.xsl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/gsn31/types/BaseDocument.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/gsn31/types/BaseTypes.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/gsn31/types/CommonTypes.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/gsn31/types/Xmldsig.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/gsn31/Описание xml-схемы gsn31.docx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/gsnProtocolInspection/gsn/gsnProtocolInspection.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/gsnProtocolInspection/gsnProtocolInspection.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/gsnProtocolInspection/gsnProtocolInspection.xsl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/gsnProtocolInspection/types/BaseDocument.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/gsnProtocolInspection/types/BaseTypes.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/gsnProtocolInspection/types/CommonTypes.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/gsnProtocolInspection/types/Xmldsig.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/gsnProtocolInspection/Описание xml-схемы gsnProtocolInspection.docx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Акт испытания внутреннего противопожарного водопровода/idActs/AIVPV.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Акт испытания внутреннего противопожарного водопровода/types/BaseDocument.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Акт испытания внутреннего противопожарного водопровода/types/BaseTypes.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Акт испытания внутреннего противопожарного водопровода/types/CommonTypes.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Акт испытания внутреннего противопожарного водопровода/types/Xmldsig.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Акт испытания внутреннего противопожарного водопровода/Акт испытания внутреннего противопожарного водопровода.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Акт испытания внутреннего противопожарного водопровода/Акт испытания внутреннего противопожарного водопровода.xsl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Акт испытания внутреннего противопожарного водопровода/Описание xml-схемы Акт испытания внутреннего противопожарного водопровода.docx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Акт испытания гидропневматической емкости/idActs/AIGE.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Акт испытания гидропневматической емкости/types/BaseDocument.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Акт испытания гидропневматической емкости/types/BaseTypes.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Акт испытания гидропневматической емкости/types/CommonTypes.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Акт испытания гидропневматической емкости/types/Xmldsig.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Акт испытания гидропневматической емкости/Акт испытания гидропневматической емкости.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Акт испытания гидропневматической емкости/Акт испытания гидропневматической емкости.xsl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Акт испытания гидропневматической емкости/Описание xml-схемы Акт испытания гидропневматической емкости.docx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Акт о выявленных дефектах приборов, оборудования и агрегатов/idActs/AOVDPOA.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Акт о выявленных дефектах приборов, оборудования и агрегатов/types/BaseDocument.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Акт о выявленных дефектах приборов, оборудования и агрегатов/types/BaseTypes.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Акт о выявленных дефектах приборов, оборудования и агрегатов/types/CommonTypes.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Акт о выявленных дефектах приборов, оборудования и агрегатов/types/Xmldsig.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Акт о выявленных дефектах приборов, оборудования и агрегатов/Акт о выявленных дефектах приборов, оборудования и агрегатов.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Акт о выявленных дефектах приборов, оборудования и агрегатов/Акт о выявленных дефектах приборов, оборудования и агрегатов.xsl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Акт о выявленных дефектах приборов, оборудования и агрегатов/Описание xml-схемы Акт о выявленных дефектах приборов, оборудования и агрегатов.docx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Акт о проведении входного контроля/idActs/APVK.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Акт о проведении входного контроля/types/BaseDocument.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Акт о проведении входного контроля/types/BaseTypes.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Акт о проведении входного контроля/types/CommonTypes.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Акт о проведении входного контроля/types/Xmldsig.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Акт о проведении входного контроля/Акт о проведении входного контроля.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Акт о проведении входного контроля/Акт о проведении входного контроля.xsl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Акт о проведении входного контроля/Описание xml-схемы Акт о проведении входного контроля.docx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Акт по результатам контрольного (надзорного) мероприятия без взаимодействия с контролируемым лицом/gsn/gsnActControlEventResult.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Акт по результатам контрольного (надзорного) мероприятия без взаимодействия с контролируемым лицом/types/BaseDocument.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Акт по результатам контрольного (надзорного) мероприятия без взаимодействия с контролируемым лицом/types/BaseTypes.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Акт по результатам контрольного (надзорного) мероприятия без взаимодействия с контролируемым лицом/types/CommonTypes.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Акт по результатам контрольного (надзорного) мероприятия без взаимодействия с контролируемым лицом/types/Xmldsig.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Акт по результатам контрольного (надзорного) мероприятия без взаимодействия с контролируемым лицом/Акт по результатам контрольного (надзорного) мероприятия без взаимодействия с контролируемым лицом.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Акт по результатам контрольного (надзорного) мероприятия без взаимодействия с контролируемым лицом/Акт по результатам контрольного (надзорного) мероприятия без взаимодействия с контролируемым лицом.xsl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Акт по результатам контрольного (надзорного) мероприятия без взаимодействия с контролируемым лицом/Описание xml-схемы Акт по результатам контрольного (надзорного) мероприятия без взаимодействия с контролируемым лицом.docx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/ЖВК/IncomingMaterialControlJournal.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/ЖВК/IncomingMaterialsControlInfo.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/ЖВК/MaterialsSelection.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/ЖВК/idJournals/IncomingMaterialControlJournal.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/ЖВК/sk/IncomingMaterialsControlInfo.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/ЖВК/sk/MaterialsSelection.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/ЖВК/types/BaseDocument.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/ЖВК/types/BaseTypes.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/ЖВК/types/CommonTypes.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/ЖВК/types/Xmldsig.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/ЖВК/Описание xml-схемы ЖВК.docx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Журнал авторского надзора/an/idSpJournalDesignerControlInspectionRecord.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Журнал авторского надзора/an/idSpJournalDesignerControlRepresentatives.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Журнал авторского надзора/an/idSpJournalDesignerControlResultRecord.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Журнал авторского надзора/an/idSpJournalDesignerControlTitle.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Журнал авторского надзора/an/idSpJournalDesignerControlVisitRecord.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Журнал авторского надзора/idJournals/idJournalChangeRecord.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Журнал авторского надзора/idJournals/idSpJournalDesignerControl.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Журнал авторского надзора/styles/an/idSpJournalDesignerControlInspectionRecord.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Журнал авторского надзора/styles/an/idSpJournalDesignerControlInspectionRecord.xsl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Журнал авторского надзора/styles/an/idSpJournalDesignerControlRepresentatives.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Журнал авторского надзора/styles/an/idSpJournalDesignerControlRepresentatives.xsl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Журнал авторского надзора/styles/an/idSpJournalDesignerControlResultRecord.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Журнал авторского надзора/styles/an/idSpJournalDesignerControlResultRecord.xsl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Журнал авторского надзора/styles/an/idSpJournalDesignerControlTitle.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Журнал авторского надзора/styles/an/idSpJournalDesignerControlTitle.xsl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Журнал авторского надзора/styles/an/idSpJournalDesignerControlVisitRecord.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Журнал авторского надзора/styles/an/idSpJournalDesignerControlVisitRecord.xsl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Журнал авторского надзора/styles/idJournals/idSpJournalDesignerControl.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Журнал авторского надзора/styles/idJournals/idSpJournalDesignerControl.xsl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Журнал авторского надзора/svg/an/idSpJournalDesignerControlInspectionRecord.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Журнал авторского надзора/svg/an/idSpJournalDesignerControlRepresentatives.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Журнал авторского надзора/svg/an/idSpJournalDesignerControlResultRecord.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Журнал авторского надзора/svg/an/idSpJournalDesignerControlTitle.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Журнал авторского надзора/svg/an/idSpJournalDesignerControlVisitRecord.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Журнал авторского надзора/svg/idJournals/idJournalChangeRecord.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Журнал авторского надзора/svg/idJournals/idSpJournalDesignerControl.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Журнал авторского надзора/types/BaseDocument.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Журнал авторского надзора/types/BaseTypes.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Журнал авторского надзора/types/CommonTypes.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Журнал авторского надзора/types/Xmldsig.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Журнал авторского надзора/Описание xml схемы Журнал авторского надзора.docx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Журнал бетонных работ/idJournals/idJournalChangeRecord.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Журнал бетонных работ/idJournals/idSpJournalConcreteWorks.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Журнал бетонных работ/idJournals/idSpJournalConcreteWorksRecord.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Журнал бетонных работ/idJournals/idSpJournalConcreteWorksTitle.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Журнал бетонных работ/idJournals/idSpJournalWorkRepresentatives.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Журнал бетонных работ/styles/idSpJournalConcreteWorks.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Журнал бетонных работ/styles/idSpJournalConcreteWorks.xsl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Журнал бетонных работ/styles/idSpJournalConcreteWorksRecord.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Журнал бетонных работ/styles/idSpJournalConcreteWorksRecord.xsl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Журнал бетонных работ/styles/idSpJournalConcreteWorksTitle.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Журнал бетонных работ/styles/idSpJournalConcreteWorksTitle.xsl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Журнал бетонных работ/svg/idJournalChangeRecord.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Журнал бетонных работ/svg/idSpJournalConcreteWorks.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Журнал бетонных работ/svg/idSpJournalConcreteWorksRecord.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Журнал бетонных работ/svg/idSpJournalConcreteWorksTitle.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Журнал бетонных работ/svg/idSpJournalWorkRepresentatives.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Журнал бетонных работ/types/BaseDocument.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Журнал бетонных работ/types/BaseTypes.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Журнал бетонных работ/types/CommonTypes.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Журнал бетонных работ/types/Xmldsig.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Журнал бетонных работ/Описание xml-схемы Журнал бетонных работ.docx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/ОЖР/BuildingInfo.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/ОЖР/BuildingParticipants.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/ОЖР/GeneralWorkJournal.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/ОЖР/Participants.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/ОЖР/WorkInfo.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/ОЖР/gsn/gsn35.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/ОЖР/gsn35.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/ОЖР/idCommon/BuildingInfo.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/ОЖР/idJournals/GeneralWorkJournal.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/ОЖР/idJournals/WorkInfo.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/ОЖР/participants/BuildingParticipants.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/ОЖР/participants/Participants.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/ОЖР/sk/sk5111.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/ОЖР/sk5111.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/ОЖР/types/BaseDocument.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/ОЖР/types/BaseTypes.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/ОЖР/types/CommonTypes.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/ОЖР/types/Xmldsig.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/ОЖР/Описание xml-схемы ОЖР.docx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Предписание об устранении выявленных нарушений/gsn/gsn223.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Предписание об устранении выявленных нарушений/gsn223.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Предписание об устранении выявленных нарушений/gsn223.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Предписание об устранении выявленных нарушений/gsn223.xsl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Предписание об устранении выявленных нарушений/types/BaseDocument.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Предписание об устранении выявленных нарушений/types/BaseTypes.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Предписание об устранении выявленных нарушений/types/CommonTypes.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Предписание об устранении выявленных нарушений/types/Xmldsig.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Предписание об устранении выявленных нарушений/Описание xml-схемы Предписание об устранении выявленных нарушений.docx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Решение о проведении проверки/gsn/gsn39.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Решение о проведении проверки/gsn39.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Решение о проведении проверки/gsn39.xsl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Решение о проведении проверки/types/BaseDocument.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Решение о проведении проверки/types/BaseTypes.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Решение о проведении проверки/types/CommonTypes.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Решение о проведении проверки/types/Xmldsig.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Решение о проведении проверки/Описание xml-схемы gsn39.docx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Решение органа по ход. о продлении срока исп. предпис. об устранении нарушений при строит, реконстр. ОКС (о восст. ср. подачи жалобы на реш. контр (надзор) органа)/gsn/gsnDecisionPrescriptExecutionDateChange.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Решение органа по ход. о продлении срока исп. предпис. об устранении нарушений при строит, реконстр. ОКС (о восст. ср. подачи жалобы на реш. контр (надзор) органа)/types/BaseDocument.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Решение органа по ход. о продлении срока исп. предпис. об устранении нарушений при строит, реконстр. ОКС (о восст. ср. подачи жалобы на реш. контр (надзор) органа)/types/BaseTypes.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Решение органа по ход. о продлении срока исп. предпис. об устранении нарушений при строит, реконстр. ОКС (о восст. ср. подачи жалобы на реш. контр (надзор) органа)/types/CommonTypes.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Решение органа по ход. о продлении срока исп. предпис. об устранении нарушений при строит, реконстр. ОКС (о восст. ср. подачи жалобы на реш. контр (надзор) органа)/types/Xmldsig.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Решение органа по ход. о продлении срока исп. предпис. об устранении нарушений при строит, реконстр. ОКС (о восст. ср. подачи жалобы на реш. контр (надзор) органа)/Описание_xml_схемы_Решение_органа_по_ходатайству_о_продлении_срока.docx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Решение органа по ход. о продлении срока исп. предпис. об устранении нарушений при строит, реконстр. ОКС (о восст. ср. подачи жалобы на реш. контр (надзор) органа)/Решение органа по ходатайству о продлении срока исполнения предписания об устранении нарушений при строительстве, реконструкции объекта капитального строительства (о восстановлении сроков подачи жалобы на решение контрольного (надзорного) органа).svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/app/src/main/resources/validation-files/Решение органа по ход. о продлении срока исп. предпис. об устранении нарушений при строит, реконстр. ОКС (о восст. ср. подачи жалобы на реш. контр (надзор) органа)/Решение органа по ходатайству о продлении срока исполнения предписания об устранении нарушений при строительстве, реконструкции объекта капитального строительства (о восстановлении сроков подачи жалобы на решение контрольного (надзорного) органа).xsl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/pom.xml" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="JpbToolWindowState">
+    <option name="isToolWindowVisible" value="false" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="importingSettings">
+      <MavenImportingSettings>
+        <option name="jdkForImporter" value="azul-17" />
+        <option name="workspaceImportEnabled" value="true" />
+      </MavenImportingSettings>
+    </option>
+  </component>
+  <component name="MavenRunner">
+    <option name="jreName" value="azul-17" />
+  </component>
+  <component name="ProjectId" id="3BDGupgIBaK8jkHCtoIlRj4aU7k" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "jdk.selected.JAVA_MODULE": "17",
+    "last_opened_file_path": "/Users/Marya/xml-doc-flow/services/app/src/main/resources/validation-files",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "reference.settings.project.maven.runner",
+    "spring.configuration.checksum": "d2a57dc1d883fd21fb9951699df71cc7",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/services/app/src/main/resources/validation-files" />
+      <recent name="$PROJECT_DIR$/services/app/src/main/resources" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/services/app/src" />
+      <recent name="$PROJECT_DIR$/services/app" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="ContractorApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="app" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="ru.artwell.contractor.ContractorApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="5286f33c-ab8b-446b-97e1-422915fb7980" name="Changes" comment="" />
+      <created>1774016456005</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1774016456005</updated>
+      <workItem from="1774016457349" duration="951000" />
+      <workItem from="1774017502113" duration="3757000" />
+      <workItem from="1774380410583" duration="1922000" />
+      <workItem from="1774431662242" duration="12512000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>

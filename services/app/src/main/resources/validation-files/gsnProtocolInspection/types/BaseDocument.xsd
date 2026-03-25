@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema targetNamespace="http://types/BaseDocument.xsd"
+           elementFormDefault="qualified"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:bt="http://types/BaseTypes.xsd">
+  <xs:import schemaLocation="BaseTypes.xsd" namespace="http://types/BaseTypes.xsd"/>
+
+  <xs:complexType name="baseDocument">
+    <xs:annotation>
+      <xs:documentation>Информация об UUID и редакции документа, UUID объекта капитального строительства, версии схемы</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="uuid" type="bt:GUID">
+        <xs:annotation>
+          <xs:documentation>UUID документа. Заполняется ИС</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="permanentObjectUUID" type="bt:GUID">
+        <xs:annotation>
+          <xs:documentation>UUID объекта капитального строительства</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="edition" type="xs:positiveInteger">
+        <xs:annotation>
+          <xs:documentation>Редакция документа (версия). Заполняется ИС</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="schemaVersion" fixed="draft.1" use="required">
+      <xs:annotation>
+        <xs:documentation>Версия схемы. Заполняется шиной</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+</xs:schema>

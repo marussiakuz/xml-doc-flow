@@ -1,0 +1,767 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema targetNamespace="http://gsn/gsn39.xsd"
+  elementFormDefault="qualified"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:ct="http://types/CommonTypes.xsd"
+  xmlns:bt="http://types/BaseTypes.xsd"
+  xmlns:bd="http://types/BaseDocument.xsd"
+  xmlns:cf="http://gsn/gsn39.xsd"
+>
+  <xs:import schemaLocation="../types/CommonTypes.xsd" namespace="http://types/CommonTypes.xsd" />
+  <xs:import schemaLocation="../types/BaseTypes.xsd" namespace="http://types/BaseTypes.xsd" />
+  <xs:import schemaLocation="../types/BaseDocument.xsd" namespace="http://types/BaseDocument.xsd" />
+
+  <xs:complexType name="gsn39">
+    <xs:annotation>
+      <xs:documentation>
+        Решение о проведении проверки
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="bd:baseDocument">
+        <xs:sequence>
+          <xs:element name="controlledPersonSignedPart">
+            <xs:annotation>
+              <xs:documentation>Информация, подписываемая представителем контролируемого лица</xs:documentation>
+            </xs:annotation>
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="gsnInfo">
+                  <xs:annotation>
+                    <xs:documentation>
+                      Информация о решении проведения выездной проверки (подписываемая информация)
+                    </xs:documentation>
+                  </xs:annotation>
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element name="controlEventDecisionRequisites">
+                        <xs:annotation>
+                          <xs:documentation>
+                            Реквизиты решения о проведении проверки органом государственного контроля
+                          </xs:documentation>
+                        </xs:annotation>
+                        <xs:complexType>
+                          <xs:sequence>
+                            <xs:element name="controlEventDecisionId" type="bt:GUID">
+                              <xs:annotation>
+                                <xs:documentation>Идентификатор решения</xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                            <xs:element name="controlEventRegistryRecord">
+                              <xs:annotation>
+                                <xs:documentation>
+                                  Отметка о размещении сведений в едином реестре контрольных мероприятий
+                                </xs:documentation>
+                              </xs:annotation>
+                              <xs:complexType>
+                                <xs:sequence>
+                                  <xs:element name="controlEventRegistryNumber" type="bt:notEmptyString">
+                                    <xs:annotation>
+                                      <xs:documentation>
+                                        Учетный номер проверки
+                                      </xs:documentation>
+                                    </xs:annotation>
+                                  </xs:element>
+                                  <xs:element name="controlEventDate" type="xs:date">
+                                    <xs:annotation>
+                                      <xs:documentation>Дата</xs:documentation>
+                                    </xs:annotation>
+                                  </xs:element>
+                                  <xs:element name="controlEventRegistryLink" type="bt:notEmptyString">
+                                    <xs:annotation>
+                                      <xs:documentation>Ссылка на единый реестр</xs:documentation>
+                                    </xs:annotation>
+                                  </xs:element>
+                                </xs:sequence>
+                              </xs:complexType>
+                            </xs:element>
+                            <xs:element name="controlEventProsecutorApproval" minOccurs="0">
+                              <xs:annotation>
+                                <xs:documentation>Отметка о согласовании с прокуратурой</xs:documentation>
+                              </xs:annotation>
+                              <xs:complexType>
+                                <xs:sequence>
+                                  <xs:element name="approval">
+                                    <xs:annotation>
+                                      <xs:documentation>
+                                        Отметка о согласовании
+                                        Допустимые варианты:
+                                        - Согласовано
+                                        - Не согласовано
+                                      </xs:documentation>
+                                    </xs:annotation>
+                                    <xs:simpleType>
+                                      <xs:restriction base="bt:notEmptyString">
+                                        <xs:enumeration value="Согласовано" />
+                                        <xs:enumeration value="Не согласовано" />
+                                      </xs:restriction>
+                                    </xs:simpleType>
+                                  </xs:element>
+                                  <xs:element name="prosecutorApprovalDocument">
+                                    <xs:annotation>
+                                      <xs:documentation>Реквизиты документа о согласовании прокуратурой</xs:documentation>
+                                    </xs:annotation>
+                                    <xs:complexType>
+                                      <xs:sequence>
+                                        <xs:group ref="ct:docNameAndNumberAndDateGroupWithoutId">
+                                          <xs:annotation>
+                                            <xs:documentation>Реквизиты документа без id</xs:documentation>
+                                          </xs:annotation>
+                                        </xs:group>
+                                        <xs:element name="prosecutorName" type="bt:notEmptyString">
+                                          <xs:annotation>
+                                            <xs:documentation>Наименование органа прокуратуры</xs:documentation>
+                                          </xs:annotation>
+                                        </xs:element>
+                                      </xs:sequence>
+                                    </xs:complexType>
+                                  </xs:element>
+                                </xs:sequence>
+                              </xs:complexType>
+                            </xs:element>
+                            <xs:element name="supervisoryAuthorityInfo" type="ct:legalEntityWithId">
+                              <xs:annotation>
+                                <xs:documentation>Сведения об органе государственного строительного надзора</xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                          </xs:sequence>
+                        </xs:complexType>
+                      </xs:element>
+                      <xs:element name="controlEventDecisionInfo">
+                        <xs:annotation>
+                          <xs:documentation>Содержание решения</xs:documentation>
+                        </xs:annotation>
+                        <xs:complexType>
+                          <xs:sequence>
+                            <xs:element name="documentDetails">
+                              <xs:annotation>
+                                <xs:documentation>Реквизиты документа</xs:documentation>
+                              </xs:annotation>
+                              <xs:complexType>
+                                <xs:sequence>
+                                  <xs:group ref="ct:docNameAndNumberAndDateGroupWithoutId">
+                                    <xs:annotation>
+                                      <xs:documentation>Реквизиты документа без id</xs:documentation>
+                                    </xs:annotation>
+                                  </xs:group>
+                                  <xs:element name="compilationTime">
+                                    <xs:annotation>
+                                      <xs:documentation>Время оформления документа</xs:documentation>
+                                    </xs:annotation>
+                                    <xs:complexType>
+                                      <xs:sequence>
+                                        <xs:element name="hours" type="xs:nonNegativeInteger">
+                                          <xs:annotation>
+                                            <xs:documentation>Часы</xs:documentation>
+                                          </xs:annotation>
+                                        </xs:element>
+                                        <xs:element name="minutes" type="xs:nonNegativeInteger">
+                                          <xs:annotation>
+                                            <xs:documentation>Минуты</xs:documentation>
+                                          </xs:annotation>
+                                        </xs:element>
+                                      </xs:sequence>
+                                    </xs:complexType>
+                                  </xs:element>
+                                </xs:sequence>
+                              </xs:complexType>
+                            </xs:element>
+                            <xs:element name="controlEventDecisionResponsiblePerson" type="ct:representative">
+                              <xs:annotation>
+                                <xs:documentation>
+                                  Лицо, принявшее решение о проведении контрольных мероприятий
+                                </xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                            <xs:element name="controlEventDecisionBasis">
+                              <xs:annotation>
+                                <xs:documentation>Основание для принятия решения</xs:documentation>
+                              </xs:annotation>
+                              <xs:complexType>
+                                <xs:sequence>
+                                  <xs:element name="basis" type="bt:notEmptyString">
+                                    <xs:annotation>
+                                      <xs:documentation>Основание</xs:documentation>
+                                    </xs:annotation>
+                                  </xs:element>
+                                  <xs:element name="basisExplanations">
+                                    <xs:annotation>
+                                      <xs:documentation>Пояснения основания</xs:documentation>
+                                    </xs:annotation>
+                                    <xs:complexType>
+                                      <xs:sequence>
+                                        <xs:element name="basisDocument">
+                                          <xs:annotation>
+                                            <xs:documentation>Реквизиты документа (реквизиты+составитель)</xs:documentation>
+                                          </xs:annotation>
+                                          <xs:complexType>
+                                            <xs:sequence>
+                                              <xs:group ref="ct:docNameAndNumberAndDateGroup">
+                                                <xs:annotation>
+                                                  <xs:documentation>Реквизиты документа с id</xs:documentation>
+                                                </xs:annotation>
+                                              </xs:group>
+                                              <xs:element name="compiler" type="bt:notEmptyString">
+                                                <xs:annotation>
+                                                  <xs:documentation>Составитель</xs:documentation>
+                                                </xs:annotation>
+                                              </xs:element>
+                                            </xs:sequence>
+                                          </xs:complexType>
+                                        </xs:element>
+                                        <xs:element name="explanations" type="bt:notEmptyString">
+                                          <xs:annotation>
+                                            <xs:documentation>Пояснения</xs:documentation>
+                                          </xs:annotation>
+                                        </xs:element>
+                                      </xs:sequence>
+                                    </xs:complexType>
+                                  </xs:element>
+                                </xs:sequence>
+                              </xs:complexType>
+                            </xs:element>
+                            <xs:element name="controlType" type="bt:notEmptyString">
+                              <xs:annotation>
+                                <xs:documentation>Наименование вида государственного/муниципального контроля (надзора)</xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                            <xs:element name="authorizedPersonsList">
+                              <xs:annotation>
+                                <xs:documentation>Уполномоченные на проведение проверки</xs:documentation>
+                              </xs:annotation>
+                              <xs:complexType>
+                                <xs:sequence>
+                                  <xs:element name="authorizedPersonsListItem" type="ct:representative" maxOccurs="unbounded">
+                                    <xs:annotation>
+                                      <xs:documentation>Уполномоченный на проведение проверки</xs:documentation>
+                                    </xs:annotation>
+                                  </xs:element>
+                                </xs:sequence>
+                              </xs:complexType>
+                            </xs:element>
+                            <xs:element name="involvedSpecialists">
+                              <xs:annotation>
+                                <xs:documentation>Привлеченные специалисты</xs:documentation>
+                              </xs:annotation>
+                              <xs:complexType>
+                                <xs:sequence>
+                                  <xs:choice>
+                                    <xs:element name="notInvolved" type="bt:notEmptyString" fixed="Отсутствие привлекаемых специалистов">
+                                      <xs:annotation>
+                                        <xs:documentation>
+                                          Флаг "специалисты не привлекались"
+                                          (значение поля: "Отсутствие привлекаемых специалистов")
+                                        </xs:documentation>
+                                      </xs:annotation>
+                                    </xs:element>
+                                    <xs:element name="involvedSpecialistList">
+                                      <xs:annotation>
+                                        <xs:documentation>Специалисты</xs:documentation>
+                                      </xs:annotation>
+                                      <xs:complexType>
+                                        <xs:sequence>
+                                          <xs:element name="involvedSpecialistListItem" type="ct:representative" maxOccurs="unbounded">
+                                            <xs:annotation>
+                                              <xs:documentation>Специалист</xs:documentation>
+                                            </xs:annotation>
+                                          </xs:element>
+                                        </xs:sequence>
+                                      </xs:complexType>
+                                    </xs:element>
+                                  </xs:choice>
+                                </xs:sequence>
+                              </xs:complexType>
+                            </xs:element>
+                            <xs:element name="expertOrganizationsOrExperts">
+                              <xs:annotation>
+                                <xs:documentation>Экспертные организации / эксперты</xs:documentation>
+                              </xs:annotation>
+                              <xs:complexType>
+                                <xs:choice>
+                                  <xs:element
+                                    name="noInvolvedExpertsOrExpertOrganizations"
+                                    type="bt:notEmptyString"
+                                    fixed="Отсутствие привлекаемых экспертов"
+                                  >
+                                    <xs:annotation>
+                                      <xs:documentation>
+                                        Флаг "эксперты не привлекались"
+                                        (значение поля: "Отсутствие привлекаемых экспертов")
+                                      </xs:documentation>
+                                    </xs:annotation>
+                                  </xs:element>
+                                  <xs:element name="involvedExpertOrganizationsList">
+                                    <xs:annotation>
+                                      <xs:documentation>Экспертные организации</xs:documentation>
+                                    </xs:annotation>
+                                    <xs:complexType>
+                                      <xs:sequence>
+                                        <xs:element name="involvedExpertOrganizationsListItem" maxOccurs="unbounded">
+                                          <xs:annotation>
+                                            <xs:documentation>Экспертная организация</xs:documentation>
+                                          </xs:annotation>
+                                          <xs:complexType>
+                                            <xs:sequence>
+                                              <xs:element name="expertOrganizationName" type="bt:notEmptyString">
+                                                <xs:annotation>
+                                                  <xs:documentation>Наименование экспертной организации</xs:documentation>
+                                                </xs:annotation>
+                                              </xs:element>
+                                              <xs:element name="expertOrganizationAccreditationName" type="bt:notEmptyString">
+                                                <xs:annotation>
+                                                  <xs:documentation>Наименование органа об аккредитации</xs:documentation>
+                                                </xs:annotation>
+                                              </xs:element>
+                                              <xs:element name="expertOrganizationDocument" type="ct:docBaseInfo">
+                                                <xs:annotation>
+                                                  <xs:documentation>Реквизиты документа без id</xs:documentation>
+                                                </xs:annotation>
+                                              </xs:element>
+                                            </xs:sequence>
+                                          </xs:complexType>
+                                        </xs:element>
+                                      </xs:sequence>
+                                    </xs:complexType>
+                                  </xs:element>
+                                  <xs:element name="involvedExpertsList">
+                                    <xs:annotation>
+                                      <xs:documentation>Эксперты</xs:documentation>
+                                    </xs:annotation>
+                                    <xs:complexType>
+                                      <xs:sequence>
+                                        <xs:element name="involvedExpertsListItem" maxOccurs="unbounded">
+                                          <xs:annotation>
+                                            <xs:documentation>Эксперт</xs:documentation>
+                                          </xs:annotation>
+                                          <xs:complexType>
+                                            <xs:complexContent>
+                                              <xs:extension base="ct:representative">
+                                                <xs:sequence>
+                                                  <xs:element name="expertsRegisterInfo" type="bt:notEmptyString">
+                                                    <xs:annotation>
+                                                      <xs:documentation>Сведения из реестра экспертов</xs:documentation>
+                                                    </xs:annotation>
+                                                  </xs:element>
+                                                </xs:sequence>
+                                              </xs:extension>
+                                            </xs:complexContent>
+                                          </xs:complexType>
+                                        </xs:element>
+                                      </xs:sequence>
+                                    </xs:complexType>
+                                  </xs:element>
+                                </xs:choice>
+                              </xs:complexType>
+                            </xs:element>
+                            <xs:element name="controlObject">
+                              <xs:annotation>
+                                <xs:documentation>Объект контроля</xs:documentation>
+                              </xs:annotation>
+                              <xs:complexType>
+                                <xs:sequence>
+                                  <xs:element name="permanentObjectInfo" minOccurs="0">
+                                    <xs:annotation>
+                                      <xs:documentation>Сведения об объекте капитального строительства</xs:documentation>
+                                    </xs:annotation>
+                                    <xs:complexType>
+                                      <xs:sequence>
+                                        <xs:element name="permanentObjectName" type="bt:notEmptyString">
+                                          <xs:annotation>
+                                            <xs:documentation>Наименование объекта (этапа)</xs:documentation>
+                                          </xs:annotation>
+                                        </xs:element>
+                                        <xs:element name="permanentObjectId" type="bt:GUID">
+                                          <xs:annotation>
+                                            <xs:documentation>id объекта капитального строительства</xs:documentation>
+                                          </xs:annotation>
+                                        </xs:element>
+                                      </xs:sequence>
+                                    </xs:complexType>
+                                  </xs:element>
+                                  <xs:element name="description" type="bt:notEmptyString">
+                                    <xs:annotation>
+                                      <xs:documentation>Описание (в отношении чего проводится проверка)</xs:documentation>
+                                    </xs:annotation>
+                                  </xs:element>
+                                </xs:sequence>
+                              </xs:complexType>
+                            </xs:element>
+                            <xs:element name="controlObjectAddress" type="ct:postalOrConstructionSiteAddress">
+                              <xs:annotation>
+                                <xs:documentation>Адрес проведения проверки</xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                            <xs:element name="controlledPerson" type="ct:individualEntrepreneurOrLegalEntityOrIndividualAndId">
+                              <xs:annotation>
+                                <xs:documentation>Контролируемое лицо</xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                            <xs:element name="controlActionsList">
+                              <xs:annotation>
+                                <xs:documentation>Сведения о контрольных (надзорных) действиях</xs:documentation>
+                              </xs:annotation>
+                              <xs:complexType>
+                                <xs:sequence>
+                                  <xs:element name="controlActionsListItem" maxOccurs="unbounded">
+                                    <xs:annotation>
+                                      <xs:documentation>Сведения о контрольном (надзорном) действии</xs:documentation>
+                                    </xs:annotation>
+                                    <xs:complexType>
+                                      <xs:sequence>
+                                        <xs:element name="controlActionNumber" type="bt:notEmptyString">
+                                          <xs:annotation>
+                                            <xs:documentation>Порядковый номер</xs:documentation>
+                                          </xs:annotation>
+                                        </xs:element>
+                                        <xs:element name="controlActionName" type="bt:notEmptyString">
+                                          <xs:annotation>
+                                            <xs:documentation>
+                                              Наименование контрольного (надзорного) действия
+                                            </xs:documentation>
+                                          </xs:annotation>
+                                        </xs:element>
+                                      </xs:sequence>
+                                    </xs:complexType>
+                                  </xs:element>
+                                </xs:sequence>
+                              </xs:complexType>
+                            </xs:element>
+                            <xs:element name="controlSubject">
+                              <xs:annotation>
+                                <xs:documentation>Предмет проверки</xs:documentation>
+                              </xs:annotation>
+                              <xs:complexType>
+                                <xs:sequence>
+                                  <xs:element name="controlSubjectDescription" type="bt:notEmptyString">
+                                    <xs:annotation>
+                                      <xs:documentation>Описание предмета проверки</xs:documentation>
+                                    </xs:annotation>
+                                  </xs:element>
+                                  <xs:element name="technicalRegulationsList">
+                                    <xs:annotation>
+                                      <xs:documentation>
+                                        Перечень технических регламентов, иных нормативных правовых актов
+                                      </xs:documentation>
+                                    </xs:annotation>
+                                    <xs:complexType>
+                                      <xs:sequence>
+                                        <xs:element name="technicalRegulationsListItem" maxOccurs="unbounded">
+                                          <xs:annotation>
+                                            <xs:documentation>
+                                              Технический регламент, иной нормативный правовой акт
+                                            </xs:documentation>
+                                          </xs:annotation>
+                                          <xs:complexType>
+                                            <xs:complexContent>
+                                              <xs:extension base="ct:docInfo">
+                                                <xs:sequence>
+                                                  <xs:element name="technicalRegulationsSectionsList" minOccurs="0">
+                                                    <xs:annotation>
+                                                      <xs:documentation>
+                                                        Перечень структурных единиц технического регламента, иного нормативно-правового акта
+                                                      </xs:documentation>
+                                                    </xs:annotation>
+                                                    <xs:complexType>
+                                                      <xs:sequence>
+                                                        <xs:element name="technicalRegulationsSectionsListItem" type="ct:docInfo" maxOccurs="unbounded">
+                                                          <xs:annotation>
+                                                            <xs:documentation>
+                                                              Структурная единица технического регламента, иного нормативно-правового акта
+                                                            </xs:documentation>
+                                                          </xs:annotation>
+                                                        </xs:element>
+                                                      </xs:sequence>
+                                                    </xs:complexType>
+                                                  </xs:element>
+                                                  <xs:element name="controlSubjectComment" type="bt:notEmptyString">
+                                                    <xs:annotation>
+                                                      <xs:documentation>Пояснение предмета проверки</xs:documentation>
+                                                    </xs:annotation>
+                                                  </xs:element>
+                                                </xs:sequence>
+                                              </xs:extension>
+                                            </xs:complexContent>
+                                          </xs:complexType>
+                                        </xs:element>
+                                      </xs:sequence>
+                                    </xs:complexType>
+                                  </xs:element>
+                                  <xs:element name="projectDocSectionsList" minOccurs="0">
+                                    <xs:annotation>
+                                      <xs:documentation>Список разделов проектной документации (сокр.)</xs:documentation>
+                                    </xs:annotation>
+                                    <xs:complexType>
+                                      <xs:sequence>
+                                        <xs:element name="projectDocSectionsListItem" maxOccurs="unbounded">
+                                          <xs:annotation>
+                                            <xs:documentation>Раздел проектной документации (сокр.)</xs:documentation>
+                                          </xs:annotation>
+                                          <xs:complexType>
+                                            <xs:complexContent>
+                                              <xs:extension base="ct:docInfo">
+                                                <xs:sequence>
+                                                  <xs:element name="projectDocSectionId" type="bt:GUID" minOccurs="0">
+                                                    <xs:annotation>
+                                                      <xs:documentation>Id раздела</xs:documentation>
+                                                    </xs:annotation>
+                                                  </xs:element>
+                                                  <xs:element name="controlSubjectComment" type="bt:notEmptyString">
+                                                    <xs:annotation>
+                                                      <xs:documentation>Пояснение предмета проверки</xs:documentation>
+                                                    </xs:annotation>
+                                                  </xs:element>
+                                                </xs:sequence>
+                                              </xs:extension>
+                                            </xs:complexContent>
+                                          </xs:complexType>
+                                        </xs:element>
+                                      </xs:sequence>
+                                    </xs:complexType>
+                                  </xs:element>
+                                </xs:sequence>
+                              </xs:complexType>
+                            </xs:element>
+                            <xs:element name="testSheets">
+                              <xs:annotation>
+                                <xs:documentation>Проверочные листы</xs:documentation>
+                              </xs:annotation>
+                              <xs:complexType>
+                                <xs:choice>
+                                  <xs:element name="testSheetsAreNotApplied" type="bt:notEmptyString">
+                                    <xs:annotation>
+                                      <xs:documentation>Флаг "не применяются"</xs:documentation>
+                                    </xs:annotation>
+                                  </xs:element>
+                                  <xs:element name="appliedTestSheetsList">
+                                    <xs:annotation>
+                                      <xs:documentation>Примененные проверочные листы</xs:documentation>
+                                    </xs:annotation>
+                                    <xs:complexType>
+                                      <xs:sequence>
+                                        <xs:element name="appliedTestSheetsListItem" maxOccurs="unbounded">
+                                          <xs:annotation>
+                                            <xs:documentation>Примененный проверочный лист</xs:documentation>
+                                          </xs:annotation>
+                                          <xs:complexType>
+                                            <xs:sequence>
+                                              <xs:element name="sequenceNumber" type="xs:positiveInteger">
+                                                <xs:annotation>
+                                                  <xs:documentation>Порядковый номер</xs:documentation>
+                                                </xs:annotation>
+                                              </xs:element>
+                                              <xs:element name="testSheetName" type="bt:notEmptyString">
+                                                <xs:annotation>
+                                                  <xs:documentation>Наименование</xs:documentation>
+                                                </xs:annotation>
+                                              </xs:element>
+                                              <xs:element name="structuralUnits" type="bt:notEmptyString" minOccurs="0">
+                                                <xs:annotation>
+                                                  <xs:documentation>Структурные единицы</xs:documentation>
+                                                </xs:annotation>
+                                              </xs:element>
+                                              <xs:element name="checklistApprovingAct" type="ct:docBaseInfo">
+                                                <xs:annotation>
+                                                  <xs:documentation>Акт, утверждающий проверочный лист</xs:documentation>
+                                                </xs:annotation>
+                                              </xs:element>
+                                            </xs:sequence>
+                                          </xs:complexType>
+                                        </xs:element>
+                                      </xs:sequence>
+                                    </xs:complexType>
+                                  </xs:element>
+                                </xs:choice>
+                              </xs:complexType>
+                            </xs:element>
+                            <xs:element name="controlPeriodInfo">
+                              <xs:annotation>
+                                <xs:documentation>Срок проверки</xs:documentation>
+                              </xs:annotation>
+                              <xs:complexType>
+                                <xs:sequence>
+                                  <xs:element name="controlPeriod" type="ct:datetimeInterval">
+                                    <xs:annotation>
+                                      <xs:documentation>Сроки проведения проверки</xs:documentation>
+                                    </xs:annotation>
+                                  </xs:element>
+                                  <xs:element name="interactionPeriod">
+                                    <xs:annotation>
+                                      <xs:documentation>Срок взаимодействия</xs:documentation>
+                                    </xs:annotation>
+                                    <xs:complexType>
+                                      <xs:sequence>
+                                        <xs:element name="hours" type="xs:nonNegativeInteger">
+                                          <xs:annotation>
+                                            <xs:documentation>Количество часов</xs:documentation>
+                                          </xs:annotation>
+                                        </xs:element>
+                                        <xs:element name="minutes" type="xs:nonNegativeInteger">
+                                          <xs:annotation>
+                                            <xs:documentation>Количество минут</xs:documentation>
+                                          </xs:annotation>
+                                        </xs:element>
+                                      </xs:sequence>
+                                    </xs:complexType>
+                                  </xs:element>
+                                </xs:sequence>
+                              </xs:complexType>
+                            </xs:element>
+                            <xs:element name="providedDocsInfo">
+                              <xs:annotation>
+                                <xs:documentation>Сведения о предоставляемых документах</xs:documentation>
+                              </xs:annotation>
+                              <xs:complexType>
+                                <xs:sequence>
+                                  <xs:element name="providedDocsList">
+                                    <xs:annotation>
+                                      <xs:documentation>Сведения о документах</xs:documentation>
+                                    </xs:annotation>
+                                    <xs:complexType>
+                                      <xs:sequence>
+                                        <xs:element name="providedDocsListItem" type="bt:notEmptyString" maxOccurs="unbounded">
+                                          <xs:annotation>
+                                            <xs:documentation>Наименование документа</xs:documentation>
+                                          </xs:annotation>
+                                        </xs:element>
+                                      </xs:sequence>
+                                    </xs:complexType>
+                                  </xs:element>
+                                  <xs:element name="additionalInfo" minOccurs="0">
+                                    <xs:annotation>
+                                      <xs:documentation>Иные сведения</xs:documentation>
+                                    </xs:annotation>
+                                    <xs:complexType>
+                                      <xs:sequence>
+                                        <xs:choice>
+                                          <xs:element name="noAdditionalInfo" type="bt:notEmptyString">
+                                            <xs:annotation>
+                                              <xs:documentation>Сведения отсутствуют</xs:documentation>
+                                            </xs:annotation>
+                                          </xs:element>
+                                          <xs:element name="additionalInfoList">
+                                            <xs:annotation>
+                                              <xs:documentation>Перечень сведений</xs:documentation>
+                                            </xs:annotation>
+                                            <xs:complexType>
+                                              <xs:sequence>
+                                                <xs:element name="additionalInfoListItem" type="bt:notEmptyString" maxOccurs="unbounded">
+                                                  <xs:annotation>
+                                                    <xs:documentation>Элемент перечня сведений</xs:documentation>
+                                                  </xs:annotation>
+                                                </xs:element>
+                                              </xs:sequence>
+                                            </xs:complexType>
+                                          </xs:element>
+                                        </xs:choice>
+                                      </xs:sequence>
+                                    </xs:complexType>
+                                  </xs:element>
+                                </xs:sequence>
+                              </xs:complexType>
+                            </xs:element>
+                          </xs:sequence>
+                        </xs:complexType>
+                      </xs:element>
+                      <xs:element name="supervisoryAuthorityRepresentativesInfo">
+                        <xs:annotation>
+                          <xs:documentation>Сведения о лицах КНО</xs:documentation>
+                        </xs:annotation>
+                        <xs:complexType>
+                          <xs:sequence>
+                            <xs:element name="controlEventDecisionAuthor">
+                              <xs:annotation>
+                                <xs:documentation>Лицо, подготовившее документ</xs:documentation>
+                              </xs:annotation>
+                              <xs:complexType>
+                                <xs:complexContent>
+                                  <xs:extension base="ct:representative">
+                                    <xs:sequence>
+                                      <xs:element name="contactInfo">
+                                        <xs:annotation>
+                                          <xs:documentation>Контактная информация</xs:documentation>
+                                        </xs:annotation>
+                                        <xs:complexType>
+                                          <xs:sequence>
+                                            <xs:element name="phone" type="bt:notEmptyString">
+                                              <xs:annotation>
+                                                <xs:documentation>Телефон</xs:documentation>
+                                              </xs:annotation>
+                                            </xs:element>
+                                            <xs:element name="email" type="bt:notEmptyString" minOccurs="0">
+                                              <xs:annotation>
+                                                <xs:documentation>Адрес электронной почты</xs:documentation>
+                                              </xs:annotation>
+                                            </xs:element>
+                                          </xs:sequence>
+                                        </xs:complexType>
+                                      </xs:element>
+                                    </xs:sequence>
+                                  </xs:extension>
+                                </xs:complexContent>
+                              </xs:complexType>
+                            </xs:element>
+                            <xs:element name="controlDecisionResponsiblePerson" type="ct:representative">
+                              <xs:annotation>
+                                <xs:documentation>Лицо, принявшее решение о проведении проверки</xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                          </xs:sequence>
+                        </xs:complexType>
+                      </xs:element>
+                    </xs:sequence>
+                    <xs:attribute name="id" type="bt:GUIDandUnderscore" use="required">
+                      <xs:annotation>
+                        <xs:documentation>Id подписываемой информации о решении</xs:documentation>
+                      </xs:annotation>
+                    </xs:attribute>
+                  </xs:complexType>
+                </xs:element>
+                <xs:element name="signatures">
+                  <xs:annotation>
+                    <xs:documentation>Подписи</xs:documentation>
+                  </xs:annotation>
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element name="signature" type="ct:signature" maxOccurs="unbounded">
+                        <xs:annotation>
+                          <xs:documentation>Подпись</xs:documentation>
+                        </xs:annotation>
+                      </xs:element>
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+                <xs:element name="emailSendingInfo" type="ct:emailSendingInfo" minOccurs="0">
+                  <xs:annotation>
+                    <xs:documentation>Информация о направлении решения на электронную почту</xs:documentation>
+                  </xs:annotation>
+                </xs:element>
+                <xs:element name="controlledPersonRepresentative" type="ct:actsRepresentativeWithIdAndOrder" minOccurs="0">
+                  <xs:annotation>
+                    <xs:documentation>Представитель контролируемого лица, который ознакамливается</xs:documentation>
+                  </xs:annotation>
+                </xs:element>
+              </xs:sequence>
+              <xs:attribute name="id" type="bt:GUIDandUnderscore" use="required">
+                <xs:annotation>
+                  <xs:documentation>Id информации, подписываемой представителем контролируемого лица</xs:documentation>
+                </xs:annotation>
+              </xs:attribute>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="familiarizationOrRefusal" type="ct:familiarizationOrRefusal" minOccurs="0">
+            <xs:annotation>
+              <xs:documentation>Ознакомление или отказ</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="extraParametersList" type="ct:extraParametersList" minOccurs="0">
+            <xs:annotation>
+              <xs:documentation>Список дополнительных параметров</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="gsn39" type="cf:gsn39" />
+</xs:schema>

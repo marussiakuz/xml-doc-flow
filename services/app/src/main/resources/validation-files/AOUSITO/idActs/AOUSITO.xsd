@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema version="1.0.0"
+  targetNamespace="http://idActs/AOUSITO.xsd"
+  elementFormDefault="qualified"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:cf="http://idActs/AOUSITO.xsd"
+  xmlns:ct="http://types/CommonTypes.xsd"
+  xmlns:bt="http://types/BaseTypes.xsd"
+  xmlns:bd="http://types/BaseDocument.xsd"
+>
+  <xs:import schemaLocation="../types/CommonTypes.xsd" namespace="http://types/CommonTypes.xsd" />
+  <xs:import schemaLocation="../types/BaseTypes.xsd" namespace="http://types/BaseTypes.xsd" />
+  <xs:import schemaLocation="../types/BaseDocument.xsd" namespace="http://types/BaseDocument.xsd" />
+
+  <xs:complexType name="aousito">
+    <xs:annotation>
+      <xs:documentation>
+        Акт освидетельствования участков сетей инженерно-технического обеспечения
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="bd:baseDocument">
+        <xs:sequence>
+          <xs:element name="actInfo">
+            <xs:annotation>
+              <xs:documentation>Информация в акте, которую надо подписать</xs:documentation>
+            </xs:annotation>
+            <xs:complexType>
+              <xs:sequence>
+                <xs:group ref="ct:commonActInfoGroup">
+                  <xs:annotation>
+                    <xs:documentation>
+                      Блоки общих данных для актов
+                      Правила заполнения:
+
+                      В элементах developer, technicalCustomer, operatingPerson или regionalOperator:
+                      элемент sro не заполняется только когда членство в саморегулируемых организациях
+                      в области инженерных изысканий, архитектурно-строительного проектирования,
+                      строительства, реконструкции, капитального ремонта объектов капитального
+                      строительства не требуется
+
+                      В элементе buildingContractor:
+                      элемент sro не заполняется только когда членство в саморегулируемых организациях
+                      в области строительства, реконструкции, капитального ремонта объектов капитального
+                      строительства не требуется
+
+                      В элементе projectDocumentationContractor:
+                      элемент sro не заполняется только когда членство в саморегулируемых организациях
+                      в области архитектурно-строительного проектирования не требуется
+
+                      Элементы developerRepresentative, technicalCustomerRepresentative, 
+                      operatingPersonRepresentative или regionalOperatorRepresentative заполняются в 
+                      случае осуществления строительства, реконструкции, капитального ремонта на 
+                      основании договора строительного подряда. При этом, элемент organization заполняется
+                      в случае осуществления строительного контроля на основании договора с застройщиком 
+                      техническим заказчиком, эксплуатирующей организацией или региональным оператором
+
+                      Элемент projDocContractRepresentative заполняется в случаях, когда осуществляется 
+                      авторский надзор. При этом, элемент organization заполняется в случае осуществления 
+                      авторского надзора лицом, не являющимся разработчиком проектной документации
+
+                      Элемент workExecutorRepresentative заполняется в случае выполнения работ по 
+                      договорам о строительстве, реконструкции, капитальном ремонте объектов 
+                      капитального строительства, заключенным с иными лицами
+                    </xs:documentation>
+                  </xs:annotation>
+                </xs:group>
+                <xs:element name="utilitySystemsOperator" type="ct:organizationWithId" minOccurs="0">
+                  <xs:annotation>
+                    <xs:documentation>
+                      Лицо, ответственное за эксплуатацию сетей инженерно-технического обеспечения
+                      Заполняется при наличии организации, осуществляющей эксплуатацию сетей 
+                      инженерно-технического обеспечения
+                    </xs:documentation>
+                  </xs:annotation>
+                </xs:element>
+                <xs:element name="utilitySystemsOperatorRepresentative" type="ct:actsRepresentativeWithIdAndOrder" minOccurs="0">
+                  <xs:annotation>
+                    <xs:documentation>
+                      Представитель лица, ответственного за эксплуатацию сетей инженерно-технического обеспечения
+                    </xs:documentation>
+                  </xs:annotation>
+                </xs:element>
+                <xs:element name="inspectedUtilitySystemsSectionsList">
+                  <xs:annotation>
+                    <xs:documentation>
+                      Участки сети инженерно-технического обеспечения, предъявленные к освидетельствованию
+                    </xs:documentation>
+                  </xs:annotation>
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element name="inspectedUtilitySystemsSectionsListItem" maxOccurs="unbounded">
+                        <xs:annotation>
+                          <xs:documentation>
+                            Участок сети инженерно-технического обеспечения предъявленный к освидетельствованию
+                          </xs:documentation>
+                        </xs:annotation>
+                        <xs:complexType>
+                          <xs:sequence>
+                            <xs:element name="structureElementId" type="bt:GUID" minOccurs="0">
+                              <xs:annotation>
+                                <xs:documentation>id структурного элемента</xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                            <xs:element name="workAndControlJournalsRecords" type="ct:journalRecordLinkGroup">
+                              <xs:annotation>
+                                <xs:documentation>Записи в журналах работ и контроля</xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                            <xs:element name="utilitySystemsSectionName" type="bt:notEmptyString">
+                              <xs:annotation>
+                                <xs:documentation>
+                                  Наименование и обозначение участка сетей инженерно-технического обеспечения
+                                </xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                            <xs:element name="location" type="ct:location">
+                              <xs:annotation>
+                                <xs:documentation>Местоположение</xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                          </xs:sequence>
+                        </xs:complexType>
+                      </xs:element>
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+                <xs:element name="workAndProjectDocumentationsList">
+                  <xs:annotation>
+                    <xs:documentation>
+                      Проектная/рабочая документация, по которой выполнены работы (список)
+                    </xs:documentation>
+                  </xs:annotation>
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element name="workAndProjectDocumentationsListItem" maxOccurs="unbounded">
+                        <xs:complexType>
+                          <xs:annotation>
+                            <xs:documentation>
+                              Проектная/рабочая документация, по которой выполнены работы
+                            </xs:documentation>
+                          </xs:annotation>
+                          <xs:sequence>
+                            <xs:element name="workAndProjectDocumentation" type="ct:workAndProjectDocumentation">
+                              <xs:annotation>
+                                <xs:documentation>Сведения о разделах проектной и/или рабочей документации</xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                            <xs:element name="organization">
+                              <xs:annotation>
+                                <xs:documentation>
+                                  Организация, выполнившая соответствующий раздел рабочей (проектной) документации
+                                </xs:documentation>
+                              </xs:annotation>
+                              <xs:complexType>
+                                <xs:choice>
+                                  <xs:element name="fullOrganizationInfo" type="ct:organizationWithOptionalSroAndId">
+                                    <xs:annotation>
+                                      <xs:documentation>Полная информация об организации</xs:documentation>
+                                    </xs:annotation>
+                                  </xs:element>
+                                  <xs:element name="shortOrganizationInfo" type="ct:shortIndividualEntrepreneurOrLegalEntityAndId">
+                                    <xs:annotation>
+                                      <xs:documentation>Краткая информация об организации (ID, ФИО ИП / наименование ЮЛ)</xs:documentation>
+                                    </xs:annotation>
+                                  </xs:element>
+                                </xs:choice>
+                              </xs:complexType>
+                            </xs:element>
+                          </xs:sequence>
+                        </xs:complexType>
+                      </xs:element>
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+                <xs:element name="technicalConditions" minOccurs="0">
+                  <xs:annotation>
+                    <xs:documentation>
+                      Технические условия подключения объекта капитального строительства к сетям инженерно-технического обеспечения
+                    </xs:documentation>
+                  </xs:annotation>
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element name="technicalConditionsDoc" type="ct:docBaseInfoWithFileAndOptionalExpirationDate">
+                        <xs:annotation>
+                          <xs:documentation>Документ технических условий</xs:documentation>
+                        </xs:annotation>
+                      </xs:element>
+                      <xs:element name="additionalInfo" type="bt:notEmptyString" minOccurs="0">
+                        <xs:annotation>
+                          <xs:documentation>Иные сведения</xs:documentation>
+                        </xs:annotation>
+                      </xs:element>
+                      <xs:element name="technicalConditionsOrganization" type="ct:shortIndividualEntrepreneurOrLegalEntityAndId">
+                        <xs:annotation>
+                          <xs:documentation>
+                            Организация, выдавшая технические условия (краткая информация об организации)
+                          </xs:documentation>
+                        </xs:annotation>
+                      </xs:element>
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+                <xs:element name="hiddenWorksList">
+                  <xs:annotation>
+                    <xs:documentation>
+                      Скрытые работы, выполненные в отношении конструкции/участка сетей
+                    </xs:documentation>
+                  </xs:annotation>
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element name="hiddenWorksListItem" type="ct:hiddenWork" maxOccurs="unbounded">
+                        <xs:annotation>
+                          <xs:documentation>
+                            Скрытая работа, выполненная в отношении конструкции/ участка сетей
+                          </xs:documentation>
+                        </xs:annotation>
+                      </xs:element>
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+                <xs:element name="usedMaterialsList">
+                  <xs:annotation>
+                    <xs:documentation>Материалы, примененные при выполнении работ</xs:documentation>
+                  </xs:annotation>
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element name="usedMaterialsListItem" type="ct:material" maxOccurs="unbounded">
+                        <xs:annotation>
+                          <xs:documentation>Материал, примененный при выполнении работ</xs:documentation>
+                        </xs:annotation>
+                      </xs:element>
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+                <xs:element name="requirementsComplianceConfirmationInfo">
+                  <xs:annotation>
+                    <xs:documentation>
+                      Документы, подтверждающие соответствие участков сетей инженерно-технического обеспечения предъявляемым к ним требованиям
+                    </xs:documentation>
+                  </xs:annotation>
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element name="requirementsComplianceConfirmationDocuments" type="ct:examinationDocuments">
+                        <xs:annotation>
+                          <xs:documentation>Документы, подтверждающие соответствие предъявляемым требованиям</xs:documentation>
+                        </xs:annotation>
+                      </xs:element>
+                      <xs:element name="technicalConditionsDoc" type="ct:docBaseInfoWithFileAndOptionalExpirationDate" minOccurs="0">
+                        <xs:annotation>
+                          <xs:documentation>Документ технических условий</xs:documentation>
+                        </xs:annotation>
+                      </xs:element>
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+                <xs:element name="trialDocsList" minOccurs="0">
+                  <xs:annotation>
+                    <xs:documentation>Сведения о проведённых испытаниях и опробованиях (список файлов документов)</xs:documentation>
+                  </xs:annotation>
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element name="trialDoc" maxOccurs="unbounded">
+                        <xs:annotation>
+                          <xs:documentation>Документ по результатам испытаний (опробований)</xs:documentation>
+                        </xs:annotation>
+                        <xs:complexType>
+                          <xs:complexContent>
+                            <xs:extension base="ct:docBaseInfoWithFile">
+                              <xs:sequence>
+                                <xs:element name="trialName" type="bt:notEmptyString">
+                                  <xs:annotation>
+                                    <xs:documentation>Наименование испытания (опробования)</xs:documentation>
+                                  </xs:annotation>
+                                </xs:element>
+                              </xs:sequence>
+                            </xs:extension>
+                          </xs:complexContent>
+                        </xs:complexType>
+                      </xs:element>
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+                <xs:element name="worksDates" type="ct:dateInterval">
+                  <xs:annotation>
+                    <xs:documentation>Даты начала и окончания работ</xs:documentation>
+                  </xs:annotation>
+                </xs:element>
+                <xs:element name="accordantWorkAndProjectDocumentation" type="ct:accordantWorkAndProjectDocumentation">
+                  <xs:annotation>
+                    <xs:documentation>
+                      Требования, которым соответствуют предъявленные участки сетей инженерно-технического обеспечения
+                    </xs:documentation>
+                  </xs:annotation>
+                </xs:element>
+                <xs:element name="attachmentsList" minOccurs="0">
+                  <xs:annotation>
+                    <xs:documentation>Приложения</xs:documentation>
+                  </xs:annotation>
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element name="attachmentsListItem" type="ct:actAttachment" maxOccurs="unbounded">
+                        <xs:annotation>
+                          <xs:documentation>Приложение</xs:documentation>
+                        </xs:annotation>
+                      </xs:element>
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+              </xs:sequence>
+              <xs:attribute name="id" type="xs:string" fixed="actInfo" use="required">
+                <xs:annotation>
+                  <xs:documentation>Id подписываемой части</xs:documentation>
+                </xs:annotation>
+              </xs:attribute>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="signatures" minOccurs="0">
+            <xs:annotation>
+              <xs:documentation>Подписи</xs:documentation>
+            </xs:annotation>
+            <xs:complexType>
+              <xs:sequence>
+                <xs:group ref="ct:commonActSignaturesGroup">
+                  <xs:annotation>
+                    <xs:documentation>Блок подписей для актов</xs:documentation>
+                  </xs:annotation>
+                </xs:group>
+                <xs:element name="utilitySystemsOperatorRepresentativeSignature" type="ct:signature" minOccurs="0">
+                  <xs:annotation>
+                    <xs:documentation>
+                      Подпись представителя организации, осуществляющей эксплуатацию сетей инженерно-технического обеспечения
+                    </xs:documentation>
+                  </xs:annotation>
+                </xs:element>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="actsServiceAttributes" type="ct:docServiceAttributes">
+            <xs:annotation>
+              <xs:documentation>Служебные атрибуты документа ИД</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="extraParametersList" type="ct:extraParametersList" minOccurs="0">
+            <xs:annotation>
+              <xs:documentation>Список дополнительных параметров</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="aousito" type="cf:aousito" />
+</xs:schema>

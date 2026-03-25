@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema
+  version="1.1"
+  targetNamespace="http://v_17_0/an/idSpJournalDesignerControlRepresentatives.xsd"
+  elementFormDefault="qualified"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:ct="http://v_17_0/types/CommonTypes.xsd"
+  xmlns:bt="http://v_17_0/types/BaseTypes.xsd"
+  xmlns:bd="http://v_17_0/types/BaseDocument.xsd"
+  xmlns:cf="http://v_17_0/an/idSpJournalDesignerControlRepresentatives.xsd"
+>
+  <xs:import schemaLocation="../types/CommonTypes.xsd" namespace="http://v_17_0/types/CommonTypes.xsd" />
+  <xs:import schemaLocation="../types/BaseTypes.xsd" namespace="http://v_17_0/types/BaseTypes.xsd" />
+  <xs:import schemaLocation="../types/BaseDocument.xsd" namespace="http://v_17_0/types/BaseDocument.xsd" />
+
+  <xs:complexType name="idSpJournalDesignerControlRepresentatives">
+    <xs:annotation>
+      <xs:documentation>
+        ЖАН, лист 3. Список работников (представителей) лиц, осуществляющих авторский надзор
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="bd:baseDocument">
+        <xs:sequence>
+          <xs:element name="participantDesignerControlWithRepresentatives">
+            <xs:annotation>
+              <xs:documentation>
+                Лицо, осуществляющее авторский надзор (ID), и его работники (представители)
+              </xs:documentation>
+            </xs:annotation>
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="participantId" type="bt:GUID">
+                  <xs:annotation>
+                    <xs:documentation>ID участника - лица, осуществляющего авторский надзор</xs:documentation>
+                  </xs:annotation>
+                </xs:element>
+                <xs:element name="representativeDesignerControlList">
+                  <xs:annotation>
+                    <xs:documentation>
+                      Список работников (представителей) лица, осуществляющего авторский надзор, с видом работ при осуществлении авторского надзора
+                    </xs:documentation>
+                  </xs:annotation>
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element name="representativeDesignerControl" maxOccurs="unbounded">
+                        <xs:annotation>
+                          <xs:documentation>
+                            Работник (представитель) лица, осуществляющего авторский надзор, с видом работ при осуществлении авторского надзора
+                          </xs:documentation>
+                        </xs:annotation>
+                        <xs:complexType>
+                          <xs:sequence>
+                            <xs:element name="representativeSignedPart">
+                              <xs:annotation>
+                                <xs:documentation>
+                                  Подписываемый блок информации о работнике (представителе)
+                                  (подписант - сам работник (представитель))
+                                </xs:documentation>
+                              </xs:annotation>
+                              <xs:complexType>
+                                <xs:sequence>
+                                  <xs:element name="representative" type="ct:actsRepresentativeWithIdAndOrderAndIDNR">
+                                    <xs:annotation>
+                                      <xs:documentation>
+                                        Информация о работнике (представителе) организации с документом, подтверждающим полномочия
+                                      </xs:documentation>
+                                    </xs:annotation>
+                                  </xs:element>
+                                  <xs:element name="phone" type="bt:notEmptyString">
+                                    <xs:annotation>
+                                      <xs:documentation>Телефон</xs:documentation>
+                                    </xs:annotation>
+                                  </xs:element>
+                                  <xs:element name="workTypeList">
+                                    <xs:annotation>
+                                      <xs:documentation>
+                                        Виды работ при осуществлении авторского надзора (список)
+                                      </xs:documentation>
+                                    </xs:annotation>
+                                    <xs:complexType>
+                                      <xs:sequence>
+                                        <xs:element name="workType" maxOccurs="unbounded" type="bt:notEmptyString">
+                                          <xs:annotation>
+                                            <xs:documentation>
+                                              Вид работ при осуществлении авторского надзора
+                                            </xs:documentation>
+                                          </xs:annotation>
+                                        </xs:element>
+                                      </xs:sequence>
+                                    </xs:complexType>
+                                  </xs:element>
+                                </xs:sequence>
+                                <xs:attribute name="id" type="bt:GUIDandUnderscore" use="required">
+                                  <xs:annotation>
+                                    <xs:documentation>
+                                      ID подписываемого блока информации о работнике (представителе)
+                                      (подписант - сам работник (представитель))
+                                    </xs:documentation>
+                                  </xs:annotation>
+                                </xs:attribute>
+                              </xs:complexType>
+                            </xs:element>
+                            <xs:element name="representativeSignature" type="ct:signature">
+                              <xs:annotation>
+                                <xs:documentation>Подпись работника (представителя)</xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                          </xs:sequence>
+                        </xs:complexType>
+                      </xs:element>
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="docServiceAttributes" type="ct:anDocServiceAttributes">
+            <xs:annotation>
+              <xs:documentation>Служебные атрибуты документа</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="extraParametersList" type="ct:extraParametersList" minOccurs="0">
+            <xs:annotation>
+              <xs:documentation>Список дополнительных параметров</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+        <xs:attribute name="docSchemaVersion" type="bt:docSchemaVersion" use="required" fixed="1.1">
+          <xs:annotation>
+            <xs:documentation>Версия схемы, по которой составлен документ</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="idSpJournalDesignerControlRepresentatives" type="cf:idSpJournalDesignerControlRepresentatives" />
+</xs:schema>

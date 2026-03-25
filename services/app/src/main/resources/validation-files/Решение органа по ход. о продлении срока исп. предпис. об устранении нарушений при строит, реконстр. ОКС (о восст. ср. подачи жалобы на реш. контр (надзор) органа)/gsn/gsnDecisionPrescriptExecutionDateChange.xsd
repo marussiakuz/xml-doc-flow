@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema elementFormDefault="qualified"
+  targetNamespace="http://gsn/gsnDecisionPrescriptExecutionDateChange.xsd"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:ct="http://types/CommonTypes.xsd"
+  xmlns:bt="http://types/BaseTypes.xsd"
+  xmlns:bd="http://types/BaseDocument.xsd"
+  xmlns:cf="http://gsn/gsnDecisionPrescriptExecutionDateChange.xsd"
+>
+  <xs:import schemaLocation="../types/CommonTypes.xsd" namespace="http://types/CommonTypes.xsd" />
+  <xs:import schemaLocation="../types/BaseTypes.xsd" namespace="http://types/BaseTypes.xsd" />
+  <xs:import schemaLocation="../types/BaseDocument.xsd" namespace="http://types/BaseDocument.xsd" />
+
+  <xs:complexType name="gsnDecisionPrescriptExecutionDateChange">
+    <xs:annotation>
+      <xs:documentation>
+        Решение органа по ходатайству о продлении срока исполнения предписания об устранении нарушений при строительстве, реконструкции объекта капитального строительства (о восстановлении сроков подачи жалобы на решение контрольного (надзорного) органа)
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="bd:baseDocument">
+        <xs:sequence>
+          <xs:element name="controlledOrganizationRepresentativeSignedPart">
+            <xs:annotation>
+              <xs:documentation>Информация, подписываемая контролируемым лицом</xs:documentation>
+            </xs:annotation>
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="supervisoryAuthorityRepresentativeSignedPart">
+                  <xs:annotation>
+                    <xs:documentation>Информация, подписываемая должностным лицом контрольного (надзорного) органа</xs:documentation>
+                  </xs:annotation>
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element name="decisionRequisites">
+                        <xs:annotation>
+                          <xs:documentation>Реквизиты решения</xs:documentation>
+                        </xs:annotation>
+                        <xs:complexType>
+                          <xs:sequence>
+                            <xs:element name="documentDetails" type="ct:docNameAndNumberAndDate">
+                              <xs:annotation>
+                                <xs:documentation>Реквизиты документа</xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                            <xs:element name="controlEventRegistryRecord">
+                              <xs:annotation>
+                                <xs:documentation>
+                                  Отметка о размещении сведений в едином реестре контрольных мероприятий
+                                </xs:documentation>
+                              </xs:annotation>
+                              <xs:complexType>
+                                <xs:sequence>
+                                  <xs:element name="controlEventRegistryNumber" type="bt:notEmptyString">
+                                    <xs:annotation>
+                                      <xs:documentation>Учетный номер проверки</xs:documentation>
+                                    </xs:annotation>
+                                  </xs:element>
+                                  <xs:element name="controlEventDate" type="xs:date">
+                                    <xs:annotation>
+                                      <xs:documentation>Дата</xs:documentation>
+                                    </xs:annotation>
+                                  </xs:element>
+                                  <xs:element name="controlEventRegistryLink" type="bt:notEmptyString">
+                                    <xs:annotation>
+                                      <xs:documentation>Ссылка на единый реестр</xs:documentation>
+                                    </xs:annotation>
+                                  </xs:element>
+                                </xs:sequence>
+                              </xs:complexType>
+                            </xs:element>
+                            <xs:element name="supervisoryAuthorityInfo" type="ct:legalEntityWithId">
+                              <xs:annotation>
+                                <xs:documentation>Сведения об органе государственного строительного надзора</xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                          </xs:sequence>
+                        </xs:complexType>
+                      </xs:element>
+                      <xs:element name="decisionInfo">
+                        <xs:annotation>
+                          <xs:documentation>Содержание решения</xs:documentation>
+                        </xs:annotation>
+                        <xs:complexType>
+                          <xs:sequence>
+                            <xs:element name="gsnPetitionPrescriptExecutionDateChange" type="ct:docNameAndNumberAndDate">
+                              <xs:annotation>
+                                <xs:documentation>
+                                  Реквизиты Ходатайства (ГСН 14.1)
+                                </xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                            <xs:choice>
+                              <xs:element name="controlledOrganization" type="ct:individualEntrepreneurOrLegalEntityOrIndividualAndId">
+                                <xs:annotation>
+                                  <xs:documentation>Контролируемое лицо</xs:documentation>
+                                </xs:annotation>
+                              </xs:element>
+                              <xs:element name="inspectionAuthority" type="ct:representativeWithId">
+                                <xs:annotation>
+                                  <xs:documentation>Инспектор направивший представление</xs:documentation>
+                                </xs:annotation>
+                              </xs:element>
+                            </xs:choice>
+                            <xs:element name="decisionSubjectDescription">
+                              <xs:annotation>
+                                <xs:documentation>
+                                  По вопросу (описание сути вопроса ходатайства)
+                                  Допустимые значения
+                                  - разъяснения способа и порядка исполнения решения
+                                  - об отсрочке исполнения решения
+                                  - о приостановлении исполнения решения
+                                  - о возобновлении ранее приостановленного исполнения решения
+                                  - о прекращении исполнения решения
+                                </xs:documentation>
+                              </xs:annotation>
+                              <xs:simpleType>
+                                <xs:restriction base="bt:notEmptyString">
+                                  <xs:enumeration value="разъяснения способа и порядка исполнения решения" />
+                                  <xs:enumeration value="об отсрочке исполнения решения" />
+                                  <xs:enumeration value="о приостановлении исполнения решения" />
+                                  <xs:enumeration value="о возобновлении ранее приостановленного исполнения решения" />
+                                  <xs:enumeration value="о прекращении исполнения решения" />
+                                </xs:restriction>
+                              </xs:simpleType>
+                            </xs:element>
+                            <xs:element name="decisionRequisites" type="ct:docNameAndNumberAndDate">
+                              <xs:annotation>
+                                <xs:documentation>
+                                  Реквизиты решения (ссылка на внутренний документ, подготовленный после получения самого ходатайства)
+                                </xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                            <xs:element name="permanentObjectInfo" type="ct:permanentObjectInfo">
+                              <xs:annotation>
+                                <xs:documentation>Объект капитального строительства</xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                            <xs:element name="presentRepresentativesList" minOccurs="0">
+                              <xs:annotation>
+                                <xs:documentation>Присутствующие при рассмотрении ходатайства лица (список)</xs:documentation>
+                              </xs:annotation>
+                              <xs:complexType>
+                                <xs:sequence>
+                                  <xs:element name="presentRepresentative" maxOccurs="unbounded">
+                                    <xs:annotation>
+                                      <xs:documentation>Присутствующее при рассмотрении ходатайства лицо</xs:documentation>
+                                    </xs:annotation>
+                                    <xs:complexType>
+                                      <xs:complexContent>
+                                        <xs:extension base="ct:actsRepresentativeWithIdAndOrder">
+                                          <xs:sequence>
+                                            <xs:element name="organization" type="ct:organizationWithOptionalSroAndId">
+                                              <xs:annotation>
+                                                <xs:documentation>Информация об организации</xs:documentation>
+                                              </xs:annotation>
+                                            </xs:element>
+                                          </xs:sequence>
+                                        </xs:extension>
+                                      </xs:complexContent>
+                                    </xs:complexType>
+                                  </xs:element>
+                                </xs:sequence>
+                              </xs:complexType>
+                            </xs:element>
+                            <xs:element name="comment" type="bt:notEmptyString">
+                              <xs:annotation>
+                                <xs:documentation>Комментарий</xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                            <xs:element name="regulationDocumentsList" type="ct:regulationDocumentsList">
+                              <xs:annotation>
+                                <xs:documentation>Перечень регламентирующих документов (нормативно-правовые акты, технические регламенты и прочие варианты)</xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                            <xs:element name="decisionResultInfo">
+                              <xs:annotation>
+                                <xs:documentation>Сведения о решении</xs:documentation>
+                              </xs:annotation>
+                              <xs:complexType>
+                                <xs:sequence>
+                                  <xs:element name="decisionResult">
+                                    <xs:annotation>
+                                      <xs:documentation>
+                                        Результат решения
+                                        Допустимые значения:
+                                        - отсрочить
+                                        - оставить без изменений
+                                        - приостановить
+                                        - возобновить
+                                        - прекратить
+                                        - согласовано
+                                        - не согласовано
+                                      </xs:documentation>
+                                    </xs:annotation>
+                                    <xs:simpleType>
+                                      <xs:restriction base="bt:notEmptyString">
+                                        <xs:enumeration value="отсрочить" />
+                                        <xs:enumeration value="оставить без изменений" />
+                                        <xs:enumeration value="приостановить" />
+                                        <xs:enumeration value="возобновить" />
+                                        <xs:enumeration value="прекратить" />
+                                        <xs:enumeration value="согласовано" />
+                                        <xs:enumeration value="не согласовано" />
+                                      </xs:restriction>
+                                    </xs:simpleType>
+                                  </xs:element>
+                                  <xs:choice>
+                                    <xs:element name="startDate" type="xs:date">
+                                      <xs:annotation>
+                                        <xs:documentation>Дата начала (с)</xs:documentation>
+                                      </xs:annotation>
+                                    </xs:element>
+                                    <xs:element name="endDate" type="xs:date">
+                                      <xs:annotation>
+                                        <xs:documentation>Дата окончания (до)</xs:documentation>
+                                      </xs:annotation>
+                                    </xs:element>
+                                  </xs:choice>
+                                </xs:sequence>
+                              </xs:complexType>
+                            </xs:element>
+                          </xs:sequence>
+                        </xs:complexType>
+                      </xs:element>
+                      <xs:element name="supervisoryAuthorityRepresentative" type="ct:representativeWithId">
+                        <xs:annotation>
+                          <xs:documentation>Должностное лицо контрольного (надзорного) органа</xs:documentation>
+                        </xs:annotation>
+                      </xs:element>
+                    </xs:sequence>
+                    <xs:attribute name="id" type="bt:GUIDandUnderscore" use="required">
+                      <xs:annotation>
+                        <xs:documentation>Id информации, подписываемой должностным лицом контрольного (надзорного) органа</xs:documentation>
+                      </xs:annotation>
+                    </xs:attribute>
+                  </xs:complexType>
+                </xs:element>
+                <xs:element name="supervisoryAuthorityRepresentativeSignature" type="ct:signature">
+                  <xs:annotation>
+                    <xs:documentation>Подпись должностного лица контрольного (надзорного) органа</xs:documentation>
+                  </xs:annotation>
+                </xs:element>
+                <xs:element name="controlledOrganizationRepresentative" type="ct:actsRepresentativeWithIdAndOrder" minOccurs="0">
+                  <xs:annotation>
+                    <xs:documentation>Информация о представителе контролируемого лица</xs:documentation>
+                  </xs:annotation>
+                </xs:element>
+              </xs:sequence>
+              <xs:attribute name="id" type="bt:GUIDandUnderscore" use="required">
+                <xs:annotation>
+                  <xs:documentation>Id информации, подписываемой контролируемым лицом</xs:documentation>
+                </xs:annotation>
+              </xs:attribute>
+            </xs:complexType>
+          </xs:element>
+          <xs:choice minOccurs="0">
+            <xs:element name="controlledOrganizationRepresentativeSignature" type="ct:signature">
+              <xs:annotation>
+                <xs:documentation>Подпись контролируемого лица</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element name="inspectionAuthoritySignature" type="ct:signature">
+              <xs:annotation>
+                <xs:documentation>Подпись инспектора</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+          </xs:choice>
+          <xs:element name="extraParametersList" type="ct:extraParametersList" minOccurs="0">
+            <xs:annotation>
+              <xs:documentation>Список дополнительных параметров</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="gsnDecisionPrescriptExecutionDateChange" type="cf:gsnDecisionPrescriptExecutionDateChange" />
+</xs:schema>

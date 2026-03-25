@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema
+  targetNamespace="http://types/BaseTypes.xsd"
+  elementFormDefault="qualified"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:cf="http://types/BaseTypes.xsd"
+>
+  <xs:simpleType name="positiveDecimals">
+    <xs:annotation>
+      <xs:documentation>Только положительные значения</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:decimal">
+      <xs:minExclusive value="0" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="GUID">
+    <xs:annotation>
+      <xs:documentation>Уникальный идентификатор</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="GUIDandUnderscore">
+    <xs:annotation>
+      <xs:documentation>
+        Уникальный идентификатор с предваряющим знаком подчеркивания
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:pattern value="_[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="notEmptyString">
+    <xs:annotation>
+      <xs:documentation>Непустая строка</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:whiteSpace value="collapse" />
+      <xs:minLength value="1" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="kpp">
+    <xs:annotation>
+      <xs:documentation>
+        Код причины постановки на учет (КПП)
+        Допустимый формат: XXXXYYXXX (строка из 4 цифр, 2 цифр или латинских заглавных букв и 3 цифр)
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:pattern value="\d{4}[\dA-Z][\dA-Z]\d{3}" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="inn">
+    <xs:annotation>
+      <xs:documentation>
+        Идентификационный номер налогоплательщика (ИНН)
+        Допустимый формат: XXXXXXXXXX / XXXXXXXXXXXX (строка из 10 или 12 цифр)
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:pattern value="\d{10}(\d{2})?" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="innip">
+    <xs:annotation>
+      <xs:documentation>
+        Идентификационный номер налогоплательщика для ИП (ИНН ИП)
+        Допустимый формат: XXXXXXXXXXXX (строка из 12 цифр)
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:pattern value="\d{12}" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="ogrn">
+    <xs:annotation>
+      <xs:documentation>
+        Основной государственный регистрационный номер (ОГРН)
+        Допустимый формат: XXXXXXXXXXXXX (строка из 13 цифр)
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:pattern value="\d{13}" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="ogrnip">
+    <xs:annotation>
+      <xs:documentation>
+        Основной государственный регистрационный номер ИП (ОГРН ИП)
+        Допустимый формат: XXXXXXXXXXXXXXX (строка из 15 цифр)
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:pattern value="\d{15}" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="okpo">
+    <xs:annotation>
+      <xs:documentation>
+        Общероссийский классификатор предприятий и организаций (ОКПО)
+        Допустимый формат: XXXXXXXX (строка из 8 цифр)
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:pattern value="\d{8}" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="okpoip">
+    <xs:annotation>
+      <xs:documentation>
+        Общероссийский классификатор предприятий и организаций (ОКПО) (для ИП)
+        Допустимый формат: XXXXXXXXXX (строка из 10 цифр)
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:pattern value="\d{10}" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="bik">
+    <xs:annotation>
+      <xs:documentation>
+        БИК (банковский идентификационный код)
+        Допустимый формат: XXXXXXXXXX (строка из 10 цифр)
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:pattern value="\d{10}" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="correspondentAccount">
+    <xs:annotation>
+      <xs:documentation>
+        Корреспондентский счёт
+        Допустимый формат: XXXXXXXXXXXXXXXXXXXX (строка из 20 цифр)
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:pattern value="\d{20}" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="operatingAccountNumber">
+    <xs:annotation>
+      <xs:documentation>
+        Номер расчетного счёта
+        Допустимый формат: XXXXXXXXXXXXXXXXXXXX (строка из 20 цифр)
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:pattern value="\d{20}" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="cadastralNumber">
+    <xs:annotation>
+      <xs:documentation>
+        Кадастровый номер
+        Допустимый формат: XX:XX:XXXXXXX:XXXX (строка из 4 групп цифр, разделенных двоеточием в формате 2-2-7-4)
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:pattern value="\d{2}:\d{2}:\d{7}:\d{4}" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="oktmo">
+    <xs:annotation>
+      <xs:documentation>
+        Общероссийский классификатор территорий муниципальных образований (ОКТМО)
+        Допустимый формат кода ОКТМО: XXXXXXXXXXX (строка из 11 цифр без пробелов и иных знаков)
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:pattern value="\d{11}" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="snils">
+    <xs:annotation>
+      <xs:documentation>
+        Страховой номер индивидуального лицевого счёта (СНИЛС)
+        Допустимый формат: XXX-XXX-XXX XX (строка из 4 групп цифр, разделенных дефисами и пробелом в формате "3-3-3 2")
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:pattern value="\d{3}-\d{3}-\d{3} \d{2}" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- TODO: уточнить необходимость этого типа -->
+  <xs:simpleType name="controlEventRegistryNumber">
+    <xs:annotation>
+      <xs:documentation>
+        Учетный номер КНМ в едином реестре проверок (в соответствии с ПП РФ №415 от 28.04.2015)
+        Допустимый формат учетного номера: XXXXXXXXXXXX (строка из 12 цифр без пробелов и иных знаков)
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:pattern value="\d{12}" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="ipAddress">
+    <xs:annotation>
+      <xs:documentation>
+        IP-адрес (IPv4)
+        Допустимый формат: XXX.XXX.XXX.XXX (строка из 4 чисел, разделенных точками; XXX - число от 0 до 255 включительно)
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:pattern value="(([1-9]?\d|1\d\d|2[0-4]\d|25[0-5])\.){3}(\d|[1-9]?\d|1\d\d|2[0-4]\d|25[0-5])" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="stateEcoExpertiseNumber">
+    <xs:annotation>
+      <xs:documentation>
+        Номер документа - заключения государственной экологической экспертизы
+        Допустимый формат: XX-X-XX-X-XX-XXXX-XX (строка из 7 групп цифр, разделенных дефисами в формате "2-1-2-1-2-4-2")
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:pattern value="\d{2}-\d-\d{2}-\d-\d{2}-\d{4}-\d{2}" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="workAndProjectDocumentationExpertiseNumber">
+    <xs:annotation>
+      <xs:documentation>
+        Номер документа - заключения государственной/негосударственной экспертизы проектной (рабочей) документации
+        Допустимые форматы:
+        - государственная экспертиза: XX-X-X-X-XXXXXX-XXXX (строка из 6 групп цифр, разделенных дефисами в формате "2-1-1-1-6-4")
+        - негосудартвенная экспертиза: X-X-X-XXXX-XX (строка из 5 групп цифр, разделенных дефисами в формате "1-1-1-4-2")
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:pattern value="\d{2}-\d-\d-\d-\d{6}-\d{4}" />
+      <xs:pattern value="\d-\d-\d\-\d{4}-\d{2}" />
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>

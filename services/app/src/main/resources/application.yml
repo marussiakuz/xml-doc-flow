@@ -1,0 +1,35 @@
+server:
+  port: ${PORT:8080}
+
+# Часовой пояс для бизнес-времени (LocalDateTime.now(zone)) и Jackson
+app:
+  time-zone: Europe/Moscow
+
+spring:
+  jackson:
+    time-zone: ${app.time-zone:Europe/Moscow}
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 20MB
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/xml_doc_flow}
+    username: ${SPRING_DATASOURCE_USERNAME:postgres}
+    password: ${SPRING_DATASOURCE_PASSWORD:postgres}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    open-in-view: false
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        jdbc:
+          lob:
+            non_contextual_creation: true
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+

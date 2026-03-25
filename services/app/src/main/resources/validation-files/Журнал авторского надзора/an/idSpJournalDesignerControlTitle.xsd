@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema
+  version="1.1"
+  targetNamespace="http://v_17_0/an/idSpJournalDesignerControlTitle.xsd"
+  elementFormDefault="qualified"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:cf="http://v_17_0/an/idSpJournalDesignerControlTitle.xsd"
+  xmlns:ct="http://v_17_0/types/CommonTypes.xsd"
+  xmlns:bt="http://v_17_0/types/BaseTypes.xsd"
+  xmlns:bd="http://v_17_0/types/BaseDocument.xsd"
+>
+  <xs:import schemaLocation="../types/CommonTypes.xsd" namespace="http://v_17_0/types/CommonTypes.xsd" />
+  <xs:import schemaLocation="../types/BaseTypes.xsd" namespace="http://v_17_0/types/BaseTypes.xsd" />
+  <xs:import schemaLocation="../types/BaseDocument.xsd" namespace="http://v_17_0/types/BaseDocument.xsd" />
+
+  <xs:complexType name="idSpJournalDesignerControlTitle">
+    <xs:annotation>
+      <xs:documentation>ЖАН, лист 1. Титульный лист</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="bd:baseDocument">
+        <xs:sequence>
+          <xs:element name="customerSignedPart">
+            <xs:annotation>
+              <xs:documentation>
+                Подписываемая часть титульного листа журнала авторского надзора
+                (подписант - представитель застройщика / технического заказчика / лица, ответственного за эксплуатацию здания, сооружения / регионального оператора (в зависимости от выбора участника))
+              </xs:documentation>
+            </xs:annotation>
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="designerControlSignedPart">
+                  <xs:annotation>
+                    <xs:documentation>
+                      Подписываемая часть титульного листа журнала авторского надзора
+                      (подписант - представитель лица, осуществляющего авторский надзор)
+                    </xs:documentation>
+                  </xs:annotation>
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element name="journalRequisites" type="ct:journalRequisites">
+                        <xs:annotation>
+                          <xs:documentation>Реквизиты документа (журнал)</xs:documentation>
+                        </xs:annotation>
+                      </xs:element>
+                      <xs:element name="permanentObjectInfo" type="ct:permanentObjectInfo">
+                        <xs:annotation>
+                          <xs:documentation>Объект капитального строительства</xs:documentation>
+                        </xs:annotation>
+                      </xs:element>
+                      <xs:choice>
+                        <xs:element name="participantDeveloper" type="ct:individualEntrepreneurOrLegalEntityOrIndividualAndId">
+                          <xs:annotation>
+                            <xs:documentation>Застройщик</xs:documentation>
+                          </xs:annotation>
+                        </xs:element>
+                        <xs:element name="participantTechnicalCustomer" type="ct:organizationWithOptionalSroAndId">
+                          <xs:annotation>
+                            <xs:documentation>Технический заказчик</xs:documentation>
+                          </xs:annotation>
+                        </xs:element>
+                        <xs:element name="participantBuildingOperator" type="ct:individualEntrepreneurOrLegalEntityOrIndividualAndId">
+                          <xs:annotation>
+                            <xs:documentation>Лицо, ответственное за эксплуатацию здания, сооружения</xs:documentation>
+                          </xs:annotation>
+                        </xs:element>
+                        <xs:element name="participantRegionalBuildingOperator" type="ct:organizationWithOptionalSroAndId">
+                          <xs:annotation>
+                            <xs:documentation>Региональный оператор</xs:documentation>
+                          </xs:annotation>
+                        </xs:element>
+                      </xs:choice>
+                      <xs:element name="participantDesignerControl" type="ct:individualEntrepreneurOrLegalEntityOrIndividualAndId">
+                        <xs:annotation>
+                          <xs:documentation>Лицо, осуществляющее авторский надзор</xs:documentation>
+                        </xs:annotation>
+                      </xs:element>
+                      <xs:element name="journalLogStartDate" type="xs:date">
+                        <xs:annotation>
+                          <xs:documentation>Дата начала ведения журнала</xs:documentation>
+                        </xs:annotation>
+                      </xs:element>
+                      <xs:element name="representativeDesignerControl" type="ct:actsRepresentativeWithIdAndOrderAndIDNR">
+                        <xs:annotation>
+                          <xs:documentation>Представитель лица, осуществляющего авторский надзор</xs:documentation>
+                        </xs:annotation>
+                      </xs:element>
+                    </xs:sequence>
+                    <xs:attribute name="id" type="bt:GUIDandUnderscore" use="required">
+                      <xs:annotation>
+                        <xs:documentation>
+                          ID подписываемой части титульного листа журнала авторского надзора
+                          (подписант - представитель лица, осуществляющего авторский надзор)
+                        </xs:documentation>
+                      </xs:annotation>
+                    </xs:attribute>
+                  </xs:complexType>
+                </xs:element>
+                <xs:element name="representativeDesignerControlSignature" type="ct:signature">
+                  <xs:annotation>
+                    <xs:documentation>Подпись представителя лица, осуществляющего авторский надзор</xs:documentation>
+                  </xs:annotation>
+                </xs:element>
+                <xs:choice minOccurs="0">
+                  <xs:element name="representativeDeveloper" type="ct:actsRepresentativeWithIdAndOrder">
+                    <xs:annotation>
+                      <xs:documentation>Представитель застройщика</xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                  <xs:element name="representativeTechnicalCustomer" type="ct:actsRepresentativeWithIdAndOrder">
+                    <xs:annotation>
+                      <xs:documentation>Представитель технического заказчика</xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                  <xs:element name="representativeBuildingOperator" type="ct:actsRepresentativeWithIdAndOrder">
+                    <xs:annotation>
+                      <xs:documentation>Представитель лица, ответственного за эксплуатацию здания, сооружения</xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                  <xs:element name="representativeRegionalBuildingOperator" type="ct:actsRepresentativeWithIdAndOrder">
+                    <xs:annotation>
+                      <xs:documentation>Представитель регионального оператора</xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                </xs:choice>
+              </xs:sequence>
+              <xs:attribute name="id" type="bt:GUIDandUnderscore" use="required">
+                <xs:annotation>
+                  <xs:documentation>
+                    ID подписываемой части титульного листа журнала авторского надзора
+                    (подписант - представитель застройщика / технического заказчика / лица, ответственного за эксплуатацию здания, сооружения / регионального оператора (в зависимости от выбора участника))
+                  </xs:documentation>
+                </xs:annotation>
+              </xs:attribute>
+            </xs:complexType>
+          </xs:element>
+          <xs:choice minOccurs="0">
+            <xs:element name="representativeDeveloperSignature" type="ct:signature">
+              <xs:annotation>
+                <xs:documentation>Подпись представителя застройщика</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element name="representativeTechnicalCustomerSignature" type="ct:signature">
+              <xs:annotation>
+                <xs:documentation>Подпись представителя технического заказчика</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element name="representativeBuildingOperatorSignature" type="ct:signature">
+              <xs:annotation>
+                <xs:documentation>Подпись представителя лица, ответственного за эксплуатацию здания, сооружения</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element name="representativeRegionalBuildingOperatorSignature" type="ct:signature">
+              <xs:annotation>
+                <xs:documentation>Подпись представителя регионального оператора</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+          </xs:choice>
+          <xs:element name="docServiceAttributes" type="ct:anDocServiceAttributes">
+            <xs:annotation>
+              <xs:documentation>Служебные атрибуты документа</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="extraParametersList" type="ct:extraParametersList" minOccurs="0">
+            <xs:annotation>
+              <xs:documentation>Список дополнительных параметров</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+        <xs:attribute name="docSchemaVersion" type="bt:docSchemaVersion" use="required" fixed="1.1">
+          <xs:annotation>
+            <xs:documentation>Версия схемы, по которой составлен документ</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="idSpJournalDesignerControlTitle" type="cf:idSpJournalDesignerControlTitle" />
+</xs:schema>

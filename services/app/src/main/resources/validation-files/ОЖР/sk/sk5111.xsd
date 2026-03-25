@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema targetNamespace="http://sk/sk5111.xsd"
+  elementFormDefault="qualified"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:ct="http://types/CommonTypes.xsd"
+  xmlns:bt="http://types/BaseTypes.xsd"
+  xmlns:bd="http://types/BaseDocument.xsd"
+  xmlns:cf="http://sk/sk5111.xsd"
+>
+  <xs:import schemaLocation="../types/CommonTypes.xsd" namespace="http://types/CommonTypes.xsd" />
+  <xs:import schemaLocation="../types/BaseTypes.xsd" namespace="http://types/BaseTypes.xsd" />
+  <xs:import schemaLocation="../types/BaseDocument.xsd" namespace="http://types/BaseDocument.xsd" />
+
+  <xs:complexType name="sk5111">
+    <xs:annotation>
+      <xs:documentation>
+        Результат контрольного мероприятия
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="bd:baseDocument">
+        <xs:sequence>
+          <xs:element name="skInfo">
+            <xs:annotation>
+              <xs:documentation>Сведения о результатах контрольного мероприятия</xs:documentation>
+            </xs:annotation>
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="permanentObjectId" type="bt:GUID">
+                  <xs:annotation>
+                    <xs:documentation>Идентификатор объекта капитального строительства </xs:documentation>
+                  </xs:annotation>
+                </xs:element>
+                <xs:element name="controlEventResultsList">
+                  <xs:annotation>
+                    <xs:documentation>Список результатов контрольного мероприятия</xs:documentation>
+                  </xs:annotation>
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element name="controlEventResultsListItem" maxOccurs="unbounded">
+                        <xs:annotation>
+                          <xs:documentation>Результат контрольного мероприятия</xs:documentation>
+                        </xs:annotation>
+                        <xs:complexType>
+                          <xs:sequence>
+                            <xs:element name="controlEventRecordId" type="bt:GUID">
+                              <xs:annotation>
+                                <xs:documentation>ID контрольного мероприятия</xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                            <xs:element name="controlEventPeriod" type="ct:datetimeInterval">
+                              <xs:annotation>
+                                <xs:documentation>
+                                  Сроки проведения контрольного мероприятия (дата/время начала и окончания КМ)
+                                </xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                            <xs:choice>
+                              <xs:element name="identifiedDefect">
+                                <xs:annotation>
+                                  <xs:documentation>Недостаток предмета освидетельствования</xs:documentation>
+                                </xs:annotation>
+                                <xs:complexType>
+                                  <xs:sequence>
+                                    <xs:element name="fixedDefectInfoWithInspectionEmployeeSignedPart">
+                                      <xs:annotation>
+                                        <xs:documentation>
+                                          Информация о недостатке (предмет контроля, описание недостатка, плановая дата его устранения, атрибуты и подпись сотрудника, проводившего контроль, фактическая дата устранения недостатка, данные о сотруднике, проводившем контроль устранения) (подписываемая часть)
+                                        </xs:documentation>
+                                      </xs:annotation>
+                                      <xs:complexType>
+                                        <xs:complexContent>
+                                          <xs:extension base="ct:defectBaseInfo">
+                                            <xs:sequence>
+                                              <xs:element name="defectFixingFactDate" type="xs:date" minOccurs="0">
+                                                <xs:annotation>
+                                                  <xs:documentation>Фактическая дата устранения выявленного недостатка</xs:documentation>
+                                                </xs:annotation>
+                                              </xs:element>
+                                              <xs:element name="defectFixingInspectionEmployee" type="ct:representativeWithId" minOccurs="0">
+                                                <xs:annotation>
+                                                  <xs:documentation>Сведения о сотруднике, проводившем контроль устранения недостатка</xs:documentation>
+                                                </xs:annotation>
+                                              </xs:element>
+                                            </xs:sequence>
+                                            <xs:attribute name="id" type="bt:GUIDandUnderscore" use="required">
+                                              <xs:annotation>
+                                                <xs:documentation>Id подписываемой части (информация об устраненном недостатке)</xs:documentation>
+                                              </xs:annotation>
+                                            </xs:attribute>
+                                          </xs:extension>
+                                        </xs:complexContent>
+                                      </xs:complexType>
+                                    </xs:element>
+                                    <xs:element name="defectFixingInspectionEmployeeSignature" type="ct:signature" minOccurs="0">
+                                      <xs:annotation>
+                                        <xs:documentation>Подпись сотрудника, проводившего контроль устранения недостатка</xs:documentation>
+                                      </xs:annotation>
+                                    </xs:element>
+                                    <xs:element name="fixingDefectConfirmationDocList" minOccurs="0">
+                                      <xs:annotation>
+                                        <xs:documentation>
+                                          Список документов, подтверждающих факт устранения недостатка
+                                        </xs:documentation>
+                                      </xs:annotation>
+                                      <xs:complexType>
+                                        <xs:sequence>
+                                          <xs:element name="fixingDefectConfirmationDocListItem" maxOccurs="unbounded">
+                                            <xs:annotation>
+                                              <xs:documentation>Документ, подтверждающий факт</xs:documentation>
+                                            </xs:annotation>
+                                            <xs:complexType>
+                                              <xs:sequence>
+                                                <xs:choice>
+                                                  <xs:element name="executiveSchemeOrDrawing">
+                                                    <xs:annotation>
+                                                      <xs:documentation>Исполнительная схема или чертёж</xs:documentation>
+                                                    </xs:annotation>
+                                                    <xs:complexType>
+                                                      <xs:sequence>
+                                                        <xs:group ref="ct:docInfoGroup">
+                                                          <xs:annotation>
+                                                            <xs:documentation>Наименование и номер документа</xs:documentation>
+                                                          </xs:annotation>
+                                                        </xs:group>
+                                                        <xs:element name="date" type="xs:date" minOccurs="0">
+                                                          <xs:annotation>
+                                                            <xs:documentation>Дата</xs:documentation>
+                                                          </xs:annotation>
+                                                        </xs:element>
+                                                        <xs:element name="docId" type="bt:GUID">
+                                                          <xs:annotation>
+                                                            <xs:documentation>Id документа</xs:documentation>
+                                                          </xs:annotation>
+                                                        </xs:element>
+                                                      </xs:sequence>
+                                                    </xs:complexType>
+                                                  </xs:element>
+                                                  <xs:element name="anotherDoc">
+                                                    <xs:annotation>
+                                                      <xs:documentation>Иной документ, который подтверждает факт</xs:documentation>
+                                                    </xs:annotation>
+                                                    <xs:complexType>
+                                                      <xs:sequence>
+                                                        <xs:group ref="ct:docInfoGroup">
+                                                          <xs:annotation>
+                                                            <xs:documentation>Наименование и номер документа</xs:documentation>
+                                                          </xs:annotation>
+                                                        </xs:group>
+                                                        <xs:element name="carrierId">
+                                                          <xs:annotation>
+                                                            <xs:documentation>Идентификатор носителя документа</xs:documentation>
+                                                          </xs:annotation>
+                                                          <xs:complexType>
+                                                            <xs:sequence>
+                                                              <xs:choice>
+                                                                <xs:element name="docId" type="bt:GUID">
+                                                                  <xs:annotation>
+                                                                    <xs:documentation>Id документа</xs:documentation>
+                                                                  </xs:annotation>
+                                                                </xs:element>
+                                                                <xs:element name="attachedDocuments" type="ct:attachedDocuments">
+                                                                  <xs:annotation>
+                                                                    <xs:documentation>Информация о документе(документax), загруженном(загруженных) в хранилище</xs:documentation>
+                                                                  </xs:annotation>
+                                                                </xs:element>
+                                                              </xs:choice>
+                                                            </xs:sequence>
+                                                          </xs:complexType>
+                                                        </xs:element>
+                                                      </xs:sequence>
+                                                    </xs:complexType>
+                                                  </xs:element>
+                                                  <xs:element name="resultsDoc">
+                                                    <xs:annotation>
+                                                      <xs:documentation>
+                                                        Документ с результатами экспертиз, обследований, лабораторных и иных испытаний выполненных работ, проведенных в процессе строительного контроля
+                                                      </xs:documentation>
+                                                    </xs:annotation>
+                                                    <xs:complexType>
+                                                      <xs:complexContent>
+                                                        <xs:extension base="ct:docNameAndNumberAndDate">
+                                                          <xs:sequence>
+                                                            <xs:element name="testingName" type="bt:notEmptyString">
+                                                              <xs:annotation>
+                                                                <xs:documentation>Наименование экспертизы, обследования, испытания и т.п.</xs:documentation>
+                                                              </xs:annotation>
+                                                            </xs:element>
+                                                          </xs:sequence>
+                                                        </xs:extension>
+                                                      </xs:complexContent>
+                                                    </xs:complexType>
+                                                  </xs:element>
+                                                </xs:choice>
+                                              </xs:sequence>
+                                            </xs:complexType>
+                                          </xs:element>
+                                        </xs:sequence>
+                                      </xs:complexType>
+                                    </xs:element>
+                                    <xs:element name="attachedDocumentsList" minOccurs="0">
+                                      <xs:annotation>
+                                        <xs:documentation>Массив файлов с обосновывающими материалами</xs:documentation>
+                                      </xs:annotation>
+                                      <xs:complexType>
+                                        <xs:sequence>
+                                          <xs:element name="attachedDocuments" type="ct:attachedDocuments" maxOccurs="unbounded">
+                                            <xs:annotation>
+                                              <xs:documentation>Информация о документе(документax), загруженном(загруженных) в хранилище</xs:documentation>
+                                            </xs:annotation>
+                                          </xs:element>
+                                        </xs:sequence>
+                                      </xs:complexType>
+                                    </xs:element>
+                                    <xs:element name="identifiedDefectActId" type="bt:GUID" minOccurs="0">
+                                      <xs:annotation>
+                                        <xs:documentation>
+                                          Id акта контрольного мероприятия, в котором зафиксировано наличие недостатка
+                                        </xs:documentation>
+                                      </xs:annotation>
+                                    </xs:element>
+                                    <xs:element name="defectRecordInGeneralWorkJournal" type="xs:boolean" minOccurs="0">
+                                      <xs:annotation>
+                                        <xs:documentation>
+                                          Указание на необходимость внесения недостатка в общий журнал работ
+                                          (логический (булевый) тип, допустимые значения - true/false)
+                                        </xs:documentation>
+                                      </xs:annotation>
+                                    </xs:element>
+                                    <xs:element name="fixedDefectActId" type="bt:GUID" minOccurs="0">
+                                      <xs:annotation>
+                                        <xs:documentation>
+                                          Id акта контрольного мероприятия, в котором зафиксировано устранение недостатка
+                                        </xs:documentation>
+                                      </xs:annotation>
+                                    </xs:element>
+                                  </xs:sequence>
+                                </xs:complexType>
+                              </xs:element>
+                              <xs:element name="defectsAbsence">
+                                <xs:annotation>
+                                  <xs:documentation>Сведения об отсутствии недостатков</xs:documentation>
+                                </xs:annotation>
+                                <xs:complexType>
+                                  <xs:sequence>
+                                    <xs:element name="defectsAbsenceSignedPart">
+                                      <xs:annotation>
+                                        <xs:documentation>
+                                          Подписываемая часть, содержащая сведения об отсутствии недостатков
+                                        </xs:documentation>
+                                      </xs:annotation>
+                                      <xs:complexType>
+                                        <xs:sequence>
+                                          <xs:element name="defectsAbsenceRecord" type="bt:notEmptyString">
+                                            <xs:annotation>
+                                              <xs:documentation>Сведения об отсутствии недостатков</xs:documentation>
+                                            </xs:annotation>
+                                          </xs:element>
+                                          <xs:element name="defectsAbsenceInspectionEmployee" type="ct:representativeWithId">
+                                            <xs:annotation>
+                                              <xs:documentation>Сведения о сотруднике, проводившем контроль</xs:documentation>
+                                            </xs:annotation>
+                                          </xs:element>
+                                        </xs:sequence>
+                                        <xs:attribute name="id" type="bt:GUIDandUnderscore" use="required">
+                                          <xs:annotation>
+                                            <xs:documentation>Id подписываемой части (сведения об отсутствии недостатков)</xs:documentation>
+                                          </xs:annotation>
+                                        </xs:attribute>
+                                      </xs:complexType>
+                                    </xs:element>
+                                    <xs:element name="authorizedEmployeeSignature" type="ct:signature">
+                                      <xs:annotation>
+                                        <xs:documentation>Подпись сотрудника, проводившего контроль</xs:documentation>
+                                      </xs:annotation>
+                                    </xs:element>
+                                    <xs:element name="fixedDefectActId" type="bt:GUID" minOccurs="0">
+                                      <xs:annotation>
+                                        <xs:documentation>
+                                          id акта контрольного мероприятия, в котором зафиксировано отсутствие недостатков
+                                        </xs:documentation>
+                                      </xs:annotation>
+                                    </xs:element>
+                                  </xs:sequence>
+                                </xs:complexType>
+                              </xs:element>
+                            </xs:choice>
+                          </xs:sequence>
+                        </xs:complexType>
+                      </xs:element>
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="extraParametersList" type="ct:extraParametersList" minOccurs="0">
+            <xs:annotation>
+              <xs:documentation>Список дополнительных параметров</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="sk5111" type="cf:sk5111" />
+</xs:schema>

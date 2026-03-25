@@ -1,0 +1,550 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema
+  version="1.0"
+  targetNamespace="http://v_17_0/idJournals/idSpJournalConcreteWorksRecord.xsd"
+  elementFormDefault="qualified"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:cf="http://v_17_0/idJournals/idSpJournalConcreteWorksRecord.xsd"
+  xmlns:ct="http://v_17_0/types/CommonTypes.xsd"
+  xmlns:bt="http://v_17_0/types/BaseTypes.xsd"
+  xmlns:bd="http://v_17_0/types/BaseDocument.xsd"
+>
+  <xs:import schemaLocation="../types/BaseTypes.xsd" namespace="http://v_17_0/types/BaseTypes.xsd" />
+  <xs:import schemaLocation="../types/BaseDocument.xsd" namespace="http://v_17_0/types/BaseDocument.xsd" />
+  <xs:import schemaLocation="../types/CommonTypes.xsd" namespace="http://v_17_0/types/CommonTypes.xsd" />
+
+  <xs:complexType name="idSpJournalConcreteWorksRecord">
+    <xs:annotation>
+      <xs:documentation>
+        Сведения о производстве бетонных работ (запись журнала бетонных работ (ЖБР))
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="bd:baseDocument">
+        <xs:sequence>
+          <xs:element name="recordCancelSignedPart">
+            <xs:annotation>
+              <xs:documentation>
+                Подписываемая часть записи журнала бетонных работ (включая данные об аннулировании записи)
+              </xs:documentation>
+            </xs:annotation>
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="buildingContractorSignedPart">
+                  <xs:annotation>
+                    <xs:documentation>
+                      Подписываемая часть записи журнала бетонных работ
+                      (подписант - представитель лица, осуществляющего строительство)  
+                    </xs:documentation>
+                  </xs:annotation>
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element name="recordSignedPart">
+                        <xs:annotation>
+                          <xs:documentation>
+                            Подписываемая часть записи журнала бетонных работ
+                            (подписант - представитель лица, осуществляющего строительство, ответственного за бетонные работы / представитель лица, выполнившего работы по бетонированию (в зависимости от выбора участника))
+                          </xs:documentation>
+                        </xs:annotation>
+                        <xs:complexType>
+                          <xs:sequence>
+                            <xs:element name="docId" type="bt:GUID">
+                              <xs:annotation>
+                                <xs:documentation>ID записи об укладке бетона</xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                            <xs:element name="generalWorkJournalRecordId" type="bt:GUID">
+                              <xs:annotation>
+                                <xs:documentation>
+                                  ID записи общего журнала работ, к которой создана запись об укладке бетона
+                                </xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                            <xs:element name="permanentObjectId" type="bt:GUID">
+                              <xs:annotation>
+                                <xs:documentation>ID объекта капитального строительства </xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                            <xs:element name="documentEdition" type="xs:positiveInteger">
+                              <xs:annotation>
+                                <xs:documentation>
+                                  Редакция документа (версия)
+                                  (если в запись вносятся изменения, тогда создается новая версия записи (новая запись), меняется редакция документа (идентификатор не меняется) и меняется статус предыдущей версии записи документа на "аннулирован")
+                                </xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                            <xs:element name="workId" type="bt:GUID" minOccurs="0">
+                              <xs:annotation>
+                                <xs:documentation>ID работы</xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                            <xs:element name="concreteWorkDateTime" type="ct:datetimeInterval">
+                              <xs:annotation>
+                                <xs:documentation>Дата и время укладки бетона</xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                            <xs:element name="constructionInfo">
+                              <xs:annotation>
+                                <xs:documentation>
+                                  Информация о бетонируемой конструкции, включая ее расположение в пространстве
+                                  (оси, отметки)
+                                </xs:documentation>
+                              </xs:annotation>
+                              <xs:complexType>
+                                <xs:sequence>
+                                  <xs:element name="location" type="ct:location">
+                                    <xs:annotation>
+                                      <xs:documentation>Местоположение бетонируемой конструкции</xs:documentation>
+                                    </xs:annotation>
+                                  </xs:element>
+                                  <xs:element name="permanentObjectStructureElement" type="ct:permanentObjectStructureElement">
+                                    <xs:annotation>
+                                      <xs:documentation>Информация о бетонируемой конструкции</xs:documentation>
+                                    </xs:annotation>
+                                  </xs:element>
+                                </xs:sequence>
+                              </xs:complexType>
+                            </xs:element>
+                            <xs:element name="concreteInfo">
+                              <xs:annotation>
+                                <xs:documentation>Сведения об уложенной бетонной смеси</xs:documentation>
+                              </xs:annotation>
+                              <xs:complexType>
+                                <xs:sequence>
+                                  <xs:element name="concreteLabel" type="bt:notEmptyString">
+                                    <xs:annotation>
+                                      <xs:documentation>Условное обозначение бетонной смеси</xs:documentation>
+                                    </xs:annotation>
+                                  </xs:element>
+                                  <xs:element name="materialList">
+                                    <xs:annotation>
+                                      <xs:documentation>
+                                        Материалы (изделия), применённые при выполнении работ (список)
+                                      </xs:documentation>
+                                    </xs:annotation>
+                                    <xs:complexType>
+                                      <xs:sequence>
+                                        <xs:element name="material" maxOccurs="unbounded">
+                                          <xs:annotation>
+                                            <xs:documentation>Материал (изделие), применённый при выполнении работ</xs:documentation>
+                                          </xs:annotation>
+                                          <xs:complexType>
+                                            <xs:sequence>
+                                              <xs:element name="name" type="bt:notEmptyString" minOccurs="0">
+                                                <xs:annotation>
+                                                  <xs:documentation>
+                                                    Наименование материала (изделия), его маркировка
+                                                    (заполняется в случае, если бетонная смесь изготавливается на строительной площадке из поступивших строительных материалов)
+                                                  </xs:documentation>
+                                                </xs:annotation>
+                                              </xs:element>
+                                              <xs:element name="incomingMaterialControlJournalRecordId" type="bt:GUID">
+                                                <xs:annotation>
+                                                  <xs:documentation>ID записи журнала входного контроля материалов</xs:documentation>
+                                                </xs:annotation>
+                                              </xs:element>
+                                              <xs:element name="qualityApproveDocuments">
+                                                <xs:annotation>
+                                                  <xs:documentation>Комплект документов, подтверждающих качество (ДПК), на указанный материал (изделие)</xs:documentation>
+                                                </xs:annotation>
+                                                <xs:complexType>
+                                                  <xs:choice>
+                                                    <xs:element name="untypedQualityApproveDocumentList">
+                                                      <xs:annotation>
+                                                        <xs:documentation>Список нетипизированных ДПК</xs:documentation>
+                                                      </xs:annotation>
+                                                      <xs:complexType>
+                                                        <xs:sequence>
+                                                          <xs:element name="untypedQualityApproveDocument" maxOccurs="unbounded" type="ct:docBaseInfoWithOptionalExpirationDate">
+                                                            <xs:annotation>
+                                                              <xs:documentation>Нетипизированный ДПК</xs:documentation>
+                                                            </xs:annotation>
+                                                          </xs:element>
+                                                        </xs:sequence>
+                                                      </xs:complexType>
+                                                    </xs:element>
+                                                    <xs:element name="typedQualityApproveDocuments">
+                                                      <xs:annotation>
+                                                        <xs:documentation>Комплект типизированных ДПК</xs:documentation>
+                                                      </xs:annotation>
+                                                      <xs:complexType>
+                                                        <xs:sequence>
+                                                          <xs:element name="materialAmountQualityDocument" type="ct:docBaseInfo" minOccurs="0">
+                                                            <xs:annotation>
+                                                              <xs:documentation>
+                                                                Документ, подтверждающий качество конкретного количества материала (партии, штуки, комплекта, серии и т.п.)
+                                                              </xs:documentation>
+                                                            </xs:annotation>
+                                                          </xs:element>
+                                                          <xs:element name="parametersComplianceDocument" type="ct:docBaseInfoWithOptionalExpirationDate">
+                                                            <xs:annotation>
+                                                              <xs:documentation>
+                                                                Документ, подтверждающий соответствие конкретной номенклатуры материала (изделия), конкретного производителя требуемым параметрам
+                                                              </xs:documentation>
+                                                            </xs:annotation>
+                                                          </xs:element>
+                                                          <xs:element name="additionalParametersComplianceDocument" type="ct:docBaseInfoWithExpirationDate" minOccurs="0">
+                                                            <xs:annotation>
+                                                              <xs:documentation>
+                                                                Документ, подтверждающий соответствие конкретной номенклатуры материала (изделия), конкретного производителя дополнительным показателям качества (пожаробезопасность, санитарная, радиационная безопасность и т.д.)
+                                                              </xs:documentation>
+                                                            </xs:annotation>
+                                                          </xs:element>
+                                                          <xs:element name="additionalQualityDocument" type="ct:docBaseInfoWithOptionalExpirationDate" minOccurs="0">
+                                                            <xs:annotation>
+                                                              <xs:documentation>
+                                                                Документ о результатах дополнительного подтверждения качества конкретного количества материала (партии, штуки, комплекта, серии и т.п.), предназначенного к использованию на конкретном строительном Объекте, путём лабораторных исследований, испытаний и т.п.
+                                                              </xs:documentation>
+                                                            </xs:annotation>
+                                                          </xs:element>
+                                                        </xs:sequence>
+                                                      </xs:complexType>
+                                                    </xs:element>
+                                                  </xs:choice>
+                                                </xs:complexType>
+                                              </xs:element>
+                                            </xs:sequence>
+                                          </xs:complexType>
+                                        </xs:element>
+                                      </xs:sequence>
+                                    </xs:complexType>
+                                  </xs:element>
+                                  <xs:element name="concreteSupplierList" minOccurs="0">
+                                    <xs:annotation>
+                                      <xs:documentation>Поставщики бетонной смеси</xs:documentation>
+                                    </xs:annotation>
+                                    <xs:complexType>
+                                      <xs:sequence>
+                                        <xs:element name="concreteSupplier" maxOccurs="unbounded">
+                                          <xs:annotation>
+                                            <xs:documentation>Поставщик бетонной смеси</xs:documentation>
+                                          </xs:annotation>
+                                          <xs:complexType>
+                                            <xs:sequence>
+                                              <xs:element name="participantId" type="bt:GUID" minOccurs="0">
+                                                <xs:annotation>
+                                                  <xs:documentation>
+                                                    ID участника (указывается, если поставщик бетонной смеси входит в перечень участников строительства)
+                                                  </xs:documentation>
+                                                </xs:annotation>
+                                              </xs:element>
+                                              <xs:element name="supplierInfo" type="ct:individualEntrepreneurFullNameOrLegalEntityName">
+                                                <xs:annotation>
+                                                  <xs:documentation>Информация о поставщике (ФИО ИП / наименование юрлица)</xs:documentation>
+                                                </xs:annotation>
+                                              </xs:element>
+                                            </xs:sequence>
+                                          </xs:complexType>
+                                        </xs:element>
+                                      </xs:sequence>
+                                    </xs:complexType>
+                                  </xs:element>
+                                  <xs:element name="concreteManufacturerList">
+                                    <xs:annotation>
+                                      <xs:documentation>
+                                        Изготовители бетонной смеси
+                                        В зависимости от того где и кем осуществлялась подготовка бетонной смеси (завод-изготовитель, строительная площадка), то указываются соответствующие данные об изготовителе
+                                      </xs:documentation>
+                                    </xs:annotation>
+                                    <xs:complexType>
+                                      <xs:sequence>
+                                        <xs:element name="concreteManufacturer" maxOccurs="unbounded">
+                                          <xs:annotation>
+                                            <xs:documentation>Изготовитель бетонной смеси</xs:documentation>
+                                          </xs:annotation>
+                                          <xs:complexType>
+                                            <xs:sequence>
+                                              <xs:element name="participantId" type="bt:GUID" minOccurs="0">
+                                                <xs:annotation>
+                                                  <xs:documentation>
+                                                    ID участника (указывается, если изготовитель бетонной смеси входит в перечень участников строительства)
+                                                  </xs:documentation>
+                                                </xs:annotation>
+                                              </xs:element>
+                                              <xs:element name="manufacturerInfo" type="ct:individualEntrepreneurFullNameOrLegalEntityName">
+                                                <xs:annotation>
+                                                  <xs:documentation>Информация об изготовителе (ФИО ИП / наименование юрлица)</xs:documentation>
+                                                </xs:annotation>
+                                              </xs:element>
+                                            </xs:sequence>
+                                          </xs:complexType>
+                                        </xs:element>
+                                      </xs:sequence>
+                                    </xs:complexType>
+                                  </xs:element>
+                                </xs:sequence>
+                              </xs:complexType>
+                            </xs:element>
+                            <xs:element name="concreteVolume" type="bt:positiveDecimals">
+                              <xs:annotation>
+                                <xs:documentation>Объем партии бетонной смеси, уложенной в конструкцию (в куб.м)</xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                            <xs:element name="openAirTemperature" type="xs:decimal">
+                              <xs:annotation>
+                                <xs:documentation>
+                                  Температура наружного воздуха (в град. по Цельсию)
+                                </xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                            <xs:element name="concreteHardeningInfo">
+                              <xs:annotation>
+                                <xs:documentation>Способ и режим твердения бетона</xs:documentation>
+                              </xs:annotation>
+                              <xs:complexType>
+                                <xs:choice>
+                                  <xs:element name="variantRequiredConcreteHardeningMethod">
+                                    <xs:annotation>
+                                      <xs:documentation>Вариант с обязательным элементом "Способ твердения бетона"</xs:documentation>
+                                    </xs:annotation>
+                                    <xs:complexType>
+                                      <xs:sequence>
+                                        <xs:element name="concreteHardeningMethod" type="bt:notEmptyString">
+                                          <xs:annotation>
+                                            <xs:documentation>Способ твердения бетона (электрообогрев и другие)</xs:documentation>
+                                          </xs:annotation>
+                                        </xs:element>
+                                        <xs:element name="concreteHardeningMode" type="bt:notEmptyString" minOccurs="0">
+                                          <xs:annotation>
+                                            <xs:documentation>Режим твердения бетона (естественный и другие)</xs:documentation>
+                                          </xs:annotation>
+                                        </xs:element>
+                                      </xs:sequence>
+                                    </xs:complexType>
+                                  </xs:element>
+                                  <xs:element name="variantRequiredConcreteHardeningMode">
+                                    <xs:annotation>
+                                      <xs:documentation>Вариант с обязательным элементом "Режим твердения бетона"</xs:documentation>
+                                    </xs:annotation>
+                                    <xs:complexType>
+                                      <xs:sequence>
+                                        <xs:element name="concreteHardeningMode" type="bt:notEmptyString">
+                                          <xs:annotation>
+                                            <xs:documentation>Режим твердения бетона (естественный и другие)</xs:documentation>
+                                          </xs:annotation>
+                                        </xs:element>
+                                      </xs:sequence>
+                                    </xs:complexType>
+                                  </xs:element>
+                                </xs:choice>
+                              </xs:complexType>
+                            </xs:element>
+                            <xs:element name="regulationDocumentsList" type="ct:regulationDocumentsList">
+                              <xs:annotation>
+                                <xs:documentation>
+                                  Нормативно-технические документы, в соответствии с которыми указывался класс прочности бетона, условное обозначение бетонной смеси и проводился контроль прочности бетона
+                                  (Например: "ГОСТ 7473", "Пункт 4.3 ГОСТ 18105")
+                                </xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                            <xs:element name="concreteStrengthProjectNormativeGrade" type="bt:notEmptyString">
+                              <xs:annotation>
+                                <xs:documentation>
+                                  Нормативный проектный класс прочности бетона, Внорм
+                                  (Указывается условное обозначение класса прочности бетона в проектном возрасте (28 дней) согласно проектным данным)
+                                </xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                            <xs:element name="concreteMiddleAgedNormativeStrength" type="bt:positiveDecimals">
+                              <xs:annotation>
+                                <xs:documentation>
+                                  Нормативная прочность бетона в промежуточном возрасте при распалубке или нагружении конструкций (%Внорм)
+                                  (Величина указывается в % от проектной прочности в промежуточном возрасте (7 дней) согласно нормативно-техническим документам)
+                                </xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                            <xs:choice>
+                              <xs:element name="representativeBuildingContractor" type="ct:representativeWithOrderAndIDNRAndParticipantId">
+                                <xs:annotation>
+                                  <xs:documentation>
+                                    Представитель Лица, осуществляющего строительство
+                                    (Лицо, ответственное за исполнение работ по бетонированию)
+                                  </xs:documentation>
+                                </xs:annotation>
+                              </xs:element>
+                              <xs:element name="representativeWorkExecutor" type="ct:representativeWithOrderAndIDNRAndParticipantId">
+                                <xs:annotation>
+                                  <xs:documentation>
+                                    Представитель Другого лица, осуществляющего строительство
+                                    (Лицо, ответственное за исполнение работ по бетонированию)
+                                  </xs:documentation>
+                                </xs:annotation>
+                              </xs:element>
+                            </xs:choice>
+                          </xs:sequence>
+                          <xs:attribute name="id" type="bt:GUIDandUnderscore" use="required">
+                            <xs:annotation>
+                              <xs:documentation>
+                                ID подписываемой части записи журнала бетонных работ
+                                (подписант - представитель лица, осуществляющего строительство, ответственного за бетонные работы / представитель лица, выполнившего работы по бетонированию (в зависимости от выбора участника))
+                              </xs:documentation>
+                            </xs:annotation>
+                          </xs:attribute>
+                        </xs:complexType>
+                      </xs:element>
+                      <xs:choice>
+                        <xs:element name="representativeBuildingContractorSignature" type="ct:signature">
+                          <xs:annotation>
+                            <xs:documentation>
+                              Подпись представителя Лица, осуществляющего строительство
+                              (УКЭП Лица, ответственного за исполнение работ по бетонированию)
+                            </xs:documentation>
+                          </xs:annotation>
+                        </xs:element>
+                        <xs:element name="representativeWorkExecutorSignature" type="ct:signature">
+                          <xs:annotation>
+                            <xs:documentation>
+                              Подпись представителя Другого лица, осуществляющего строительство
+                              (УКЭП Лица, ответственного за исполнение работ по бетонированию)
+                            </xs:documentation>
+                          </xs:annotation>
+                        </xs:element>
+                      </xs:choice>
+                      <xs:element name="concreteStrengthFactGrade" type="bt:notEmptyString" minOccurs="0">
+                        <xs:annotation>
+                          <xs:documentation>
+                            Фактический класс прочности бетона в проектном возрасте в контролируемой партии конструкций по результатам сплошного неразрушающего контроля прочности
+                            (Указывается условное обозначение класса прочности бетона в проектном возрасте (28 дней), полученное по факту)
+                          </xs:documentation>
+                        </xs:annotation>
+                      </xs:element>
+                      <xs:element name="factStrength" type="bt:positiveDecimals" minOccurs="0">
+                        <xs:annotation>
+                          <xs:documentation>
+                            Фактическая прочность бетона в промежуточном возрасте при распалубке или нагружении конструкций в контролируемой партии конструкций по результатам сплошного неразрушающего контроля прочности
+                            (Величина указывается в % от проектной прочности в промежуточном возрасте (7 дней), полученная по факту)
+                          </xs:documentation>
+                        </xs:annotation>
+                      </xs:element>
+                      <xs:element name="concreteMiddleAgedAverageStrength" type="bt:positiveDecimals" minOccurs="0">
+                        <xs:annotation>
+                          <xs:documentation>
+                            Средняя прочность серий контрольных образцов бетона по результатам входного контроля прочности бетонной смеси в промежуточном возрасте
+                            (Указывается средняя величина прочности бетона в МПа в промежуточном возрасте (7 дней))
+                          </xs:documentation>
+                        </xs:annotation>
+                      </xs:element>
+                      <xs:element name="concreteProjectAgedAverageStrength" type="bt:positiveDecimals" minOccurs="0">
+                        <xs:annotation>
+                          <xs:documentation>
+                            Средняя прочность серий контрольных образцов бетона по результатам входного контроля прочности бетонной смеси в проектном возрасте
+                            (Указывается средняя величина прочности бетона в МПа в проектном возрасте (28 дней))
+                          </xs:documentation>
+                        </xs:annotation>
+                      </xs:element>
+                      <xs:element name="asBuiltSchemaList" minOccurs="0">
+                        <xs:annotation>
+                          <xs:documentation>Список исполнительных схем и чертежей</xs:documentation>
+                        </xs:annotation>
+                        <xs:complexType>
+                          <xs:sequence>
+                            <xs:element name="asBuiltSchema" type="ct:asBuiltSchema" maxOccurs="unbounded">
+                              <xs:annotation>
+                                <xs:documentation>Исполнительная схема или чертеж</xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                          </xs:sequence>
+                        </xs:complexType>
+                      </xs:element>
+                      <xs:element name="examResultDocList" minOccurs="0">
+                        <xs:annotation>
+                          <xs:documentation>
+                            Список документов, содержащих результаты экспертиз / обследований / лабораторных и иных испытаний, проведенных в процессе строительного контроля
+                            (указываются сведения о заключениях лабораторий по результатам сплошного неразрушающего контроля прочности)
+                          </xs:documentation>
+                        </xs:annotation>
+                        <xs:complexType>
+                          <xs:sequence>
+                            <xs:element name="examResultDoc" type="ct:examResultDoc" maxOccurs="unbounded">
+                              <xs:annotation>
+                                <xs:documentation>
+                                  Документ, содержащий результаты экспертизы / обследования / лабораторных и иных испытаний, проведенных в процессе строительного контроля
+                                </xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                          </xs:sequence>
+                        </xs:complexType>
+                      </xs:element>
+                      <xs:element name="representativeBuildingContractor" type="ct:representativeWithOrderAndIDNRAndParticipantId" minOccurs="0">
+                        <xs:annotation>
+                          <xs:documentation>
+                            Представитель лица, осуществляющего строительство
+                            (Лицо, ответственное за проведение контроля и оценку прочности бетона)
+                          </xs:documentation>
+                        </xs:annotation>
+                      </xs:element>
+                    </xs:sequence>
+                    <xs:attribute name="id" type="bt:GUIDandUnderscore" use="required">
+                      <xs:annotation>
+                        <xs:documentation>
+                          ID подписываемой части записи журнала бетонных работ
+                          (подписант - представитель лица, осуществляющего строительство)
+                        </xs:documentation>
+                      </xs:annotation>
+                    </xs:attribute>
+                  </xs:complexType>
+                </xs:element>
+                <xs:element name="representativeBuildingContractorSignature" type="ct:signature" minOccurs="0">
+                  <xs:annotation>
+                    <xs:documentation>
+                      Подпись представителя лица, осуществляющего строительство
+                      (УКЭП Лица, ответственного за проведение контроля и оценку прочности бетона)
+                    </xs:documentation>
+                  </xs:annotation>
+                </xs:element>
+                <xs:element name="recordCancelInfo" type="ct:recordCancelInfo" minOccurs="0">
+                  <xs:annotation>
+                    <xs:documentation>Сведения об аннулировании версии записи</xs:documentation>
+                  </xs:annotation>
+                </xs:element>
+              </xs:sequence>
+              <xs:attribute name="id" type="bt:GUIDandUnderscore" use="required">
+                <xs:annotation>
+                  <xs:documentation>
+                    ID подписываемой части записи журнала бетонных работ (включая данные об аннулировании записи)
+                    (подписант - представитель, аннулировавший версию записи)
+                  </xs:documentation>
+                </xs:annotation>
+              </xs:attribute>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="representativeCancelSignature" type="ct:signature" minOccurs="0">
+            <xs:annotation>
+              <xs:documentation>Подпись сотрудника, аннулировавшего запись</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="recordStatus">
+            <xs:annotation>
+              <xs:documentation>
+                Статус записи
+                Допустимые значения:
+                - On_revision (На доработке, частично подписанный)
+                - Signed (Подписан)
+                - Canceled (Аннулирован)
+              </xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+              <xs:restriction base="bt:notEmptyString">
+                <xs:enumeration value="On_revision" />
+                <xs:enumeration value="Signed" />
+                <xs:enumeration value="Canceled" />
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:element>
+          <xs:element name="extraParametersList" type="ct:extraParametersList" minOccurs="0">
+            <xs:annotation>
+              <xs:documentation>Список дополнительных параметров</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+        <xs:attribute name="docSchemaVersion" type="bt:docSchemaVersion" use="required" fixed="1.0">
+          <xs:annotation>
+            <xs:documentation>Версия схемы, по которой составлен документ</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="idSpJournalConcreteWorksRecord" type="cf:idSpJournalConcreteWorksRecord" />
+</xs:schema>

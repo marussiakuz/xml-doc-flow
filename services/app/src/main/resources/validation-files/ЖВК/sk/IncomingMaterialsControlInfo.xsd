@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema targetNamespace="http://sk/IncomingMaterialsControlInfo.xsd"
+  elementFormDefault="qualified"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:ct="http://types/CommonTypes.xsd"
+  xmlns:bt="http://types/BaseTypes.xsd"
+  xmlns:bd="http://types/BaseDocument.xsd"
+  xmlns:cf="http://sk/IncomingMaterialsControlInfo.xsd"
+>
+  <xs:import schemaLocation="../types/CommonTypes.xsd" namespace="http://types/CommonTypes.xsd" />
+  <xs:import schemaLocation="../types/BaseTypes.xsd" namespace="http://types/BaseTypes.xsd" />
+  <xs:import schemaLocation="../types/BaseDocument.xsd" namespace="http://types/BaseDocument.xsd" />
+
+  <xs:complexType name="incomingMaterialsControlInfo">
+    <xs:annotation>
+      <xs:documentation>Сведения о входном контроле материалов и изделий</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="bd:baseDocument">
+        <xs:sequence>
+          <xs:element name="permanentObjectId" type="bt:GUID">
+            <xs:annotation>
+              <xs:documentation>id объекта капитального строительства</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="materialsOrItemsVerificationInfoList">
+            <xs:annotation>
+              <xs:documentation>Сведения о верификации материалов/изделий (список)</xs:documentation>
+            </xs:annotation>
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="materialsOrItemsVerificationInfoListItem" maxOccurs="unbounded">
+                  <xs:annotation>
+                    <xs:documentation>Сведения о верификации материала/изделия</xs:documentation>
+                  </xs:annotation>
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element name="materialOrItemVerificationInfoSignedPart">
+                        <xs:annotation>
+                          <xs:documentation>Подписываемая часть сведений о верификации закупленной продукции</xs:documentation>
+                        </xs:annotation>
+                        <xs:complexType>
+                          <xs:sequence>
+                            <xs:element name="materialOrItemVerificationJournalRecordId" type="bt:GUID">
+                              <xs:annotation>
+                                <xs:documentation>Идентификатор записи журнала</xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                            <xs:element name="deliveryDate" type="xs:date">
+                              <xs:annotation>
+                                <xs:documentation>Дата поступления</xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                            <xs:element name="transportInfo" minOccurs="0">
+                              <xs:annotation>
+                                <xs:documentation>Информация о транспорте</xs:documentation>
+                              </xs:annotation>
+                              <xs:complexType>
+                                <xs:sequence>
+                                  <xs:element name="transportType" type="bt:notEmptyString">
+                                    <xs:annotation>
+                                      <xs:documentation>Тип транспорта</xs:documentation>
+                                    </xs:annotation>
+                                  </xs:element>
+                                  <xs:element name="transportNumber" type="bt:notEmptyString">
+                                    <xs:annotation>
+                                      <xs:documentation>Номер</xs:documentation>
+                                    </xs:annotation>
+                                  </xs:element>
+                                </xs:sequence>
+                              </xs:complexType>
+                            </xs:element>
+                            <xs:element name="supplier">
+                              <xs:annotation>
+                                <xs:documentation>Поставщик</xs:documentation>
+                              </xs:annotation>
+                              <xs:complexType>
+                                <xs:sequence>
+                                  <xs:element name="participantId" type="bt:GUID" minOccurs="0">
+                                    <xs:annotation>
+                                      <xs:documentation>ID участника</xs:documentation>
+                                    </xs:annotation>
+                                  </xs:element>
+                                  <xs:element name="organizationName" type="bt:notEmptyString">
+                                    <xs:annotation>
+                                      <xs:documentation>Наименование организации</xs:documentation>
+                                    </xs:annotation>
+                                  </xs:element>
+                                </xs:sequence>
+                              </xs:complexType>
+                            </xs:element>
+                            <xs:element name="materialOrItemName" type="bt:notEmptyString">
+                              <xs:annotation>
+                                <xs:documentation>Наименование материала (изделия), его маркировка</xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                            <xs:element name="qualityApproveDocuments">
+                              <xs:annotation>
+                                <xs:documentation>
+                                  Комплект документов, подтверждающих качество (ДПК) материала (изделия)
+                                </xs:documentation>
+                              </xs:annotation>
+                              <xs:complexType>
+                                <xs:sequence>
+                                  <xs:choice>
+                                    <xs:element name="untypedQualityApproveDocumentsList">
+                                      <xs:annotation>
+                                        <xs:documentation>Список нетипизированных ДПК</xs:documentation>
+                                      </xs:annotation>
+                                      <xs:complexType>
+                                        <xs:sequence>
+                                          <xs:element
+                                            name="untypedQualityApproveDocumentsListItem"
+                                            maxOccurs="unbounded"
+                                            type="ct:administrativeDocument"
+                                          >
+                                            <xs:annotation>
+                                              <xs:documentation>Нетипизированный ДПК</xs:documentation>
+                                            </xs:annotation>
+                                          </xs:element>
+                                        </xs:sequence>
+                                      </xs:complexType>
+                                    </xs:element>
+                                    <xs:element name="typedQualityApproveDocuments">
+                                      <xs:annotation>
+                                        <xs:documentation>Комплект типизированных ДПК</xs:documentation>
+                                      </xs:annotation>
+                                      <xs:complexType>
+                                        <xs:sequence>
+                                          <xs:element name="materialAmountQualityDocument" minOccurs="0">
+                                            <xs:annotation>
+                                              <xs:documentation>
+                                                Документ, подтверждающий качество конкретного количества материала (партии, штуки, комплекта, серии и т.п.)
+                                              </xs:documentation>
+                                            </xs:annotation>
+                                            <xs:complexType>
+                                              <xs:sequence>
+                                                <xs:group ref="ct:docNameAndNumberAndDateGroupWithoutId">
+                                                  <xs:annotation>
+                                                    <xs:documentation>Наименование, номер и дата документа</xs:documentation>
+                                                  </xs:annotation>
+                                                </xs:group>
+                                                <xs:element name="attachedDocuments" type="ct:attachedDocuments">
+                                                  <xs:annotation>
+                                                    <xs:documentation>Информация о документе(документax), загруженном(загруженных) в хранилище</xs:documentation>
+                                                  </xs:annotation>
+                                                </xs:element>
+                                              </xs:sequence>
+                                            </xs:complexType>
+                                          </xs:element>
+                                          <xs:element
+                                            name="parametersComplianceDocument"
+                                            type="ct:administrativeDocument"
+                                          >
+                                            <xs:annotation>
+                                              <xs:documentation>
+                                                Документ, подтверждающий соответствие конкретной номенклатуры материала (изделия), конкретного производителя требуемым параметрам
+                                              </xs:documentation>
+                                            </xs:annotation>
+                                          </xs:element>
+                                          <xs:element
+                                            name="additionalParametersComplianceDocument"
+                                            type="ct:administrativeDocument"
+                                            minOccurs="0"
+                                          >
+                                            <xs:annotation>
+                                              <xs:documentation>
+                                                Документ, подтверждающий соответствие конкретной номенклатуры материала (изделия), конкретного производителя дополнительным показателям качества (пожаробезопасность, санитарная, радиационная безопасность и т.д.)
+                                              </xs:documentation>
+                                            </xs:annotation>
+                                          </xs:element>
+                                          <xs:element
+                                            name="additionalQualityDocument"
+                                            type="ct:administrativeDocument"
+                                            minOccurs="0"
+                                          >
+                                            <xs:annotation>
+                                              <xs:documentation>
+                                                Документ о результатах дополнительного подтверждения качества конкретного количества материала (партии, штуки, комплекта, серии и т.п.), предназначенного к использованию на конкретном строительном Объекте, путём лабораторных исследований, испытаний и т.п.
+                                              </xs:documentation>
+                                            </xs:annotation>
+                                          </xs:element>
+                                        </xs:sequence>
+                                      </xs:complexType>
+                                    </xs:element>
+                                  </xs:choice>
+                                </xs:sequence>
+                              </xs:complexType>
+                            </xs:element>
+                            <xs:element name="packagingType" type="bt:notEmptyString" minOccurs="0">
+                              <xs:annotation>
+                                <xs:documentation>Вид упаковки</xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                            <xs:element name="materialOrItemAdditionalInfo">
+                              <xs:annotation>
+                                <xs:documentation>Масса, партия, количество</xs:documentation>
+                              </xs:annotation>
+                              <xs:complexType>
+                                <xs:sequence>
+                                  <xs:element name="weight" minOccurs="0">
+                                    <xs:annotation>
+                                      <xs:documentation>Масса</xs:documentation>
+                                    </xs:annotation>
+                                    <xs:complexType>
+                                      <xs:sequence>
+                                        <xs:element name="unit" type="bt:notEmptyString">
+                                          <xs:annotation>
+                                            <xs:documentation>Единица измерения указывается в соответствии с колонкой "Наименованием единицы измерения" классификатора ОКЕИ</xs:documentation>
+                                          </xs:annotation>
+                                        </xs:element>
+                                        <xs:element name="value" type="bt:positiveDecimals">
+                                          <xs:annotation>
+                                            <xs:documentation>Значение величины</xs:documentation>
+                                          </xs:annotation>
+                                        </xs:element>
+                                      </xs:sequence>
+                                    </xs:complexType>
+                                  </xs:element>
+                                  <xs:element name="batchNumber" type="bt:notEmptyString" minOccurs="0">
+                                    <xs:annotation>
+                                      <xs:documentation>Номер партии</xs:documentation>
+                                    </xs:annotation>
+                                  </xs:element>
+                                  <xs:element name="amount">
+                                    <xs:annotation>
+                                      <xs:documentation>Количество</xs:documentation>
+                                    </xs:annotation>
+                                    <xs:complexType>
+                                      <xs:sequence>
+                                        <xs:element name="unit" type="bt:notEmptyString">
+                                          <xs:annotation>
+                                            <xs:documentation>Единица измерения указывается в соответствии с колонкой "Наименованием единицы измерения" классификатора ОКЕИ</xs:documentation>
+                                          </xs:annotation>
+                                        </xs:element>
+                                        <xs:element name="value" type="bt:positiveDecimals">
+                                          <xs:annotation>
+                                            <xs:documentation>Значение величины</xs:documentation>
+                                          </xs:annotation>
+                                        </xs:element>
+                                      </xs:sequence>
+                                    </xs:complexType>
+                                  </xs:element>
+                                </xs:sequence>
+                              </xs:complexType>
+                            </xs:element>
+                            <xs:element name="samplingPlace" type="bt:notEmptyString" minOccurs="0">
+                              <xs:annotation>
+                                <xs:documentation>Место отбора образца (выборки или пробы)</xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                            <xs:element name="samplingDate" type="xs:date" minOccurs="0">
+                              <xs:annotation>
+                                <xs:documentation>Дата отбора образца (выборки или пробы)</xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                            <xs:element name="qualityConclusion" type="bt:notEmptyString">
+                              <xs:annotation>
+                                <xs:documentation>Заключение о качестве</xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                          </xs:sequence>
+                          <xs:attribute name="id" type="bt:GUIDandUnderscore" use="required">
+                            <xs:annotation>
+                              <xs:documentation>Id подписываемой части сведений о верификации закупленной продукции</xs:documentation>
+                            </xs:annotation>
+                          </xs:attribute>
+                        </xs:complexType>
+                      </xs:element>
+                      <xs:element name="signature" type="ct:signature">
+                        <xs:annotation>
+                          <xs:documentation>Подпись сотрудника</xs:documentation>
+                        </xs:annotation>
+                      </xs:element>
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="extraParametersList" type="ct:extraParametersList" minOccurs="0">
+            <xs:annotation>
+              <xs:documentation>Список дополнительных параметров</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="incomingMaterialsControlInfo" type="cf:incomingMaterialsControlInfo" />
+</xs:schema>

@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema
+  version="1.0"
+  targetNamespace="http://v_17_0/idJournals/idSpJournalWorkRepresentatives.xsd"
+  elementFormDefault="qualified"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:ct="http://v_17_0/types/CommonTypes.xsd"
+  xmlns:bt="http://v_17_0/types/BaseTypes.xsd"
+  xmlns:bd="http://v_17_0/types/BaseDocument.xsd"
+  xmlns:cf="http://v_17_0/idJournals/idSpJournalWorkRepresentatives.xsd"
+>
+  <xs:import schemaLocation="../types/CommonTypes.xsd" namespace="http://v_17_0/types/CommonTypes.xsd" />
+  <xs:import schemaLocation="../types/BaseTypes.xsd" namespace="http://v_17_0/types/BaseTypes.xsd" />
+  <xs:import schemaLocation="../types/BaseDocument.xsd" namespace="http://v_17_0/types/BaseDocument.xsd" />
+
+  <xs:complexType name="idSpJournalWorkRepresentatives">
+    <xs:annotation>
+      <xs:documentation>
+        Общие данные к специальному журналу работ о представителях лиц, выполняющих работы
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="bd:baseDocument">
+        <xs:sequence>
+          <xs:element name="participantBuildingContractorWithRepresentatives">
+            <xs:annotation>
+              <xs:documentation>Лицо, осуществляющее строительство, выполняющее вид работ и его представители</xs:documentation>
+            </xs:annotation>
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="participantId" type="bt:GUID">
+                  <xs:annotation>
+                    <xs:documentation>ID участника - лица, осуществляющего строительство</xs:documentation>
+                  </xs:annotation>
+                </xs:element>
+                <xs:element name="representativeBuildingContractorList">
+                  <xs:annotation>
+                    <xs:documentation>
+                      Список представителей лица, осуществляющего строительство
+                    </xs:documentation>
+                  </xs:annotation>
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element name="representativeBuildingContractor" maxOccurs="unbounded">
+                        <xs:annotation>
+                          <xs:documentation>
+                            Представитель строительной организации, ответственный за выполнение работ
+                          </xs:documentation>
+                        </xs:annotation>
+                        <xs:complexType>
+                          <xs:sequence>
+                            <xs:element name="representativeSignedPart">
+                              <xs:annotation>
+                                <xs:documentation>Информация, подписываемая представителем</xs:documentation>
+                              </xs:annotation>
+                              <xs:complexType>
+                                <xs:sequence>
+                                  <xs:element name="representative" type="ct:actsRepresentativeWithIdAndOrderAndIDNR">
+                                    <xs:annotation>
+                                      <xs:documentation>
+                                        Информация о представителе организации с документом, подтверждающим полномочия
+                                      </xs:documentation>
+                                    </xs:annotation>
+                                  </xs:element>
+                                  <xs:element name="authoritiesBeginDate" type="xs:date">
+                                    <xs:annotation>
+                                      <xs:documentation>
+                                        Дата начала действия полномочий
+                                      </xs:documentation>
+                                    </xs:annotation>
+                                  </xs:element>
+                                  <xs:element name="authoritiesEndDate" type="xs:date" minOccurs="0">
+                                    <xs:annotation>
+                                      <xs:documentation>
+                                        Дата окончания действия полномочий (заполняется при условии, если истекли полномочия представителя)
+                                      </xs:documentation>
+                                    </xs:annotation>
+                                  </xs:element>
+                                </xs:sequence>
+                                <xs:attribute name="id" type="bt:GUIDandUnderscore" use="required">
+                                  <xs:annotation>
+                                    <xs:documentation>ID информации, подписываемой представителем</xs:documentation>
+                                  </xs:annotation>
+                                </xs:attribute>
+                              </xs:complexType>
+                            </xs:element>
+                            <xs:element name="signature" type="ct:signature">
+                              <xs:annotation>
+                                <xs:documentation>Подпись представителя</xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                          </xs:sequence>
+                        </xs:complexType>
+                      </xs:element>
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="participantWorkExecutorWithRepresentativesList" minOccurs="0">
+            <xs:annotation>
+              <xs:documentation>
+                Список других лиц, осуществляющих строительство, выполняющих вид работ, и их представителей
+              </xs:documentation>
+            </xs:annotation>
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="participantWorkExecutorWithRepresentatives" maxOccurs="unbounded">
+                  <xs:annotation>
+                    <xs:documentation>
+                      Другое лицо, осуществляющее строительство, выполняющее вид работ, и его представители
+                    </xs:documentation>
+                  </xs:annotation>
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element name="participantId" type="bt:GUID">
+                        <xs:annotation>
+                          <xs:documentation>ID участника - лица, выполняющего работы</xs:documentation>
+                        </xs:annotation>
+                      </xs:element>
+                      <xs:element name="representativeWorkExecutorList">
+                        <xs:annotation>
+                          <xs:documentation>
+                            Список представителей лица, ответственного за выполнение работ
+                          </xs:documentation>
+                        </xs:annotation>
+                        <xs:complexType>
+                          <xs:sequence>
+                            <xs:element name="representativeWorkExecutor" maxOccurs="unbounded">
+                              <xs:annotation>
+                                <xs:documentation>
+                                  Представитель лица, ответственного за выполнение работ
+                                </xs:documentation>
+                              </xs:annotation>
+                              <xs:complexType>
+                                <xs:sequence>
+                                  <xs:element name="representativeSignedPart">
+                                    <xs:annotation>
+                                      <xs:documentation>Информация, подписываемая представителем</xs:documentation>
+                                    </xs:annotation>
+                                    <xs:complexType>
+                                      <xs:sequence>
+                                        <xs:element name="representative" type="ct:actsRepresentativeWithIdAndOrderAndIDNR">
+                                          <xs:annotation>
+                                            <xs:documentation>
+                                              Информация о представителе организации с документом, подтверждающим полномочия
+                                            </xs:documentation>
+                                          </xs:annotation>
+                                        </xs:element>
+                                        <xs:element name="authoritiesBeginDate" type="xs:date">
+                                          <xs:annotation>
+                                            <xs:documentation>
+                                              Дата начала действия полномочий
+                                            </xs:documentation>
+                                          </xs:annotation>
+                                        </xs:element>
+                                        <xs:element name="authoritiesEndDate" type="xs:date" minOccurs="0">
+                                          <xs:annotation>
+                                            <xs:documentation>
+                                              Дата окончания действия полномочий (заполняется при условии, если истекли полномочия представителя)
+                                            </xs:documentation>
+                                          </xs:annotation>
+                                        </xs:element>
+                                      </xs:sequence>
+                                      <xs:attribute name="id" type="bt:GUIDandUnderscore" use="required">
+                                        <xs:annotation>
+                                          <xs:documentation>ID информации, подписываемой представителем</xs:documentation>
+                                        </xs:annotation>
+                                      </xs:attribute>
+                                    </xs:complexType>
+                                  </xs:element>
+                                  <xs:element name="signature" type="ct:signature">
+                                    <xs:annotation>
+                                      <xs:documentation>Подпись представителя</xs:documentation>
+                                    </xs:annotation>
+                                  </xs:element>
+                                </xs:sequence>
+                              </xs:complexType>
+                            </xs:element>
+                          </xs:sequence>
+                        </xs:complexType>
+                      </xs:element>
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="extraParametersList" type="ct:extraParametersList" minOccurs="0">
+            <xs:annotation>
+              <xs:documentation>Список дополнительных параметров</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+        <xs:attribute name="docSchemaVersion" type="bt:docSchemaVersion" use="required" fixed="1.0">
+          <xs:annotation>
+            <xs:documentation>Версия схемы, по которой составлен документ</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="idSpJournalWorkRepresentatives" type="cf:idSpJournalWorkRepresentatives" />
+</xs:schema>

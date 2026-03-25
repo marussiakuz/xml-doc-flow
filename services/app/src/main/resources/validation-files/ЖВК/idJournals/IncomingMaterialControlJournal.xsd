@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema targetNamespace="http://idJournals/IncomingMaterialControlJournal.xsd"
+           elementFormDefault="qualified"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:cf="http://idJournals/IncomingMaterialControlJournal.xsd"
+           xmlns:ct="http://types/CommonTypes.xsd"
+           xmlns:bt="http://types/BaseTypes.xsd"
+           xmlns:bd="http://types/BaseDocument.xsd"
+           xmlns:sg="http://www.w3.org/2000/09/xmldsig#"
+>
+  <!-- Импортируемые зависимости (общие типы) -->
+  <xs:import schemaLocation="../types/CommonTypes.xsd" namespace="http://types/CommonTypes.xsd" />
+  <xs:import schemaLocation="../types/BaseTypes.xsd" namespace="http://types/BaseTypes.xsd" />
+  <xs:import schemaLocation="../types/BaseDocument.xsd" namespace="http://types/BaseDocument.xsd" />
+  <xs:import schemaLocation="../types/Xmldsig.xsd" namespace="http://www.w3.org/2000/09/xmldsig#" />
+
+  <xs:complexType name="incomingMaterialControlJournal">
+    <xs:annotation>
+      <xs:documentation>
+        Журнал входного контроля материалов (ЖВК) (верификации закупленной продукции)
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="bd:baseDocument">
+        <xs:sequence>
+          <!-- Титульный лист -->
+          <xs:element name="incomingMaterialControlJournalTitle">
+            <xs:annotation>
+              <xs:documentation>Титульный лист</xs:documentation>
+            </xs:annotation>
+            <xs:complexType>
+              <xs:sequence>
+                <!-- Информация об объекте капитального строительства -->
+                <xs:element name="permanentObjectInfo" type="bt:GUID">
+                  <xs:annotation>
+                    <xs:documentation>Id объекта капитального строительства </xs:documentation>
+                  </xs:annotation>
+                </xs:element>
+                <!-- Информация об организациях и их представителях, выполняющих входной контроль материалов -->
+                <xs:element name="organisationAndRepresentative" maxOccurs="unbounded">
+                  <xs:annotation>
+                    <xs:documentation>
+                      Список организаций и их представителей, выполняющих входной контроль материалов
+                    </xs:documentation>
+                  </xs:annotation>
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element name="participantId" type="bt:GUID">
+                        <xs:annotation>
+                          <xs:documentation>
+                            ID участника
+                          </xs:documentation>
+                        </xs:annotation>
+                      </xs:element>
+                      <xs:element name="validationResponsibleRepresentativeWithSignature">
+                        <xs:annotation>
+                          <xs:documentation>
+                            Список представителей строительной организации, ответственный за верификацию
+                          </xs:documentation>
+                        </xs:annotation>
+                        <xs:complexType>
+                          <xs:sequence>
+                            <xs:element name="validationResponsibleRepresentativesIdsList">
+                              <xs:annotation>
+                                <xs:documentation>
+                                  Список id подписываемых частей сведений о представителях, ответственных за входной контроль материалов
+                                </xs:documentation>
+                              </xs:annotation>
+                              <xs:complexType>
+                                <xs:sequence>
+                                  <xs:element name="validationResponsibleRepresentativesIdsListItem" type="bt:GUIDandUnderscore" maxOccurs="unbounded">
+                                    <xs:annotation>
+                                      <xs:documentation>
+                                        Id подписываемой частей сведений о представителе, ответственном за входной контроль материалов
+                                      </xs:documentation>
+                                    </xs:annotation>
+                                  </xs:element>
+                                </xs:sequence>
+                              </xs:complexType>
+                            </xs:element>
+                          </xs:sequence>
+                        </xs:complexType>
+                      </xs:element>
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <!--
+            Сведения о верификации закупленной продукции
+            (список результатов процедур входного контроля материалов)
+          -->
+          <xs:element name="materialsOrItemsVerificationRecordsList">
+            <xs:annotation>
+              <xs:documentation>
+                Сведения о верификации закупленной продукции (список результатов процедур входного контроля материалов)
+              </xs:documentation>
+            </xs:annotation>
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="materialsOrItemsVerificationRecordsListItem" maxOccurs="unbounded">
+                  <xs:annotation>
+                    <xs:documentation>
+                      Сведения о верификации закупленной продукции (результат процедуры входного контроля материалов)
+                    </xs:documentation>
+                  </xs:annotation>
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element name="materialOrItemVerificationJournalRecordId" type="bt:GUID">
+                        <xs:annotation>
+                          <xs:documentation>
+                            Идентификатор записи журнала
+                          </xs:documentation>
+                        </xs:annotation>
+                      </xs:element>
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="extraParametersList" type="ct:extraParametersList" minOccurs="0">
+            <xs:annotation>
+              <xs:documentation>Список дополнительных параметров</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="incomingMaterialControlJournal" type="cf:incomingMaterialControlJournal" />
+</xs:schema>

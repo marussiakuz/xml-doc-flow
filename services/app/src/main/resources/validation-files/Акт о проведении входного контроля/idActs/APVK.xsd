@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema version="1.0.0"
+  targetNamespace="http://idActs/APVK.xsd"
+  elementFormDefault="qualified"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:cf="http://idActs/APVK.xsd"
+  xmlns:ct="http://types/CommonTypes.xsd"
+  xmlns:bt="http://types/BaseTypes.xsd"
+  xmlns:bd="http://types/BaseDocument.xsd"
+>
+  <xs:import schemaLocation="../types/CommonTypes.xsd" namespace="http://types/CommonTypes.xsd" />
+  <xs:import schemaLocation="../types/BaseTypes.xsd" namespace="http://types/BaseTypes.xsd" />
+  <xs:import schemaLocation="../types/BaseDocument.xsd" namespace="http://types/BaseDocument.xsd" />
+
+  <xs:complexType name="apvk">
+    <xs:annotation>
+      <xs:documentation>
+        Акт о проведении входного контроля
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="bd:baseDocument">
+        <xs:sequence>
+          <xs:element name="actInfo">
+            <xs:annotation>
+              <xs:documentation>Подписываемая часть</xs:documentation>
+            </xs:annotation>
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="documentDetails" type="ct:actRequisites">
+                  <xs:annotation>
+                    <xs:documentation>Реквизиты документа</xs:documentation>
+                  </xs:annotation>
+                </xs:element>
+                <xs:element name="permanentObjectInfo" type="ct:permanentObjectInfo">
+                  <xs:annotation>
+                    <xs:documentation>Объект капитального строительства</xs:documentation>
+                  </xs:annotation>
+                </xs:element>
+                <xs:choice>
+                  <xs:element name="developer" type="ct:individualEntrepreneurOrLegalEntityOrIndividualAndId">
+                    <xs:annotation>
+                      <xs:documentation>Застройщик</xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                  <xs:element name="technicalCustomer" type="ct:organizationWithOptionalSroAndId">
+                    <xs:annotation>
+                      <xs:documentation>Технический заказчик</xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                  <xs:element name="operatingPerson" type="ct:individualEntrepreneurOrLegalEntityOrIndividualAndId">
+                    <xs:annotation>
+                      <xs:documentation>Лицо, ответственное за эксплуатацию здания, сооружения</xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                  <xs:element name="regionalOperator" type="ct:organizationWithOptionalSroAndId">
+                    <xs:annotation>
+                      <xs:documentation>Региональный оператор</xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                </xs:choice>
+                <xs:element name="buildingContractor" type="ct:organizationWithOptionalSroAndId">
+                  <xs:annotation>
+                    <xs:documentation>Лицо, осуществляющее строительство</xs:documentation>
+                  </xs:annotation>
+                </xs:element>
+                <xs:element name="participantControlRepresentative" type="ct:representativeWithIDNRAndOrganization" minOccurs="0">
+                  <xs:annotation>
+                    <xs:documentation>
+                      Представитель застройщика / технического заказчика / лица, ответственного за эксплуатацию здания, сооружения / регионального оператора по вопросам строительного контроля (в зависимости от выбора участника)
+                    </xs:documentation>
+                  </xs:annotation>
+                </xs:element>
+                <xs:element name="buildingContractorControlRepresentative" type="ct:actsRepresentativeWithIdAndOrderAndIDNR">
+                  <xs:annotation>
+                    <xs:documentation>
+                      Сведения о представителе лица, осуществляющего строительство по вопросам строительного контроля
+                    </xs:documentation>
+                  </xs:annotation>
+                </xs:element>
+                <xs:element name="otherRepresentativesList" type="ct:otherRepresentativesList" minOccurs="0">
+                  <xs:annotation>
+                    <xs:documentation>Иные представители лиц, участвующих в освидетельствовании</xs:documentation>
+                  </xs:annotation>
+                </xs:element>
+                <xs:element name="incomingControlInfoList">
+                  <xs:annotation>
+                    <xs:documentation>Сведения о входном контроле (список)</xs:documentation>
+                  </xs:annotation>
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element name="incomingControlInfo" maxOccurs="unbounded">
+                        <xs:annotation>
+                          <xs:documentation>Сведения о входном контроле (элемент списка)</xs:documentation>
+                        </xs:annotation>
+                        <xs:complexType>
+                          <xs:sequence>
+                            <xs:element name="incomingMaterialControlJournalRecordId" type="bt:GUID" minOccurs="0">
+                              <xs:annotation>
+                                <xs:documentation>id записи журнала</xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                            <xs:element name="name" type="bt:notEmptyString">
+                              <xs:annotation>
+                                <xs:documentation>Наименование технических средств/материалов/изделия/оборудования</xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                            <xs:element name="type" type="bt:notEmptyString">
+                              <xs:annotation>
+                                <xs:documentation>Тип технических средств/материалов/изделия/оборудования</xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                            <xs:element name="mark" type="bt:notEmptyString">
+                              <xs:annotation>
+                                <xs:documentation>Марка технических средств/материалов/изделия/оборудования</xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                            <xs:element name="serialNumber" type="bt:notEmptyString">
+                              <xs:annotation>
+                                <xs:documentation>Заводской номер</xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                            <xs:element name="supplier">
+                              <xs:annotation>
+                                <xs:documentation>Предприятие-изготовитель/поставщик</xs:documentation>
+                              </xs:annotation>
+                              <xs:complexType>
+                                <xs:sequence>
+                                  <xs:element name="participantId" type="bt:GUID" minOccurs="0">
+                                    <xs:annotation>
+                                      <xs:documentation>ID участника</xs:documentation>
+                                    </xs:annotation>
+                                  </xs:element>
+                                  <xs:choice>
+                                    <xs:element name="individualEntrepreneur" type="ct:fullName">
+                                      <xs:annotation>
+                                        <xs:documentation>ФИО ИП</xs:documentation>
+                                      </xs:annotation>
+                                    </xs:element>
+                                    <xs:element name="legalEntity" type="bt:notEmptyString">
+                                      <xs:annotation>
+                                        <xs:documentation>Юридичекое лицо</xs:documentation>
+                                      </xs:annotation>
+                                    </xs:element>  
+                                  </xs:choice>
+                                </xs:sequence>
+                              </xs:complexType>
+                            </xs:element>
+                            <xs:element name="manufacturingDate" type="xs:date">
+                              <xs:annotation>
+                                <xs:documentation>Дата изготовления</xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                            <xs:element name="deliveryDate" type="xs:date">
+                              <xs:annotation>
+                                <xs:documentation>Дата поступления</xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                            <xs:element name="qualityApproveDocuments">
+                              <xs:annotation>
+                                <xs:documentation>
+                                  Комплект документов, подтверждающих качество (ДПК) материала (изделия)
+                                </xs:documentation>
+                              </xs:annotation>
+                              <xs:complexType>
+                                <xs:sequence>
+                                  <xs:choice>
+                                    <xs:element name="untypedQualityApproveDocumentsList">
+                                      <xs:annotation>
+                                        <xs:documentation>Список нетипизированных ДПК</xs:documentation>
+                                      </xs:annotation>
+                                      <xs:complexType>
+                                        <xs:sequence>
+                                          <xs:element name="untypedQualityApproveDocument" type="ct:docBaseInfoWithOptionalExpirationDate" maxOccurs="unbounded">
+                                            <xs:annotation>
+                                              <xs:documentation>Нетипизированный ДПК</xs:documentation>
+                                            </xs:annotation>
+                                          </xs:element>
+                                        </xs:sequence>
+                                      </xs:complexType>
+                                    </xs:element>
+                                    <xs:element name="typedQualityApproveDocuments">
+                                      <xs:annotation>
+                                        <xs:documentation>Комплект типизированных ДПК</xs:documentation>
+                                      </xs:annotation>
+                                      <xs:complexType>
+                                        <xs:sequence>
+                                          <xs:element name="materialAmountQualityDocument" type="ct:docBaseInfo" minOccurs="0">
+                                            <xs:annotation>
+                                              <xs:documentation>
+                                                Документ, подтверждающий качество конкретного количества материала (партии, штуки, комплекта, серии и т.п.)
+                                              </xs:documentation>
+                                            </xs:annotation>
+                                          </xs:element>
+                                          <xs:element name="parametersComplianceDocument" type="ct:docBaseInfoWithOptionalExpirationDate">
+                                            <xs:annotation>
+                                              <xs:documentation>
+                                                Документ, подтверждающий соответствие конкретной номенклатуры материала (изделия), конкретного производителя требуемым параметрам
+                                              </xs:documentation>
+                                            </xs:annotation>
+                                          </xs:element>
+                                          <xs:element name="additionalParametersComplianceDocument" type="ct:docBaseInfoWithExpirationDate" minOccurs="0">
+                                            <xs:annotation>
+                                              <xs:documentation>
+                                                Документ, подтверждающий соответствие конкретной номенклатуры материала (изделия), конкретного производителя дополнительным показателям качества (пожаробезопасность, санитарная, радиационная безопасность и т.д.)
+                                              </xs:documentation>
+                                            </xs:annotation>
+                                          </xs:element>
+                                          <xs:element name="additionalQualityDocument" type="ct:docBaseInfoWithOptionalExpirationDate" minOccurs="0">
+                                            <xs:annotation>
+                                              <xs:documentation>
+                                                Документ о результатах дополнительного подтверждения качества конкретного количества материала (партии, штуки, комплекта, серии и т.п.), предназначенного к использованию на конкретном строительном Объекте, путём лабораторных исследований, испытаний и т.п.
+                                              </xs:documentation>
+                                            </xs:annotation>
+                                          </xs:element>
+                                        </xs:sequence>
+                                      </xs:complexType>
+                                    </xs:element>
+                                  </xs:choice>
+                                </xs:sequence>
+                              </xs:complexType>
+                            </xs:element>
+                            <xs:element name="materialOrItemAdditionalInfo">
+                              <xs:annotation>
+                                <xs:documentation>Масса, партия, количество</xs:documentation>
+                              </xs:annotation>
+                              <xs:complexType>
+                                <xs:sequence>
+                                  <xs:element name="weight" minOccurs="0">
+                                    <xs:annotation>
+                                      <xs:documentation>Масса</xs:documentation>
+                                    </xs:annotation>
+                                    <xs:complexType>
+                                      <xs:sequence>
+                                        <xs:element name="unit" type="bt:notEmptyString">
+                                          <xs:annotation>
+                                            <xs:documentation>Единица измерения</xs:documentation>
+                                          </xs:annotation>
+                                        </xs:element>
+                                        <xs:element name="value" type="bt:positiveDecimals">
+                                          <xs:annotation>
+                                            <xs:documentation>Значение величины</xs:documentation>
+                                          </xs:annotation>
+                                        </xs:element>
+                                      </xs:sequence>
+                                    </xs:complexType>
+                                  </xs:element>
+                                  <xs:element name="batchNumber" type="bt:notEmptyString" minOccurs="0">
+                                    <xs:annotation>
+                                      <xs:documentation>Номер партии</xs:documentation>
+                                    </xs:annotation>
+                                  </xs:element>
+                                  <xs:element name="count">
+                                    <xs:annotation>
+                                      <xs:documentation>Количество</xs:documentation>
+                                    </xs:annotation>
+                                    <xs:complexType>
+                                      <xs:sequence>
+                                        <xs:element name="unit" type="bt:notEmptyString">
+                                          <xs:annotation>
+                                            <xs:documentation>Единица измерения</xs:documentation>
+                                          </xs:annotation>
+                                        </xs:element>
+                                        <xs:element name="value" type="bt:positiveDecimals">
+                                          <xs:annotation>
+                                            <xs:documentation>Значение величины</xs:documentation>
+                                          </xs:annotation>
+                                        </xs:element>
+                                      </xs:sequence>
+                                    </xs:complexType>
+                                  </xs:element>
+                                </xs:sequence>
+                              </xs:complexType>
+                            </xs:element>
+                          </xs:sequence>
+                        </xs:complexType>
+                      </xs:element>
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+                <xs:element name="accordantWorkAndProjectDocumentation" type="ct:accordantWorkAndProjectDocumentation">
+                  <xs:annotation>
+                    <xs:documentation>Требования, которым соответствует предмет освидетельствования</xs:documentation>
+                  </xs:annotation>
+                </xs:element>
+              </xs:sequence>
+              <xs:attribute name="id" type="bt:GUIDandUnderscore" use="required">
+                <xs:annotation>
+                  <xs:documentation>Id подписываемой части</xs:documentation>
+                </xs:annotation>
+              </xs:attribute>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="participantControlRepresentativeSignature" type="ct:signature" minOccurs="0">
+            <xs:annotation>
+              <xs:documentation>
+                Подпись представителя застройщика / технического заказчика / лица, ответственного за эксплуатацию здания, сооружения / регионального оператора по вопросам строительного контроля (в зависимости от выбора участника)
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="buildingContractorControlRepresentativeSignature" type="ct:signature" minOccurs="0">
+            <xs:annotation>
+              <xs:documentation>
+                Подпись представителя лица, осуществляющего строительство по вопросам строительного контроля
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="otherRepresentativesSignaturesList" minOccurs="0">
+            <xs:annotation>
+              <xs:documentation>Подписи представителей иных лиц</xs:documentation>
+            </xs:annotation>
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="otherRepresentativeSignature" type="ct:signature" maxOccurs="unbounded">
+                  <xs:annotation>
+                    <xs:documentation>Подпись представителя иного лица</xs:documentation>
+                  </xs:annotation>
+                </xs:element>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="actsServiceAttributes" type="ct:docServiceAttributes">
+            <xs:annotation>
+              <xs:documentation>Служебные атрибуты документа ИД</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="extraParametersList" type="ct:extraParametersList" minOccurs="0">
+            <xs:annotation>
+              <xs:documentation>Список дополнительных параметров</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="apvk" type="cf:apvk" />
+</xs:schema>

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema
+  version="1.1"
+  targetNamespace="http://v_17_0/idJournals/idJournalChangeRecord.xsd"
+  elementFormDefault="qualified"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:cf="http://v_17_0/idJournals/idJournalChangeRecord.xsd"
+  xmlns:ct="http://v_17_0/types/CommonTypes.xsd"
+  xmlns:bt="http://v_17_0/types/BaseTypes.xsd"
+  xmlns:bd="http://v_17_0/types/BaseDocument.xsd"
+>
+  <xs:import schemaLocation="../types/CommonTypes.xsd" namespace="http://v_17_0/types/CommonTypes.xsd" />
+  <xs:import schemaLocation="../types/BaseTypes.xsd" namespace="http://v_17_0/types/BaseTypes.xsd" />
+  <xs:import schemaLocation="../types/BaseDocument.xsd" namespace="http://v_17_0/types/BaseDocument.xsd" />
+
+  <xs:complexType name="idJournalChangeRecord">
+    <xs:annotation>
+      <xs:documentation>
+        Запись о внесенных изменениях в общий журнал работ/журнал авторского надзора/специальный журнал работ
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="bd:baseDocument">
+        <xs:sequence>
+          <xs:element name="signedPart">
+            <xs:annotation>
+              <xs:documentation>
+                Подписываемая часть записи об изменениях в журнале
+                (подписант - представитель, внесший изменения в журнал и сделавший запись о них)
+              </xs:documentation>
+            </xs:annotation>
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="docId" type="bt:GUID">
+                  <xs:annotation>
+                    <xs:documentation>ID записи об изменениях</xs:documentation>
+                  </xs:annotation>
+                </xs:element>
+                <xs:element name="permanentObjectId" type="bt:GUID">
+                  <xs:annotation>
+                    <xs:documentation>ID объекта капитального строительства</xs:documentation>
+                  </xs:annotation>
+                </xs:element>
+                <xs:element name="idJournalId" type="bt:GUID">
+                  <xs:annotation>
+                    <xs:documentation>ID журнала, в который были внесены изменения</xs:documentation>
+                  </xs:annotation>
+                </xs:element>
+                <xs:element name="sequenceNumber" type="xs:nonNegativeInteger">
+                  <xs:annotation>
+                    <xs:documentation>Порядковый номер записи</xs:documentation>
+                  </xs:annotation>
+                </xs:element>
+                <xs:element name="changeDate" type="xs:date">
+                  <xs:annotation>
+                    <xs:documentation>Дата внесения изменений</xs:documentation>
+                  </xs:annotation>
+                </xs:element>
+                <xs:element name="changeDescriptionWithBasis">
+                  <xs:annotation>
+                    <xs:documentation>Изменения в журнале с указанием основания</xs:documentation>
+                  </xs:annotation>
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element name="description" type="bt:notEmptyString">
+                        <xs:annotation>
+                          <xs:documentation>Внесённые изменения</xs:documentation>
+                        </xs:annotation>
+                      </xs:element>
+                      <xs:element name="basis" type="bt:notEmptyString">
+                        <xs:annotation>
+                          <xs:documentation>Основания для внесения данных изменений</xs:documentation>
+                        </xs:annotation>
+                      </xs:element>
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+                <xs:element name="representative" type="ct:actsRepresentativeWithIdAndOrder">
+                  <xs:annotation>
+                    <xs:documentation>
+                      Представитель, внесший изменения в журнал и сделавший запись о них
+                    </xs:documentation>
+                  </xs:annotation>
+                </xs:element>
+              </xs:sequence>
+              <xs:attribute name="id" type="bt:GUIDandUnderscore" use="required">
+                <xs:annotation>
+                  <xs:documentation>
+                    ID подписываемой части записи об изменениях в журнале
+                    (подписант - представитель, внесший изменения в журнал и сделавший запись о них)
+                  </xs:documentation>
+                </xs:annotation>
+              </xs:attribute>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="representativeSignature" type="ct:signature">
+            <xs:annotation>
+              <xs:documentation>
+                Подпись представителя, внесшего изменения в журнал и сделавшего запись о них
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="docServiceAttributes" type="ct:baseDocServiceAttributes">
+            <xs:annotation>
+              <xs:documentation>Служебные атрибуты документа</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="extraParametersList" type="ct:extraParametersList" minOccurs="0">
+            <xs:annotation>
+              <xs:documentation>Список дополнительных параметров</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+        <xs:attribute name="docSchemaVersion" type="bt:docSchemaVersion" use="required" fixed="1.1">
+          <xs:annotation>
+            <xs:documentation>Версия схемы, по которой составлен документ</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="idJournalChangeRecord" type="cf:idJournalChangeRecord" />
+</xs:schema>

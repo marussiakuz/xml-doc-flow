@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema targetNamespace="http://participants/Participants.xsd"
+  elementFormDefault="qualified"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:cf="http://participants/Participants.xsd"
+  xmlns:ct="http://types/CommonTypes.xsd"
+  xmlns:bt="http://types/BaseTypes.xsd"
+  xmlns:bd="http://types/BaseDocument.xsd"
+>
+  <xs:import schemaLocation="../types/CommonTypes.xsd" namespace="http://types/CommonTypes.xsd" />
+  <xs:import schemaLocation="../types/BaseTypes.xsd" namespace="http://types/BaseTypes.xsd" />
+  <xs:import schemaLocation="../types/BaseDocument.xsd" namespace="http://types/BaseDocument.xsd" />
+
+  <xs:complexType name="participants">
+    <xs:annotation>
+      <xs:documentation>
+        Схема "Данные застройщика о представителях"
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="bd:baseDocument">
+        <xs:sequence>
+          <xs:element name="permanentObjectId" type="bt:GUID">
+            <xs:annotation>
+              <xs:documentation>id объекта капитального строительства</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:choice>
+            <xs:element name="developerRepresentatives">
+              <xs:annotation>
+                <xs:documentation>Представители застройщика</xs:documentation>
+              </xs:annotation>
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element name="participantId" type="bt:GUID">
+                    <xs:annotation>
+                      <xs:documentation>ID участника Застройщика</xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                  <xs:element name="developerRepresentativesList">
+                    <xs:annotation>
+                      <xs:documentation>Уполномоченные представители Застройщика</xs:documentation>
+                    </xs:annotation>
+                    <xs:complexType>
+                      <xs:sequence>
+                        <xs:element
+                          name="developerRepresentativesListItem"
+                          type="ct:representativeWithIdAndIDNRAndAdministrativeDocumentAndSignature"
+                          maxOccurs="unbounded"
+                        >
+                          <xs:annotation>
+                            <xs:documentation>Уполномоченный представитель Застройщика</xs:documentation>
+                          </xs:annotation>
+                        </xs:element>
+                      </xs:sequence>
+                    </xs:complexType>
+                  </xs:element>
+                  <xs:element name="developerConstructionControlRepresentativesList" minOccurs="0">
+                    <xs:annotation>
+                      <xs:documentation>Уполномоченные представители Застройщика по вопросам строительного контроля</xs:documentation>
+                    </xs:annotation>
+                    <xs:complexType>
+                      <xs:sequence>
+                        <xs:element
+                          name="developerConstructionControlRepresentativesListItem"
+                          type="ct:constructionControlRepresentativeWithSignature"
+                          maxOccurs="unbounded"
+                        >
+                          <xs:annotation>
+                            <xs:documentation>Уполномоченный представитель Застройщика по вопросам строительного контроля</xs:documentation>
+                          </xs:annotation>
+                        </xs:element>
+                      </xs:sequence>
+                    </xs:complexType>
+                  </xs:element>
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+            <xs:element name="operatingPersonRepresentatives">
+              <xs:annotation>
+                <xs:documentation>Представители лица, ответственного за эксплуатацию здания, сооружения</xs:documentation>
+              </xs:annotation>
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element name="participantId" type="bt:GUID">
+                    <xs:annotation>
+                      <xs:documentation>Id участника (организации), ответственного за эксплуатацию здания, сооружения</xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                  <xs:element name="operatingPersonRepresentativesList">
+                    <xs:annotation>
+                      <xs:documentation>
+                        Уполномоченные представители лица, ответственного за эксплуатацию здания, сооружения
+                      </xs:documentation>
+                    </xs:annotation>
+                    <xs:complexType>
+                      <xs:sequence>
+                        <xs:element
+                          name="operatingPersonRepresentativesListItem"
+                          type="ct:representativeWithIdAndAdministrativeDocumentAndSignature"
+                          maxOccurs="unbounded"
+                        >
+                          <xs:annotation>
+                            <xs:documentation>
+                              Уполномоченный представитель лица, ответственного за эксплуатацию здания, сооружения
+                            </xs:documentation>
+                          </xs:annotation>
+                        </xs:element>
+                      </xs:sequence>
+                    </xs:complexType>
+                  </xs:element>
+                  <xs:element name="operatingPersonConstructionControlRepresentativesList" minOccurs="0">
+                    <xs:annotation>
+                      <xs:documentation>
+                        Список уполномоченных представителей лица, ответственного за эксплуатацию здания, сооружения, по вопросам строительного контроля
+                      </xs:documentation>
+                    </xs:annotation>
+                    <xs:complexType>
+                      <xs:sequence>
+                        <xs:element
+                          name="operatingPersonConstructionControlRepresentativesListItem"
+                          type="ct:constructionControlRepresentativeWithSignature"
+                          maxOccurs="unbounded"
+                        >
+                          <xs:annotation>
+                            <xs:documentation>
+                              Уполномоченный представитель лица, ответственного за эксплуатацию здания, сооружения по вопросам строительного контроля
+                            </xs:documentation>
+                          </xs:annotation>
+                        </xs:element>
+                      </xs:sequence>
+                    </xs:complexType>
+                  </xs:element>
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+            <xs:element name="regionalOperatorRepresentatives">
+              <xs:annotation>
+                <xs:documentation>Представители регионального оператора</xs:documentation>
+              </xs:annotation>
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element name="participantId" type="bt:GUID">
+                    <xs:annotation>
+                      <xs:documentation>ID участника регионального оператора</xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                  <xs:element name="regionalOperatorRepresentativesList">
+                    <xs:annotation>
+                      <xs:documentation>Уполномоченные представители регионального оператора</xs:documentation>
+                    </xs:annotation>
+                    <xs:complexType>
+                      <xs:sequence>
+                        <xs:element
+                          name="regionalOperatorRepresentativesListItem"
+                          type="ct:representativeWithIdAndAdministrativeDocumentAndSignature"
+                          maxOccurs="unbounded"
+                        >
+                          <xs:annotation>
+                            <xs:documentation>Уполномоченный представитель регионального оператора</xs:documentation>
+                          </xs:annotation>
+                        </xs:element>
+                      </xs:sequence>
+                    </xs:complexType>
+                  </xs:element>
+                  <xs:element name="regionalOperatorConstructionControlRepresentativesList" minOccurs="0">
+                    <xs:annotation>
+                      <xs:documentation>Список уполномоченных представителей регионального оператора по вопросам строительного контроля</xs:documentation>
+                    </xs:annotation>
+                    <xs:complexType>
+                      <xs:sequence>
+                        <xs:element
+                          name="regionalOperatorConstructionControlRepresentativesListItem"
+                          type="ct:constructionControlRepresentativeWithSignature"
+                          maxOccurs="unbounded"
+                        >
+                          <xs:annotation>
+                            <xs:documentation>Уполномоченный представитель регионального оператора по вопросам строительного контроля</xs:documentation>
+                          </xs:annotation>
+                        </xs:element>
+                      </xs:sequence>
+                    </xs:complexType>
+                  </xs:element>
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:choice>
+          <xs:element name="technicalCustomerRepresentatives" minOccurs="0">
+            <xs:annotation>
+              <xs:documentation>Представители технического заказчика</xs:documentation>
+            </xs:annotation>
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="participantId" type="bt:GUID">
+                  <xs:annotation>
+                    <xs:documentation>ID участника Технического заказчика</xs:documentation>
+                  </xs:annotation>
+                </xs:element>
+                <xs:element name="technicalCustomerRepresentativesList">
+                  <xs:annotation>
+                    <xs:documentation>Уполномоченные представители Технического заказчика</xs:documentation>
+                  </xs:annotation>
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element
+                        name="technicalCustomerRepresentativesListItem"
+                        type="ct:representativeWithIdAndIDNRAndAdministrativeDocumentAndSignature"
+                        maxOccurs="unbounded"
+                      >
+                        <xs:annotation>
+                          <xs:documentation>Уполномоченный представитель Технического заказчика</xs:documentation>
+                        </xs:annotation>
+                      </xs:element>
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+                <xs:element name="technicalCustomerConstructionControlRepresentativesList">
+                  <xs:annotation>
+                    <xs:documentation>Уполномоченные представители Технического заказчика по вопросам строительного контроля</xs:documentation>
+                  </xs:annotation>
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element
+                        name="technicalCustomerConstructionControlRepresentativesListItem"
+                        type="ct:constructionControlRepresentativeWithSignature"
+                        maxOccurs="unbounded"
+                      >
+                        <xs:annotation>
+                          <xs:documentation>Уполномоченный представитель Технического заказчика по вопросам строительного контроля</xs:documentation>
+                        </xs:annotation>
+                      </xs:element>
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="designerSupervisionRepresentativesList" minOccurs="0">
+            <xs:annotation>
+              <xs:documentation>
+                Представители лиц, осуществляющих подготовку проектной документации, выполняющих проверку соответствия выполняемых работ проектной документации (авторский надзор)
+              </xs:documentation>
+            </xs:annotation>
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="designerSupervisionRepresentativesListItem" maxOccurs="unbounded">
+                  <xs:annotation>
+                    <xs:documentation>
+                      Представители лица, осуществляющего подготовку проектной документации, выполняющего проверку соответствия выполняемых работ проектной документации (авторский надзор)
+                    </xs:documentation>
+                  </xs:annotation>
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element name="designerSupervisionAuthRepresentativesList">
+                        <xs:annotation>
+                          <xs:documentation>
+                            Уполномоченные представители лица, осуществляющего подготовку проектной документации, выполняющего проверку соответствия выполняемых работ проектной документации (авторский надзор)
+                          </xs:documentation>
+                        </xs:annotation>
+                        <xs:complexType>
+                          <xs:sequence>
+                            <xs:element
+                              name="designerSupervisionAuthRepresentativesListItem"
+                              type="ct:representativeWithIdAndIDNRAndAdministrativeDocumentAndSignature"
+                              maxOccurs="unbounded"
+                            >
+                              <xs:annotation>
+                                <xs:documentation>
+                                  Уполномоченный представитель лица, осуществляющего подготовку проектной документации, выполняющего проверку соответствия выполняемых работ проектной документации (авторский надзор)
+                                </xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                          </xs:sequence>
+                        </xs:complexType>
+                      </xs:element>
+                      <xs:element name="participantId" type="bt:GUID">
+                        <xs:annotation>
+                          <xs:documentation>
+                            ID участника (организации), осуществляющего подготовку проектной документации, выполняющего проверку соответствия выполняемых работ проектной документации (авторский надзор)
+                          </xs:documentation>
+                        </xs:annotation>
+                      </xs:element>
+                      <xs:element name="projectDocSectionsList" type="ct:projectDocSectionsList">
+                        <xs:annotation>
+                          <xs:documentation>Список разделов проектной документации (сокр.)</xs:documentation>
+                        </xs:annotation>
+                      </xs:element>
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="extraParametersList" type="ct:extraParametersList" minOccurs="0">
+            <xs:annotation>
+              <xs:documentation>Список дополнительных параметров</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="participants" type="cf:participants" />
+</xs:schema>

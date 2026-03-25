@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema targetNamespace="http://idCommon/BuildingInfo.xsd"
+  elementFormDefault="qualified"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:cf="http://idCommon/BuildingInfo.xsd"
+  xmlns:ct="http://types/CommonTypes.xsd"
+  xmlns:bt="http://types/BaseTypes.xsd"
+  xmlns:bd="http://types/BaseDocument.xsd"
+>
+  <xs:import schemaLocation="../types/CommonTypes.xsd" namespace="http://types/CommonTypes.xsd" />
+  <xs:import schemaLocation="../types/BaseTypes.xsd" namespace="http://types/BaseTypes.xsd" />
+  <xs:import schemaLocation="../types/BaseDocument.xsd" namespace="http://types/BaseDocument.xsd" />
+
+  <xs:complexType name="buildingInfo">
+    <xs:annotation>
+      <xs:documentation>
+        Общие сведения, часть 7: Идентификатор документа, Вид строительства, Объект капитального строительства, Сведения о государственном строительном надзоре, Регистрационная надпись органа государственного строительного надзора
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="bd:baseDocument">
+        <xs:sequence>
+          <xs:element name="docId" type="ct:docInfo">
+            <xs:annotation>
+              <xs:documentation>Идентификатор документа</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="constructionTypeName">
+            <xs:annotation>
+              <xs:documentation>
+                Наименование вида строительства
+                Допустимые значения:
+                - строительство
+                - реконструкция
+                - капитальный ремонт
+              </xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+              <xs:restriction base="bt:notEmptyString">
+                <xs:enumeration value="строительство" />
+                <xs:enumeration value="реконструкция" />
+                <xs:enumeration value="капитальный ремонт" />
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:element>
+          <xs:element name="permanentObjectInfo" type="ct:permanentObjectInfo">
+            <xs:annotation>
+              <xs:documentation>Объект капитального строительства</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="supervisionInfo">
+            <xs:annotation>
+              <xs:documentation>Сведения о государственном строительном надзоре</xs:documentation>
+            </xs:annotation>
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="supervisoryAuthorityInfo" type="ct:legalEntityWithId">
+                  <xs:annotation>
+                    <xs:documentation>Сведения об органе государственного строительного надзора</xs:documentation>
+                  </xs:annotation>
+                </xs:element>
+                <xs:element name="supervisoryAuthorityOfficial">
+                  <xs:annotation>
+                    <xs:documentation>Должностное лицо органа государственного строительного надзора</xs:documentation>
+                  </xs:annotation>
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element name="supervisoryAuthorityOfficialInfo" type="ct:representative">
+                        <xs:annotation>
+                          <xs:documentation>Должностное лицо органа государственного строительного надзора</xs:documentation>
+                        </xs:annotation>
+                      </xs:element>
+                      <xs:element name="administrativeDocument" type="ct:docBaseInfo">
+                        <xs:annotation>
+                          <xs:documentation>Распорядительный документ, подтверждающий полномочия</xs:documentation>
+                        </xs:annotation>
+                      </xs:element>
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="supervisoryAuthorityRegistryRecord">
+            <xs:annotation>
+              <xs:documentation>Регистрационная надпись органа государственного строительного надзора</xs:documentation>
+            </xs:annotation>
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="supervisoryAuthorityRegistryRecordSignedPart">
+                  <xs:annotation>
+                    <xs:documentation>Подписываемая часть</xs:documentation>
+                  </xs:annotation>
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element name="journalID" type="bt:notEmptyString">
+                        <xs:annotation>
+                          <xs:documentation>Идентификационный номер журнала в системе Государственного строительного надзора (Номер дела/регистрационный номер)</xs:documentation>
+                        </xs:annotation>
+                      </xs:element>
+                      <xs:element name="registrationDate" type="xs:date">
+                        <xs:annotation>
+                          <xs:documentation>Дата регистрации</xs:documentation>
+                        </xs:annotation>
+                      </xs:element>
+                      <xs:element name="supervisoryAuthorityRepresentative" type="ct:representative">
+                        <xs:annotation>
+                          <xs:documentation>Представитель Госстройнадзора, внёсший регистрационную запись</xs:documentation>
+                        </xs:annotation>
+                      </xs:element>
+                    </xs:sequence>
+                    <xs:attribute name="id" type="bt:GUIDandUnderscore" use="required">
+                      <xs:annotation>
+                        <xs:documentation>Id подписываемой части</xs:documentation>
+                      </xs:annotation>
+                    </xs:attribute>
+                  </xs:complexType>
+                </xs:element>
+                <xs:element name="supervisoryAuthoritySignature" type="ct:signature">
+                  <xs:annotation>
+                    <xs:documentation>Подпись</xs:documentation>
+                  </xs:annotation>
+                </xs:element>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="extraParametersList" type="ct:extraParametersList" minOccurs="0">
+            <xs:annotation>
+              <xs:documentation>Список дополнительных параметров</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="buildingInfo" type="cf:buildingInfo" />
+</xs:schema>

@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema targetNamespace="http://gsn/gsnProtocolInspection.xsd"
+  elementFormDefault="qualified"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:ct="http://types/CommonTypes.xsd"
+  xmlns:bt="http://types/BaseTypes.xsd"
+  xmlns:bd="http://types/BaseDocument.xsd"
+  xmlns:cf="http://gsn/gsnProtocolInspection.xsd"
+>
+  <xs:import schemaLocation="../types/CommonTypes.xsd" namespace="http://types/CommonTypes.xsd" />
+  <xs:import schemaLocation="../types/BaseTypes.xsd" namespace="http://types/BaseTypes.xsd" />
+  <xs:import schemaLocation="../types/BaseDocument.xsd" namespace="http://types/BaseDocument.xsd" />
+
+  <xs:complexType name="gsnProtocolInspection">
+    <xs:annotation>
+      <xs:documentation>
+        Протокол осмотра
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="bd:baseDocument">
+        <xs:sequence>
+          <xs:element name="controlledPersonSignedPart">
+            <xs:annotation>
+              <xs:documentation>
+                Информация, подписываемая представителем контролируемого лица
+              </xs:documentation>
+            </xs:annotation>
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="supervisoryAuthorityRepresentativesSignedPart">
+                  <xs:annotation>
+                    <xs:documentation>
+                      Информация, подписываемая лицами, проводившими осмотр
+                    </xs:documentation>
+                  </xs:annotation>
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element name="protocolRequisites">
+                        <xs:annotation>
+                          <xs:documentation>Реквизиты протокола осмотра</xs:documentation>
+                        </xs:annotation>
+                        <xs:complexType>
+                          <xs:sequence>
+                            <xs:element name="supervisoryAuthorityInfo" type="ct:legalEntityWithId">
+                              <xs:annotation>
+                                <xs:documentation>Сведения об органе государственного строительного надзора</xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                            <xs:element name="documentDetails" type="ct:docNameAndNumberAndDate">
+                              <xs:annotation>
+                                <xs:documentation>Реквизиты документа</xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                            <xs:element name="controlEventPeriod" type="ct:datetimeInterval">
+                              <xs:annotation>
+                                <xs:documentation>Срок проведения осмотра</xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                          </xs:sequence>
+                        </xs:complexType>
+                      </xs:element>
+                      <xs:element name="protocolInfo">
+                        <xs:annotation>
+                          <xs:documentation>Содержание протокола осмотра</xs:documentation>
+                        </xs:annotation>
+                        <xs:complexType>
+                          <xs:sequence>
+                            <xs:element name="controlledPerson" type="ct:individualEntrepreneurOrLegalEntityOrIndividualAndId">
+                              <xs:annotation>
+                                <xs:documentation>Контролируемое лицо</xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                            <xs:element name="controlEventDecisionRequisites" type="ct:docNameAndNumberAndDate">
+                              <xs:annotation>
+                                <xs:documentation>Реквизиты решения (задания) на проведение контрольного (надзорного) мероприятия</xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                            <xs:element name="controlEventInfo" type="bt:notEmptyString">
+                              <xs:annotation>
+                                <xs:documentation>Описание осмотра</xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                            <xs:element name="recordingMethodsInfo" type="bt:notEmptyString">
+                              <xs:annotation>
+                                <xs:documentation>Сведения о способах фиксации</xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                            <xs:element name="attachedEntitiesList" type="ct:attachedEntitiesList" minOccurs="0">
+                              <xs:annotation>
+                                <xs:documentation>Приложения</xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                          </xs:sequence>
+                        </xs:complexType>
+                      </xs:element>
+                      <xs:element name="supervisoryAuthorityRepresentativesList">
+                        <xs:annotation>
+                          <xs:documentation>Уполномоченные на проведение осмотра представители</xs:documentation>
+                        </xs:annotation>
+                        <xs:complexType>
+                          <xs:sequence>
+                            <xs:element
+                              name="supervisoryAuthorityRepresentativesListItem"
+                              type="ct:representativeWithOptionalId"
+                              maxOccurs="unbounded"
+                            >
+                              <xs:annotation>
+                                <xs:documentation>Уполномоченный на проведение осмотра представитель</xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                          </xs:sequence>
+                        </xs:complexType>
+                      </xs:element>
+                    </xs:sequence>
+                    <xs:attribute name="id" type="bt:GUIDandUnderscore" use="required">
+                      <xs:annotation>
+                        <xs:documentation>Id информации, подписываемой лицами, проводившими осмотр</xs:documentation>
+                      </xs:annotation>
+                    </xs:attribute>
+                  </xs:complexType>
+                </xs:element>
+                <xs:element name="supervisoryAuthorityRepresentativesSignatureList">
+                  <xs:annotation>
+                    <xs:documentation>Подписи лиц, проводивших осмотр</xs:documentation>
+                  </xs:annotation>
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element name="supervisoryAuthorityRepresentativesSignatureListItem" type="ct:signature" maxOccurs="unbounded">
+                        <xs:annotation>
+                          <xs:documentation>Подпись лица, проводившего осмотр</xs:documentation>
+                        </xs:annotation>
+                      </xs:element>
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+                <xs:element name="controlledPersonRepresentative" type="ct:actsRepresentativeWithIdAndOrder">
+                  <xs:annotation>
+                    <xs:documentation>Сведения о представителе контролируемого лица</xs:documentation>
+                  </xs:annotation>
+                </xs:element>
+                <xs:element name="protocolComments" minOccurs="0">
+                  <xs:annotation>
+                    <xs:documentation>Замечания к протоколу</xs:documentation>
+                  </xs:annotation>
+                  <xs:complexType>
+                    <xs:choice>
+                      <xs:element name="commentsAbsence" type="bt:notEmptyString" fixed="Замечания отсутствуют">
+                        <xs:annotation>
+                          <xs:documentation>
+                            Замечания отсутствуют
+                            (элемент с фиксированным значением "Замечания отсутствуют")
+                          </xs:documentation>
+                        </xs:annotation>
+                      </xs:element>
+                      <xs:element name="commentsText" type="bt:notEmptyString">
+                        <xs:annotation>
+                          <xs:documentation>Содержание замечаний</xs:documentation>
+                        </xs:annotation>
+                      </xs:element>
+                    </xs:choice>
+                  </xs:complexType>
+                </xs:element>
+              </xs:sequence>
+              <xs:attribute name="id" type="bt:GUIDandUnderscore" use="required">
+                <xs:annotation>
+                  <xs:documentation>Id информации, подписываемой представителем контролируемого лица</xs:documentation>
+                </xs:annotation>
+              </xs:attribute>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="familiarizationOrRefusal" type="ct:familiarizationOrRefusal" minOccurs="0">
+            <xs:annotation>
+              <xs:documentation>Ознакомление или отказ</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="extraParametersList" type="ct:extraParametersList" minOccurs="0">
+            <xs:annotation>
+              <xs:documentation>Список дополнительных параметров</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="gsnProtocolInspection" type="cf:gsnProtocolInspection" />
+</xs:schema>

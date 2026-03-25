@@ -1,0 +1,545 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema
+  version="1.1"
+  targetNamespace="http://v_17_0/an/idSpJournalDesignerControlResultRecord.xsd"
+  elementFormDefault="qualified"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:ct="http://v_17_0/types/CommonTypes.xsd"
+  xmlns:bt="http://v_17_0/types/BaseTypes.xsd"
+  xmlns:bd="http://v_17_0/types/BaseDocument.xsd"
+  xmlns:cf="http://v_17_0/an/idSpJournalDesignerControlResultRecord.xsd"
+>
+  <xs:import schemaLocation="../types/CommonTypes.xsd" namespace="http://v_17_0/types/CommonTypes.xsd" />
+  <xs:import schemaLocation="../types/BaseTypes.xsd" namespace="http://v_17_0/types/BaseTypes.xsd" />
+  <xs:import schemaLocation="../types/BaseDocument.xsd" namespace="http://v_17_0/types/BaseDocument.xsd" />
+
+  <xs:complexType name="idSpJournalDesignerControlResultRecord">
+    <xs:annotation>
+      <xs:documentation>
+        ЖАН, лист 6. Запись в учетном листе по результатам участия авторского надзора в освидетельствовании работ
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="bd:baseDocument">
+        <xs:sequence>
+          <xs:choice>
+            <xs:element name="violationInfo">
+              <xs:annotation>
+                <xs:documentation>
+                  Нарушение требования проектной документации, выявленное авторским надзором при освидетельствовании работ
+                </xs:documentation>
+              </xs:annotation>
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element name="recordCancelSignedPart">
+                    <xs:annotation>
+                      <xs:documentation>
+                        Подписываемая часть записи в учетном листе (включая данные об аннулировании записи)
+                      </xs:documentation>
+                    </xs:annotation>
+                    <xs:complexType>
+                      <xs:sequence>
+                        <xs:element name="customerSignedPart">
+                          <xs:annotation>
+                            <xs:documentation>
+                              Подписываемая часть записи в учетном листе (подписант - представитель застройщика / технического заказчика / лица, ответственного за эксплуатацию здания, сооружения / регионального оператора (в зависимости от выбора участника))
+                            </xs:documentation>
+                          </xs:annotation>
+                          <xs:complexType>
+                            <xs:sequence>
+                              <xs:element name="designerControlSignedPart">
+                                <xs:annotation>
+                                  <xs:documentation>
+                                    Подписываемая часть записи в учетном листе (подписант - представитель лица, осуществляющего авторский надзор, проводивший проверку)
+                                  </xs:documentation>
+                                </xs:annotation>
+                                <xs:complexType>
+                                  <xs:sequence>
+                                    <xs:element name="idSpJournalDesignerControlResultRecordId" type="bt:GUID">
+                                      <xs:annotation>
+                                        <xs:documentation>ID записи в учетном листе</xs:documentation>
+                                      </xs:annotation>
+                                    </xs:element>
+                                    <xs:element name="permanentObjectId" type="bt:GUID">
+                                      <xs:annotation>
+                                        <xs:documentation>ID объекта капитального строительства</xs:documentation>
+                                      </xs:annotation>
+                                    </xs:element>
+                                    <xs:element name="documentEdition" type="xs:positiveInteger">
+                                      <xs:annotation>
+                                        <xs:documentation>
+                                          Редакция документа (версия)
+                                          (если в запись вносятся изменения, тогда создается новая версия записи (новая запись), меняется редакция документа (идентификатор не меняется) и меняется статус предыдущей версии записи документа на "аннулирован")
+                                        </xs:documentation>
+                                      </xs:annotation>
+                                    </xs:element>
+                                    <xs:element name="controlEventId" type="bt:GUID" minOccurs="0">
+                                      <xs:annotation>
+                                        <xs:documentation>
+                                          ID контрольного мероприятия, в котором зафиксировано наличие нарушения
+                                        </xs:documentation>
+                                      </xs:annotation>
+                                    </xs:element>
+                                    <xs:element name="violationDate" type="xs:date">
+                                      <xs:annotation>
+                                        <xs:documentation>Дата внесения записи о нарушении</xs:documentation>
+                                      </xs:annotation>
+                                    </xs:element>
+                                    <xs:element name="violationNumber" type="xs:positiveInteger">
+                                      <xs:annotation>
+                                        <xs:documentation>
+                                          Номер нарушения (cквозной, при новой записи номер увеличивается на единицу)
+                                        </xs:documentation>
+                                      </xs:annotation>
+                                    </xs:element>
+                                    <xs:element name="controlSubjectDescriptionList" minOccurs="0">
+                                      <xs:annotation>
+                                        <xs:documentation>
+                                          Описание предметов контроля (работа или элемент ОКС) (список)
+                                        </xs:documentation>
+                                      </xs:annotation>
+                                      <xs:complexType>
+                                        <xs:sequence>
+                                          <xs:element name="controlSubjectDescription" type="ct:controlSubjectDescription" maxOccurs="unbounded">
+                                            <xs:annotation>
+                                              <xs:documentation>
+                                                Описание предмета контроля (работа или элемент ОКС)
+                                              </xs:documentation>
+                                            </xs:annotation>
+                                          </xs:element>
+                                        </xs:sequence>
+                                      </xs:complexType>
+                                    </xs:element>
+                                    <xs:element name="violationDetails">
+                                      <xs:annotation>
+                                        <xs:documentation>
+                                          Описание нарушения, выявленного авторским надзором при освидетельствовании работ
+                                        </xs:documentation>
+                                      </xs:annotation>
+                                      <xs:complexType>
+                                        <xs:sequence>
+                                          <xs:element name="violationDescription" type="bt:notEmptyString">
+                                            <xs:annotation>
+                                              <xs:documentation>
+                                                Формулировка выявленного нарушения
+                                                (одно из возможных значений: "выявлено несоответствие рабочей документации проектной документации")
+                                              </xs:documentation>
+                                            </xs:annotation>
+                                          </xs:element>
+                                          <xs:choice>
+                                            <xs:element name="variantRequiredProjDocSectionList">
+                                              <xs:annotation>
+                                                <xs:documentation>
+                                                  Вариант с обязательным элементом "Список разделов проектной документации"
+                                                </xs:documentation>
+                                              </xs:annotation>
+                                              <xs:complexType>
+                                                <xs:sequence>
+                                                  <xs:element name="projDocSectionList" type="ct:projDocSectionList">
+                                                    <xs:annotation>
+                                                      <xs:documentation>
+                                                        Список разделов проектной документации
+                                                        (перечисляются разделы проектной документации, требования которых были нарушены)
+                                                      </xs:documentation>
+                                                    </xs:annotation>
+                                                  </xs:element>
+                                                  <xs:element name="regulationDocumentsList" type="ct:regulationDocumentsList" minOccurs="0">
+                                                    <xs:annotation>
+                                                      <xs:documentation>
+                                                        Перечень нормативных документов, предусмотренных проектной документацией
+                                                        (перечисляются нормативные документы, предусмотренные проектной документацией, требования которых были нарушены)
+                                                      </xs:documentation>
+                                                    </xs:annotation>
+                                                  </xs:element>
+                                                </xs:sequence>
+                                              </xs:complexType>
+                                            </xs:element>
+                                            <xs:element name="variantRequiredRegulationDocumentsList">
+                                              <xs:annotation>
+                                                <xs:documentation>
+                                                  Вариант с обязательным элементом "Перечень нормативных документов, предусмотренных проектной документацией"
+                                                </xs:documentation>
+                                              </xs:annotation>
+                                              <xs:complexType>
+                                                <xs:sequence>
+                                                  <xs:element name="regulationDocumentsList" type="ct:regulationDocumentsList">
+                                                    <xs:annotation>
+                                                      <xs:documentation>
+                                                        Перечень нормативных документов, предусмотренных проектной документацией
+                                                        (перечисляются нормативные документы, предусмотренные проектной документацией, требования которых были нарушены)
+                                                      </xs:documentation>
+                                                    </xs:annotation>
+                                                  </xs:element>
+                                                </xs:sequence>
+                                              </xs:complexType>
+                                            </xs:element>
+                                          </xs:choice>
+                                          <xs:element name="workDocSectionList" type="ct:workDocSectionList" minOccurs="0">
+                                            <xs:annotation>
+                                              <xs:documentation>
+                                                Список разделов рабочей документации
+                                                (перечисляются разделы рабочей документации, не соответствующие проектной документации)
+                                              </xs:documentation>
+                                            </xs:annotation>
+                                          </xs:element>
+                                          <xs:element name="attachedDocumentsList" minOccurs="0">
+                                            <xs:annotation>
+                                              <xs:documentation>Массив файлов с обосновывающими материалами</xs:documentation>
+                                            </xs:annotation>
+                                            <xs:complexType>
+                                              <xs:sequence>
+                                                <xs:element name="attachedDocuments" type="ct:attachedDocuments" maxOccurs="unbounded">
+                                                  <xs:annotation>
+                                                    <xs:documentation>
+                                                      Информация о документе (документax), загруженном (загруженных) в хранилище
+                                                    </xs:documentation>
+                                                  </xs:annotation>
+                                                </xs:element>
+                                              </xs:sequence>
+                                            </xs:complexType>
+                                          </xs:element>
+                                          <xs:element name="violationConfirmDocs" minOccurs="0">
+                                            <xs:annotation>
+                                              <xs:documentation>Документы, подтверждающие факт нарушения</xs:documentation>
+                                            </xs:annotation>
+                                            <xs:complexType>
+                                              <xs:choice>
+                                                <xs:element name="variantRequiredAttachmentList">
+                                                  <xs:annotation>
+                                                    <xs:documentation>
+                                                      Вариант с обязательным элементом "Список прилагаемых документов"
+                                                    </xs:documentation>
+                                                  </xs:annotation>
+                                                  <xs:complexType>
+                                                    <xs:sequence>
+                                                      <xs:element name="attachmentList" type="ct:attachmentList">
+                                                        <xs:annotation>
+                                                          <xs:documentation>
+                                                            Список прилагаемых документов (исполнительные схемы / документы с результатами испытаний / иные документы)
+                                                          </xs:documentation>
+                                                        </xs:annotation>
+                                                      </xs:element>
+                                                      <xs:element name="idActList" type="ct:idActList" minOccurs="0">
+                                                        <xs:annotation>
+                                                          <xs:documentation>Список прилагаемых актов ИД</xs:documentation>
+                                                        </xs:annotation>
+                                                      </xs:element>
+                                                    </xs:sequence>
+                                                  </xs:complexType>
+                                                </xs:element>
+                                                <xs:element name="variantRequiredIdActList">
+                                                  <xs:annotation>
+                                                    <xs:documentation>
+                                                      Вариант с обязательным элементом "Список прилагаемых актов ИД"
+                                                    </xs:documentation>
+                                                  </xs:annotation>
+                                                  <xs:complexType>
+                                                    <xs:sequence>
+                                                      <xs:element name="idActList" type="ct:idActList">
+                                                        <xs:annotation>
+                                                          <xs:documentation>Список прилагаемых актов ИД</xs:documentation>
+                                                        </xs:annotation>
+                                                      </xs:element>
+                                                    </xs:sequence>
+                                                  </xs:complexType>
+                                                </xs:element>
+                                              </xs:choice>
+                                            </xs:complexType>
+                                          </xs:element>
+                                        </xs:sequence>
+                                      </xs:complexType>
+                                    </xs:element>
+                                    <xs:element name="violationFixPlanDate" type="xs:date">
+                                      <xs:annotation>
+                                        <xs:documentation>
+                                          Дата устранения выявленного нарушения
+                                          (указывается представителем лица, осуществляющего авторский надзор, проводившим проверку)
+                                        </xs:documentation>
+                                      </xs:annotation>
+                                    </xs:element>
+                                    <xs:element name="representativeDesignerControl" type="ct:actsRepresentativeWithIdAndOrderAndIDNR">
+                                      <xs:annotation>
+                                        <xs:documentation>
+                                          Сведения о представителе лица, осуществляющего авторский надзор, проводившем проверку
+                                          (ID представителя, проводившего проверку, должен совпадать с ID представителя из листа 4 журнала АН в одну и ту же дату)
+                                        </xs:documentation>
+                                      </xs:annotation>
+                                    </xs:element>
+                                  </xs:sequence>
+                                  <xs:attribute name="id" type="bt:GUIDandUnderscore" use="required">
+                                    <xs:annotation>
+                                      <xs:documentation>
+                                        ID подписываемой части записи в учетном листе
+                                        (подписант - представитель лица, осуществляющего авторский надзор, проводивший проверку)
+                                      </xs:documentation>
+                                    </xs:annotation>
+                                  </xs:attribute>
+                                </xs:complexType>
+                              </xs:element>
+                              <xs:element name="representativeDesignerControlSignature" type="ct:signature">
+                                <xs:annotation>
+                                  <xs:documentation>
+                                    Подпись представителя лица, осуществляющего авторский надзор, проводившего проверку
+                                  </xs:documentation>
+                                </xs:annotation>
+                              </xs:element>
+                              <xs:element name="violationFixCustomerPlanDate" type="xs:date" minOccurs="0">
+                                <xs:annotation>
+                                  <xs:documentation>
+                                    Дата устранения выявленного нарушения, предлагаемая застройщиком (техзаказчиком)
+                                    (в случае несовпадения дат устранения, указанных лицом, осуществляющим авторский надзор, и застройщиком (техзаказчиком), запись аннулируется)
+                                  </xs:documentation>
+                                </xs:annotation>
+                              </xs:element>
+                              <xs:choice minOccurs="0">
+                                <xs:element name="representativeDeveloperFamiliarizationMarkInfo" type="ct:familiarizationMarkInfo">
+                                  <xs:annotation>
+                                    <xs:documentation>
+                                      Отметка об ознакомлении со сведениями о выявленном нарушении представителя застройщика
+                                      (подтверждение факта ознакомления с записью и согласования даты устранения нарушения)
+                                    </xs:documentation>
+                                  </xs:annotation>
+                                </xs:element>
+                                <xs:element name="representativeTechnicalCustomerFamiliarizationMarkInfo" type="ct:familiarizationMarkInfo">
+                                  <xs:annotation>
+                                    <xs:documentation>
+                                      Отметка об ознакомлении со сведениями о выявленном нарушении представителя технического заказчика
+                                      (подтверждение факта ознакомления с записью и согласования даты устранения нарушения)
+                                    </xs:documentation>
+                                  </xs:annotation>
+                                </xs:element>
+                                <xs:element name="representativeBuildingOperatorFamiliarizationMarkInfo" type="ct:familiarizationMarkInfo">
+                                  <xs:annotation>
+                                    <xs:documentation>
+                                      Отметка об ознакомлении со сведениями о выявленном нарушении представителя лица, ответственного за эксплуатацию здания, сооружения
+                                      (подтверждение факта ознакомления с записью и согласования даты устранения нарушения)
+                                    </xs:documentation>
+                                  </xs:annotation>
+                                </xs:element>
+                                <xs:element name="representativeRegionalBuildingOperatorFamiliarizationMarkInfo" type="ct:familiarizationMarkInfo">
+                                  <xs:annotation>
+                                    <xs:documentation>
+                                      Отметка об ознакомлении со сведениями о выявленном нарушении представителя регионального оператора
+                                      (подтверждение факта ознакомления с записью и согласования даты устранения нарушения)
+                                    </xs:documentation>
+                                  </xs:annotation>
+                                </xs:element>
+                              </xs:choice>
+                            </xs:sequence>
+                            <xs:attribute name="id" type="bt:GUIDandUnderscore" use="required">
+                              <xs:annotation>
+                                <xs:documentation>
+                                  ID подписываемой части записи в учетном листе
+                                  (подписант - представитель застройщика / технического заказчика / лица, ответственного за эксплуатацию здания, сооружения / регионального оператора (в зависимости от выбора участника))
+                                </xs:documentation>
+                              </xs:annotation>
+                            </xs:attribute>
+                          </xs:complexType>
+                        </xs:element>
+                        <xs:choice minOccurs="0">
+                          <xs:element name="representativeDeveloperSignature" type="ct:signature">
+                            <xs:annotation>
+                              <xs:documentation>Подпись представителя застройщика</xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                          <xs:element name="representativeTechnicalCustomerSignature" type="ct:signature">
+                            <xs:annotation>
+                              <xs:documentation>Подпись представителя технического заказчика</xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                          <xs:element name="representativeBuildingOperatorSignature" type="ct:signature">
+                            <xs:annotation>
+                              <xs:documentation>
+                                Подпись представителя лица, ответственного за эксплуатацию здания, сооружения
+                              </xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                          <xs:element name="representativeRegionalBuildingOperatorSignature" type="ct:signature">
+                            <xs:annotation>
+                              <xs:documentation>Подпись представителя регионального оператора</xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                        </xs:choice>
+                        <xs:element name="recordCancelInfo" type="ct:recordCancelInfo" minOccurs="0">
+                          <xs:annotation>
+                            <xs:documentation>Сведения об аннулировании версии записи</xs:documentation>
+                          </xs:annotation>
+                        </xs:element>
+                      </xs:sequence>
+                      <xs:attribute name="id" type="bt:GUIDandUnderscore" use="required">
+                        <xs:annotation>
+                          <xs:documentation>
+                            ID подписываемой части записи в учетном листе (включая данные об аннулировании записи)
+                            (подписант - представитель, аннулировавший запись)
+                          </xs:documentation>
+                        </xs:annotation>
+                      </xs:attribute>
+                    </xs:complexType>
+                  </xs:element>
+                  <xs:element name="representativeCancelSignature" type="ct:signature" minOccurs="0">
+                    <xs:annotation>
+                      <xs:documentation>
+                        Подпись представителя, аннулировавшего запись
+                      </xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+            <xs:element name="noViolationInfo">
+              <xs:annotation>
+                <xs:documentation>
+                  Сведения об отсутствии нарушений по результатам контроля авторского надзора
+                </xs:documentation>
+              </xs:annotation>
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element name="recordCancelSignedPart">
+                    <xs:annotation>
+                      <xs:documentation>
+                        Подписываемая часть записи в учетном листе (включая данные об аннулировании записи)
+                      </xs:documentation>
+                    </xs:annotation>
+                    <xs:complexType>
+                      <xs:sequence>
+                        <xs:element name="designerControlSignedPart">
+                          <xs:annotation>
+                            <xs:documentation>
+                              Подписываемая часть записи в учетном листе (подписант - представитель лица, осуществляющего авторский надзор, проводивший проверку)
+                            </xs:documentation>
+                          </xs:annotation>
+                          <xs:complexType>
+                            <xs:sequence>
+                              <xs:element name="idSpJournalDesignerControlResultRecordId" type="bt:GUID">
+                                <xs:annotation>
+                                  <xs:documentation>ID записи в учетном листе</xs:documentation>
+                                </xs:annotation>
+                              </xs:element>
+                              <xs:element name="permanentObjectId" type="bt:GUID">
+                                <xs:annotation>
+                                  <xs:documentation>ID объекта капитального строительства</xs:documentation>
+                                </xs:annotation>
+                              </xs:element>
+                              <xs:element name="documentEdition" type="xs:positiveInteger">
+                                <xs:annotation>
+                                  <xs:documentation>
+                                    Редакция документа (версия)
+                                    (если в запись вносятся изменения, тогда создается новая версия записи (новая запись), меняется редакция документа (идентификатор не меняется) и меняется статус предыдущей версии записи документа на "аннулирован")
+                                  </xs:documentation>
+                                </xs:annotation>
+                              </xs:element>
+                              <xs:element name="controlEventId" type="bt:GUID">
+                                <xs:annotation>
+                                  <xs:documentation>
+                                    ID контрольного мероприятия, в котором зафиксировано отсутствие нарушений
+                                  </xs:documentation>
+                                </xs:annotation>
+                              </xs:element>
+                              <xs:element name="noViolation" type="xs:string" fixed="нарушения отсутствуют">
+                                <xs:annotation>
+                                  <xs:documentation>
+                                    Сведения об отсутствии нарушений
+                                    (фиксированное значение "нарушения отсутствуют")
+                                  </xs:documentation>
+                                </xs:annotation>
+                              </xs:element>
+                              <xs:element name="noViolationDate" type="xs:date">
+                                <xs:annotation>
+                                  <xs:documentation>Дата внесения записи об отсутствии нарушений</xs:documentation>
+                                </xs:annotation>
+                              </xs:element>
+                              <xs:element name="controlSubjectDescriptionList" minOccurs="0">
+                                <xs:annotation>
+                                  <xs:documentation>
+                                    Описание предметов контроля (работа или элемент ОКС) (список)
+                                  </xs:documentation>
+                                </xs:annotation>
+                                <xs:complexType>
+                                  <xs:sequence>
+                                    <xs:element name="controlSubjectDescription" type="ct:controlSubjectDescription" maxOccurs="unbounded">
+                                      <xs:annotation>
+                                        <xs:documentation>
+                                          Описание предмета контроля (работа или элемент ОКС)
+                                        </xs:documentation>
+                                      </xs:annotation>
+                                    </xs:element>
+                                  </xs:sequence>
+                                </xs:complexType>
+                              </xs:element>
+                              <xs:element name="representativeDesignerControl" type="ct:actsRepresentativeWithIdAndOrderAndIDNR">
+                                <xs:annotation>
+                                  <xs:documentation>
+                                    Сведения о представителе лица, осуществляющего авторский надзор, проводившем проверку
+                                    (ID сотрудника, проводившего контроль, должен совпадать с ID сотрудника из листа 4 журнала АН в одну и ту же дату)
+                                  </xs:documentation>
+                                </xs:annotation>
+                              </xs:element>
+                            </xs:sequence>
+                            <xs:attribute name="id" type="bt:GUIDandUnderscore" use="required">
+                              <xs:annotation>
+                                <xs:documentation>
+                                  ID подписываемой части записи в учетном листе
+                                  (подписант - представитель лица, осуществляющего авторский надзор, проводивший проверку)
+                                </xs:documentation>
+                              </xs:annotation>
+                            </xs:attribute>
+                          </xs:complexType>
+                        </xs:element>
+                        <xs:element name="representativeDesignerControlSignature" type="ct:signature">
+                          <xs:annotation>
+                            <xs:documentation>
+                              Подпись представителя лица, осуществляющего авторский надзор, проводившего проверку
+                            </xs:documentation>
+                          </xs:annotation>
+                        </xs:element>
+                        <xs:element name="recordCancelInfo" type="ct:recordCancelInfo" minOccurs="0">
+                          <xs:annotation>
+                            <xs:documentation>
+                              Сведения об аннулировании версии записи
+                            </xs:documentation>
+                          </xs:annotation>
+                        </xs:element>
+                      </xs:sequence>
+                      <xs:attribute name="id" type="bt:GUIDandUnderscore" use="required">
+                        <xs:annotation>
+                          <xs:documentation>
+                            ID подписываемой части записи в учетном листе (включая данные об аннулировании записи)
+                            (подписант - представитель, аннулировавший запись)
+                          </xs:documentation>
+                        </xs:annotation>
+                      </xs:attribute>
+                    </xs:complexType>
+                  </xs:element>
+                  <xs:element name="representativeCancelSignature" type="ct:signature" minOccurs="0">
+                    <xs:annotation>
+                      <xs:documentation>
+                        Подпись представителя, аннулировавшего запись
+                      </xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:choice>
+          <xs:element name="docServiceAttributes" type="ct:anDocServiceAttributes">
+            <xs:annotation>
+              <xs:documentation>Служебные атрибуты документа</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="extraParametersList" type="ct:extraParametersList" minOccurs="0">
+            <xs:annotation>
+              <xs:documentation>Список дополнительных параметров</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+        <xs:attribute name="docSchemaVersion" type="bt:docSchemaVersion" use="required" fixed="1.1">
+          <xs:annotation>
+            <xs:documentation>Версия схемы, по которой составлен документ</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="idSpJournalDesignerControlResultRecord" type="cf:idSpJournalDesignerControlResultRecord" />
+</xs:schema>

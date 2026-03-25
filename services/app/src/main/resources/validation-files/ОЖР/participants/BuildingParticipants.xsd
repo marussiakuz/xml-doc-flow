@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema targetNamespace="http://participants/BuildingParticipants.xsd"
+  elementFormDefault="qualified"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:cf="http://participants/BuildingParticipants.xsd"
+  xmlns:ct="http://types/CommonTypes.xsd"
+  xmlns:bt="http://types/BaseTypes.xsd"
+  xmlns:bd="http://types/BaseDocument.xsd"
+>
+  <xs:import schemaLocation="../types/CommonTypes.xsd" namespace="http://types/CommonTypes.xsd" />
+  <xs:import schemaLocation="../types/BaseTypes.xsd" namespace="http://types/BaseTypes.xsd" />
+  <xs:import schemaLocation="../types/BaseDocument.xsd" namespace="http://types/BaseDocument.xsd" />
+
+  <xs:complexType name="buildingParticipants">
+    <xs:annotation>
+      <xs:documentation>
+        Схема "Данные генподрядчика о представителях"
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="bd:baseDocument">
+        <xs:sequence>
+          <xs:element name="permanentObjectId" type="bt:GUID">
+            <xs:annotation>
+              <xs:documentation>Объект капитального строительства</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="buildingContractorRepresentatives">
+            <xs:annotation>
+              <xs:documentation>Представители лица, осуществляющего строительство</xs:documentation>
+            </xs:annotation>
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="participantId" type="bt:GUID">
+                  <xs:annotation>
+                    <xs:documentation>
+                      ID участника (лица), осуществляющего строительство
+                    </xs:documentation>
+                  </xs:annotation>
+                </xs:element>
+                <xs:element name="buildingContractorRepresentativesList">
+                  <xs:annotation>
+                    <xs:documentation>
+                      Список уполномоченных представителей лица, осуществляющего строительство, с документами
+                    </xs:documentation>
+                  </xs:annotation>
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element name="buildingContractorRepresentativesListItem" maxOccurs="unbounded">
+                        <xs:annotation>
+                          <xs:documentation>
+                            Информация об уполномоченном представителе лица, осуществляющего строительство, с документами
+                          </xs:documentation>
+                        </xs:annotation>
+                        <xs:complexType>
+                          <xs:sequence>
+                            <xs:element
+                              name="buildingContractorRepresentativeWithSignature"
+                              type="ct:representativeWithIdAndIDNRAndAdministrativeDocumentAndSignature"
+                            >
+                              <xs:annotation>
+                                <xs:documentation>
+                                  Уполномоченный представитель лица, осуществляющего строительство, и его подпись
+                                </xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                            <xs:element name="authorizationDocumentsList" minOccurs="0">
+                              <xs:annotation>
+                                <xs:documentation>
+                                  Перечень документов, подтверждающих право выполнять определённый вид деятельности
+                                </xs:documentation>
+                              </xs:annotation>
+                              <xs:complexType>
+                                <xs:sequence>
+                                  <xs:element name="authorizationDocumentsListItem" type="ct:authorizationDocument" maxOccurs="unbounded">
+                                    <xs:annotation>
+                                      <xs:documentation>
+                                        Документ, подтверждающий право выполнять определённый вид деятельности
+                                      </xs:documentation>
+                                    </xs:annotation>
+                                  </xs:element>
+                                </xs:sequence>
+                              </xs:complexType>
+                            </xs:element>
+                          </xs:sequence>
+                        </xs:complexType>
+                      </xs:element>
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+                <xs:element name="constructionControlRepresentativesList">
+                  <xs:annotation>
+                    <xs:documentation>
+                      Список уполномоченных представителей лица, осуществляющего строительство, по вопросам строительного контроля
+                    </xs:documentation>
+                  </xs:annotation>
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element name="constructionControlRepresentativesListItem" maxOccurs="unbounded">
+                        <xs:annotation>
+                          <xs:documentation>
+                            Информация об уполномоченном представителе лица, осуществляющего строительство, по вопросам строительного контроля с документами
+                          </xs:documentation>
+                        </xs:annotation>
+                        <xs:complexType>
+                          <xs:sequence>
+                            <xs:element
+                              name="constructionControlRepresentativeWithSignature"
+                              type="ct:representativeWithIdAndIDNRAndAdministrativeDocumentAndSignature"
+                            >
+                              <xs:annotation>
+                                <xs:documentation>
+                                  Уполномоченный представитель лица, осуществляющего строительство, по вопросам строительного контроля и его подпись
+                                </xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                            <xs:element name="authorizationDocumentsList" minOccurs="0">
+                              <xs:annotation>
+                                <xs:documentation>
+                                  Перечень документов, подтверждающих право выполнять определённый вид деятельности
+                                </xs:documentation>
+                              </xs:annotation>
+                              <xs:complexType>
+                                <xs:sequence>
+                                  <xs:element name="authorizationDocumentsListItem" type="ct:authorizationDocument" maxOccurs="unbounded">
+                                    <xs:annotation>
+                                      <xs:documentation>
+                                        Документ, подтверждающий право выполнять определённый вид деятельности
+                                      </xs:documentation>
+                                    </xs:annotation>
+                                  </xs:element>
+                                </xs:sequence>
+                              </xs:complexType>
+                            </xs:element>
+                          </xs:sequence>
+                        </xs:complexType>
+                      </xs:element>
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="otherBuildingContractorRepresentativesList" minOccurs="0">
+            <xs:annotation>
+              <xs:documentation>
+                Представители других лиц, осуществляющих строительство, с документами
+              </xs:documentation>
+            </xs:annotation>
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="otherBuildingContractorRepresentativesListItem" maxOccurs="unbounded">
+                  <xs:annotation>
+                    <xs:documentation>
+                      Представители другого лица, осуществляющего строительство, с документами
+                    </xs:documentation>
+                  </xs:annotation>
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element name="participantId" type="bt:GUID">
+                        <xs:annotation>
+                          <xs:documentation>
+                            ID участника (другого лица), осуществляющей строительство
+                          </xs:documentation>
+                        </xs:annotation>
+                      </xs:element>
+                      <xs:element name="representativesList">
+                        <xs:annotation>
+                          <xs:documentation>
+                            Список уполномоченных представителей другого лица, осуществляющего строительство, с документами
+                          </xs:documentation>
+                        </xs:annotation>
+                        <xs:complexType>
+                          <xs:sequence>
+                            <xs:element name="representativesListItem" maxOccurs="unbounded">
+                              <xs:annotation>
+                                <xs:documentation>
+                                  Информация об уполномоченном представителе другого лица, осуществляющего строительство, с документами
+                                </xs:documentation>
+                              </xs:annotation>
+                              <xs:complexType>
+                                <xs:sequence>
+                                  <xs:element name="representativeWithSignature" type="ct:representativeWithIdAndIDNRAndAdministrativeDocumentAndSignature">
+                                    <xs:annotation>
+                                      <xs:documentation>
+                                        Уполномоченный представитель другого лица, осуществляющего строительство, и его подпись
+                                      </xs:documentation>
+                                    </xs:annotation>
+                                  </xs:element>
+                                  <xs:element name="authorizationDocumentsList" minOccurs="0">
+                                    <xs:annotation>
+                                      <xs:documentation>
+                                        Перечень документов, подтверждающих право выполнять определённый вид деятельности
+                                      </xs:documentation>
+                                    </xs:annotation>
+                                    <xs:complexType>
+                                      <xs:sequence>
+                                        <xs:element name="authorizationDocumentsListItem" type="ct:authorizationDocument" maxOccurs="unbounded">
+                                          <xs:annotation>
+                                            <xs:documentation>
+                                              Документ, подтверждающий право выполнять определённый вид деятельности
+                                            </xs:documentation>
+                                          </xs:annotation>
+                                        </xs:element>
+                                      </xs:sequence>
+                                    </xs:complexType>
+                                  </xs:element>
+                                </xs:sequence>
+                              </xs:complexType>
+                            </xs:element>
+                          </xs:sequence>
+                        </xs:complexType>
+                      </xs:element>
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="buildingContractorEngineersList">
+            <xs:annotation>
+              <xs:documentation>
+                Список инженерно-технического персонала лица, осуществляющего строительство, занятого при строительстве, реконструкции, капитальном ремонте объекта капитального строительства
+              </xs:documentation>
+            </xs:annotation>
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="buildingContractorEngineersListItem" maxOccurs="unbounded">
+                  <xs:annotation>
+                    <xs:documentation>
+                      Сотрудник из состава инженерно-технического персонала лица, осуществляющего строительство, занятого при строительстве, реконструкции, капитальном ремонте объекта капитального строительства
+                    </xs:documentation>
+                  </xs:annotation>
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element name="buildingContractorEngineerSignedPart">
+                        <xs:annotation>
+                          <xs:documentation>
+                            Подписываемая информация о сотруднике из списка инженерно-технического персонала
+                          </xs:documentation>
+                        </xs:annotation>
+                        <xs:complexType>
+                          <xs:sequence>
+                            <xs:element name="sequenceNumber" type="xs:positiveInteger">
+                              <xs:annotation>
+                                <xs:documentation>Порядковый номер записи в списке</xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                            <xs:element name="buildingContractorEngineerRepresentative">
+                              <xs:annotation>
+                                <xs:documentation>
+                                  Информация о сотруднике, входящем в список инженерно-технического персонала
+                                </xs:documentation>
+                              </xs:annotation>
+                              <xs:complexType>
+                                <xs:sequence>
+                                  <xs:element name="buildingContractorParticipantId" type="bt:GUID">
+                                    <xs:annotation>
+                                      <xs:documentation>ID участника (лица), осуществляющего строительство</xs:documentation>
+                                    </xs:annotation>
+                                  </xs:element>
+                                  <xs:element name="buildingContractorOrganizationName" type="bt:notEmptyString">
+                                    <xs:annotation>
+                                      <xs:documentation>Наименование лица, осуществляющего строительство</xs:documentation>
+                                    </xs:annotation>
+                                  </xs:element>
+                                  <xs:element name="engineerRepresentative" type="ct:representativeWithOptionalId">
+                                    <xs:annotation>
+                                      <xs:documentation>Сотрудник из списка инженерно-технического персонала</xs:documentation>
+                                    </xs:annotation>
+                                  </xs:element>
+                                  <xs:element name="workPeriod">
+                                    <xs:annotation>
+                                      <xs:documentation>Период работы на объекте капитального строительства</xs:documentation>
+                                    </xs:annotation>
+                                    <xs:complexType>
+                                      <xs:sequence>
+                                        <xs:element name="dateStart" type="xs:date">
+                                          <xs:annotation>
+                                            <xs:documentation>Дата начала работ</xs:documentation>
+                                          </xs:annotation>
+                                        </xs:element>
+                                        <xs:element name="dateEnd" type="xs:date" minOccurs="0">
+                                          <xs:annotation>
+                                            <xs:documentation>Дата окончания работ</xs:documentation>
+                                          </xs:annotation>
+                                        </xs:element>
+                                      </xs:sequence>
+                                    </xs:complexType>
+                                  </xs:element>
+                                  <xs:element name="workType" type="bt:notEmptyString">
+                                    <xs:annotation>
+                                      <xs:documentation>Вид работ</xs:documentation>
+                                    </xs:annotation>
+                                  </xs:element>
+                                </xs:sequence>
+                              </xs:complexType>
+                            </xs:element>
+                            <xs:element name="authorizedRepresentative" type="ct:representative">
+                              <xs:annotation>
+                                <xs:documentation>
+                                  Представитель лица, осуществляющего строительство, уполномоченный на внесение сведений в список
+                                </xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                          </xs:sequence>
+                          <xs:attribute name="id" type="bt:GUIDandUnderscore" use="required">
+                            <xs:annotation>
+                              <xs:documentation>
+                                Id подписываемой информации о сотруднике из списка инженерно-технического персонала
+                              </xs:documentation>
+                            </xs:annotation>
+                          </xs:attribute>
+                        </xs:complexType>
+                      </xs:element>
+                      <xs:element name="authorizedRepresentativeSignature" type="ct:signature" minOccurs="0">
+                        <xs:annotation>
+                          <xs:documentation>
+                            Подпись представителя лица, осуществляющего строительство, уполномоченного на внесение сведений в список
+                          </xs:documentation>
+                        </xs:annotation>
+                      </xs:element>
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="extraParametersList" type="ct:extraParametersList" minOccurs="0">
+            <xs:annotation>
+              <xs:documentation>Список дополнительных параметров</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="buildingParticipants" type="cf:buildingParticipants" />
+</xs:schema>

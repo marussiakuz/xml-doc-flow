@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema
+  version="1.1"
+  targetNamespace="http://v_17_0/an/idSpJournalDesignerControlVisitRecord.xsd"
+  elementFormDefault="qualified"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:ct="http://v_17_0/types/CommonTypes.xsd"
+  xmlns:bt="http://v_17_0/types/BaseTypes.xsd"
+  xmlns:bd="http://v_17_0/types/BaseDocument.xsd"
+  xmlns:cf="http://v_17_0/an/idSpJournalDesignerControlVisitRecord.xsd"
+>
+  <xs:import schemaLocation="../types/CommonTypes.xsd" namespace="http://v_17_0/types/CommonTypes.xsd"/>
+  <xs:import schemaLocation="../types/BaseTypes.xsd" namespace="http://v_17_0/types/BaseTypes.xsd"/>
+  <xs:import schemaLocation="../types/BaseDocument.xsd" namespace="http://v_17_0/types/BaseDocument.xsd"/>
+
+  <xs:complexType name="idSpJournalDesignerControlVisitRecord">
+    <xs:annotation>
+      <xs:documentation>
+        ЖАН, лист 4. Запись в регистрационном листе посещения ОКС лицом (лицами), осуществляющим(и) авторский надзор
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="bd:baseDocument">
+        <xs:sequence>
+          <xs:element name="recordCancelSignedPart">
+            <xs:annotation>
+              <xs:documentation>
+                Подписываемая часть записи регистрационного листа
+                (с отметкой об аннулировании записи)
+              </xs:documentation>
+            </xs:annotation>
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="customerSignedPart">
+                  <xs:annotation>
+                    <xs:documentation>
+                      Подписываемая часть записи регистрационного листа
+                      (подписант - представитель застройщика / технического заказчика / лица, ответственного за эксплуатацию здания, сооружения / регионального оператора (в зависимости от выбора участника))
+                    </xs:documentation>
+                  </xs:annotation>
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element name="idSpJournalDesignerControlVisitRecordId" type="bt:GUID">
+                        <xs:annotation>
+                          <xs:documentation>ID записи регистрационного листа</xs:documentation>
+                        </xs:annotation>
+                      </xs:element>
+                      <xs:element name="permanentObjectId" type="bt:GUID">
+                        <xs:annotation>
+                          <xs:documentation>ID объекта капитального строительства</xs:documentation>
+                        </xs:annotation>
+                      </xs:element>
+                      <xs:element name="documentEdition" type="xs:positiveInteger">
+                        <xs:annotation>
+                          <xs:documentation>
+                            Редакция документа (версия)
+                            (если в запись вносятся изменения, тогда создается новая версия записи (новая запись), меняется редакция документа (идентификатор не меняется) и меняется статус предыдущей версии записи документа на "аннулирован")
+                          </xs:documentation>
+                        </xs:annotation>
+                      </xs:element>
+                      <xs:element name="recordNumber" type="xs:positiveInteger">
+                        <xs:annotation>
+                          <xs:documentation>Порядковый номер регистрационной записи</xs:documentation>
+                        </xs:annotation>
+                      </xs:element>
+                      <xs:choice>
+                        <xs:element name="participantDesignerControlCheckId" type="bt:GUID">
+                          <xs:annotation>
+                            <xs:documentation>ID проверки лица, осуществляющего авторский надзор</xs:documentation>
+                          </xs:annotation>
+                        </xs:element>
+                        <xs:element name="controlEventId" type="bt:GUID">
+                          <xs:annotation>
+                            <xs:documentation>
+                              ID контрольного мероприятия, в котором участвует лицо, осуществляющее авторский надзор
+                            </xs:documentation>
+                          </xs:annotation>
+                        </xs:element>
+                      </xs:choice>
+                      <xs:element name="participantDesignerControl" type="ct:individualEntrepreneurOrLegalEntityOrIndividualAndId">
+                        <xs:annotation>
+                          <xs:documentation>Лицо, осуществляющее авторский надзор</xs:documentation>
+                        </xs:annotation>
+                      </xs:element>
+                      <xs:element name="representativeDesignerControl" type="ct:actsRepresentativeWithIdAndOrderAndIDNR">
+                        <xs:annotation>
+                          <xs:documentation>Представитель лица, осуществляющего авторский надзор</xs:documentation>
+                        </xs:annotation>
+                      </xs:element>
+                      <xs:element name="arrivalDateTime" type="xs:dateTime">
+                        <xs:annotation>
+                          <xs:documentation>Дата и время приезда</xs:documentation>
+                        </xs:annotation>
+                      </xs:element>
+                      <xs:element name="departureDateTime" type="xs:dateTime">
+                        <xs:annotation>
+                          <xs:documentation>Дата и время отъезда</xs:documentation>
+                        </xs:annotation>
+                      </xs:element>
+                      <xs:choice minOccurs="0">
+                        <xs:element name="representativeDeveloper" type="ct:actsRepresentativeWithIdAndOrder">
+                          <xs:annotation>
+                            <xs:documentation>Представитель застройщика</xs:documentation>
+                          </xs:annotation>
+                        </xs:element>
+                        <xs:element name="representativeTechnicalCustomer" type="ct:actsRepresentativeWithIdAndOrder">
+                          <xs:annotation>
+                            <xs:documentation>Представитель технического заказчика</xs:documentation>
+                          </xs:annotation>
+                        </xs:element>
+                        <xs:element name="representativeBuildingOperator" type="ct:actsRepresentativeWithIdAndOrder">
+                          <xs:annotation>
+                            <xs:documentation>Представитель лица, ответственного за эксплуатацию здания, сооружения</xs:documentation>
+                          </xs:annotation>
+                        </xs:element>
+                        <xs:element name="representativeRegionalBuildingOperator" type="ct:actsRepresentativeWithIdAndOrder">
+                          <xs:annotation>
+                            <xs:documentation>Представитель регионального оператора</xs:documentation>
+                          </xs:annotation>
+                        </xs:element>
+                      </xs:choice>
+                    </xs:sequence>
+                    <xs:attribute name="id" type="bt:GUIDandUnderscore" use="required">
+                      <xs:annotation>
+                        <xs:documentation>
+                          ID подписываемой части записи регистрационного листа
+                          (подписант - представитель застройщика / технического заказчика / лица, ответственного за эксплуатацию здания, сооружения / регионального оператора (в зависимости от выбора участника))
+                        </xs:documentation>
+                      </xs:annotation>
+                    </xs:attribute>
+                  </xs:complexType>
+                </xs:element>
+                <xs:choice minOccurs="0">
+                  <xs:element name="representativeDeveloperSignature" type="ct:signature">
+                    <xs:annotation>
+                      <xs:documentation>Подпись представителя застройщика</xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                  <xs:element name="representativeTechnicalCustomerSignature" type="ct:signature">
+                    <xs:annotation>
+                      <xs:documentation>Подпись представителя технического заказчика</xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                  <xs:element name="representativeBuildingOperatorSignature" type="ct:signature">
+                    <xs:annotation>
+                      <xs:documentation>Подпись представителя лица, ответственного за эксплуатацию здания, сооружения</xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                  <xs:element name="representativeRegionalBuildingOperatorSignature" type="ct:signature">
+                    <xs:annotation>
+                      <xs:documentation>Подпись представителя регионального оператора</xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                </xs:choice>
+                <xs:element name="recordCancelInfo" type="ct:recordCancelInfo" minOccurs="0">
+                  <xs:annotation>
+                    <xs:documentation>Сведения об аннулировании версии записи</xs:documentation>
+                  </xs:annotation>
+                </xs:element>
+              </xs:sequence>
+              <xs:attribute name="id" type="bt:GUIDandUnderscore" use="required">
+                <xs:annotation>
+                  <xs:documentation>
+                    ID подписываемой части записи регистрационного листа
+                    (подписант - представитель, аннулировавший версию записи)
+                  </xs:documentation>
+                </xs:annotation>
+              </xs:attribute>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="representativeCancelSignature" type="ct:signature" minOccurs="0">
+            <xs:annotation>
+              <xs:documentation>
+                Подпись представителя, аннулировавшего версию записи
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="docServiceAttributes" type="ct:anDocServiceAttributes">
+            <xs:annotation>
+              <xs:documentation>Служебные атрибуты документа</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="extraParametersList" type="ct:extraParametersList" minOccurs="0">
+            <xs:annotation>
+              <xs:documentation>Список дополнительных параметров</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+        <xs:attribute name="docSchemaVersion" type="bt:docSchemaVersion" use="required" fixed="1.1">
+          <xs:annotation>
+            <xs:documentation>Версия схемы, по которой составлен документ</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="idSpJournalDesignerControlVisitRecord" type="cf:idSpJournalDesignerControlVisitRecord" />
+</xs:schema>

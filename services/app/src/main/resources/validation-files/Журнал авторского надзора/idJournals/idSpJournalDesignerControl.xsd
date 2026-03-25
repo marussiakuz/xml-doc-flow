@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema
+  version="1.1"
+  targetNamespace="http://v_17_0/idJournals/idSpJournalDesignerControl.xsd"
+  elementFormDefault="qualified"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:cf="http://v_17_0/idJournals/idSpJournalDesignerControl.xsd"
+  xmlns:ct="http://v_17_0/types/CommonTypes.xsd"
+  xmlns:bt="http://v_17_0/types/BaseTypes.xsd"
+  xmlns:bd="http://v_17_0/types/BaseDocument.xsd"
+>
+  <xs:import schemaLocation="../types/CommonTypes.xsd" namespace="http://v_17_0/types/CommonTypes.xsd" />
+  <xs:import schemaLocation="../types/BaseTypes.xsd" namespace="http://v_17_0/types/BaseTypes.xsd" />
+  <xs:import schemaLocation="../types/BaseDocument.xsd" namespace="http://v_17_0/types/BaseDocument.xsd" />
+
+  <xs:complexType name="idSpJournalDesignerControl">
+    <xs:annotation>
+      <xs:documentation>Журнал авторского надзора</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="bd:baseDocument">
+        <xs:sequence>
+          <xs:element name="designerControlSignedPart">
+            <xs:annotation>
+              <xs:documentation>
+                Подписываемая часть журнала авторского надзора
+                (подписант - представитель лица, осуществляющего авторский надзор; ставится закрывающая подпись)
+              </xs:documentation>
+            </xs:annotation>
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="journalRequisites" type="ct:journalRequisites">
+                  <xs:annotation>
+                    <xs:documentation>Реквизиты документа (журнал)</xs:documentation>
+                  </xs:annotation>
+                </xs:element>
+                <xs:element name="permanentObjectInfo" type="ct:permanentObjectInfo">
+                  <xs:annotation>
+                    <xs:documentation>Объект капитального строительства</xs:documentation>
+                  </xs:annotation>
+                </xs:element>
+                <xs:choice>
+                  <xs:element name="participantDeveloper" type="ct:individualEntrepreneurOrLegalEntityOrIndividualAndId">
+                    <xs:annotation>
+                      <xs:documentation>Застройщик</xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                  <xs:element name="participantTechnicalCustomer" type="ct:organizationWithOptionalSroAndId">
+                    <xs:annotation>
+                      <xs:documentation>Технический заказчик</xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                  <xs:element name="participantBuildingOperator" type="ct:individualEntrepreneurOrLegalEntityOrIndividualAndId">
+                    <xs:annotation>
+                      <xs:documentation>Лицо, ответственное за эксплуатацию здания, сооружения</xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                  <xs:element name="participantRegionalBuildingOperator" type="ct:organizationWithOptionalSroAndId">
+                    <xs:annotation>
+                      <xs:documentation>Региональный оператор</xs:documentation>
+                    </xs:annotation>
+                  </xs:element>
+                </xs:choice>
+                <xs:element name="participantDesignerControl" type="ct:individualEntrepreneurOrLegalEntityOrIndividualAndId">
+                  <xs:annotation>
+                    <xs:documentation>Лицо, осуществляющее авторский надзор</xs:documentation>
+                  </xs:annotation>
+                </xs:element>
+                <xs:element name="titleDesignerControlSignedPartId" type="bt:GUIDandUnderscore">
+                  <xs:annotation>
+                    <xs:documentation>
+                      ID части титульного листа журнала авторского надзора, подписываемой представителем лица, осуществляющего авторский надзор
+                    </xs:documentation>
+                  </xs:annotation>
+                </xs:element>
+                <xs:element name="titleCustomerSignedPartId" type="bt:GUIDandUnderscore">
+                  <xs:annotation>
+                    <xs:documentation>
+                      ID части титульного листа журнала авторского надзора, подписываемой представителем застройщика (технического заказчика)
+                    </xs:documentation>
+                  </xs:annotation>
+                </xs:element>
+                <xs:element name="participantBuildingContractor" type="ct:organizationWithOptionalSroAndId">
+                  <xs:annotation>
+                    <xs:documentation>
+                      Лицо, осуществляющее строительство (ЛОС) (информация из листа 2 журнала АН)
+                    </xs:documentation>
+                  </xs:annotation>
+                </xs:element>
+                <xs:element name="participantWorkExecutorAndWorksList" minOccurs="0">
+                  <xs:annotation>
+                    <xs:documentation>
+                      Другие лица, осуществляющие строительство, и выполняемые ими работы (информация из листа 2 журнала АН)
+                    </xs:documentation>
+                  </xs:annotation>
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element name="participantWorkExecutorAndWorks" maxOccurs="unbounded">
+                        <xs:annotation>
+                          <xs:documentation>
+                            Другое лицо, осуществляющее строительство, и выполняемые им работы
+                          </xs:documentation>
+                        </xs:annotation>
+                        <xs:complexType>
+                          <xs:sequence>
+                            <xs:element name="participantWorkExecutor" type="ct:organizationWithOptionalSroAndId">
+                              <xs:annotation>
+                                <xs:documentation>
+                                  Другое лицо, осуществляющее строительство (подрядчик, выполняющий строительные и/или монтажные работы на ОКС)
+                                </xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                            <xs:element name="workDescriptionList">
+                              <xs:annotation>
+                                <xs:documentation>
+                                  Выполняемые указанным лицом работы по строительству, реконструкции, капитальному ремонту объекта капитального строительства (список)
+                                </xs:documentation>
+                              </xs:annotation>
+                              <xs:complexType>
+                                <xs:sequence>
+                                  <xs:element name="workDescription" maxOccurs="unbounded" type="bt:notEmptyString">
+                                    <xs:annotation>
+                                      <xs:documentation>
+                                        Выполняемая указанным лицом работа по строительству, реконструкции, капитальному ремонту объекта капитального строительства
+                                      </xs:documentation>
+                                    </xs:annotation>
+                                  </xs:element>
+                                </xs:sequence>
+                              </xs:complexType>
+                            </xs:element>
+                          </xs:sequence>
+                        </xs:complexType>
+                      </xs:element>
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+                <xs:element name="representativeDesignerControlSignedPartIdList">
+                  <xs:annotation>
+                    <xs:documentation>
+                      Список работников (представителей) лиц, осуществляющих авторский надзор (лист 3 журнала АН)
+                      (список ID подписываемых блоков информации о представителях лиц, осуществляющих авторский надзор)
+                    </xs:documentation>
+                  </xs:annotation>
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element name="representativeDesignerControlSignedPartId" type="bt:GUIDandUnderscore" maxOccurs="unbounded">
+                        <xs:annotation>
+                          <xs:documentation>
+                            ID подписываемого блока информации о представителе лица, осуществляющего авторский надзор (лист 3 журнала АН)
+                          </xs:documentation>
+                        </xs:annotation>
+                      </xs:element>
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+                <xs:element name="idSpJournalDesignerControlVisitRecordList">
+                  <xs:annotation>
+                    <xs:documentation>
+                      Регистрационный лист посещения ОКС лицом (лицами), осуществляющим(и) авторский надзор (лист 4 журнала АН)
+                      (список записей регистрационного листа)
+                    </xs:documentation>
+                  </xs:annotation>
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element name="idSpJournalDesignerControlVisitRecord" maxOccurs="unbounded">
+                        <xs:annotation>
+                          <xs:documentation>
+                            Реквизиты записи из регистрационного листа посещения ОКС лицом (лицами), осуществляющим(и) авторский надзор (лист 4 журнала АН)
+                          </xs:documentation>
+                        </xs:annotation>
+                        <xs:complexType>
+                          <xs:sequence>
+                            <xs:element name="idSpJournalDesignerControlVisitRecordId" type="bt:GUID">
+                              <xs:annotation>
+                                <xs:documentation>
+                                  ID записи из регистрационного листа посещения ОКС лицом (лицами), осуществляющим(и) авторский надзор (лист 4 журнала АН)
+                                </xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                            <xs:element name="documentEdition" type="xs:positiveInteger">
+                              <xs:annotation>
+                                <xs:documentation>
+                                  Редакция документа (версия)
+                                </xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                            <xs:element name="docStatus" type="ct:docStatus">
+                              <xs:annotation>
+                                <xs:documentation>
+                                  Статус записи
+                                </xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                          </xs:sequence>
+                        </xs:complexType>
+                      </xs:element>
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+                <xs:element name="idSpJournalDesignerControlInspectionRecordList">
+                  <xs:annotation>
+                    <xs:documentation>
+                      Учётный лист по результатам контроля авторского надзора (лист 5 журнала АН)
+                      (список записей из учётного листа)
+                    </xs:documentation>
+                  </xs:annotation>
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element name="idSpJournalDesignerControlInspectionRecord" maxOccurs="unbounded">
+                        <xs:annotation>
+                          <xs:documentation>
+                            Реквизиты записи из учётного листа по результатам контроля авторского надзора (лист 5 журнала АН)
+                          </xs:documentation>
+                        </xs:annotation>
+                        <xs:complexType>
+                          <xs:sequence>
+                            <xs:element name="idSpJournalDesignerControlInspectionRecordId" type="bt:GUID">
+                              <xs:annotation>
+                                <xs:documentation>
+                                  ID записи из учётного листа по результатам контроля авторского надзора (лист 5 журнала АН)
+                                </xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                            <xs:element name="documentEdition" type="xs:positiveInteger">
+                              <xs:annotation>
+                                <xs:documentation>
+                                  Редакция документа (версия)
+                                </xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                            <xs:element name="docStatus" type="ct:docStatus">
+                              <xs:annotation>
+                                <xs:documentation>
+                                  Статус записи
+                                </xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                          </xs:sequence>
+                        </xs:complexType>
+                      </xs:element>
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+                <xs:element name="idSpJournalDesignerControlResultRecordList" minOccurs="0">
+                  <xs:annotation>
+                    <xs:documentation>
+                      Учётный лист по результатам участия авторского надзора в освидетельствовании работ (лист 6 журнала АН)
+                      (список записей из учётного листа)
+                    </xs:documentation>
+                  </xs:annotation>
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element name="idSpJournalDesignerControlResultRecord" maxOccurs="unbounded">
+                        <xs:annotation>
+                          <xs:documentation>
+                            Реквизиты записи из учётного листа по результатам участия авторского надзора в освидетельствовании работ (лист 6 журнала АН)
+                          </xs:documentation>
+                        </xs:annotation>
+                        <xs:complexType>
+                          <xs:sequence>
+                            <xs:element name="idSpJournalDesignerControlResultRecordId" type="bt:GUID">
+                              <xs:annotation>
+                                <xs:documentation>
+                                  ID записи из учётного листа по результатам участия авторского надзора в освидетельствовании работ (лист 6 журнала АН)
+                                </xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                            <xs:element name="documentEdition" type="xs:positiveInteger">
+                              <xs:annotation>
+                                <xs:documentation>
+                                  Редакция документа (версия)
+                                </xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                            <xs:element name="docStatus" type="ct:docStatus">
+                              <xs:annotation>
+                                <xs:documentation>
+                                  Статус записи
+                                </xs:documentation>
+                              </xs:annotation>
+                            </xs:element>
+                          </xs:sequence>
+                        </xs:complexType>
+                      </xs:element>
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+                <xs:element name="idJournalChangeRecordIdList" minOccurs="0">
+                  <xs:annotation>
+                    <xs:documentation>
+                      Сведения об изменениях в журнале авторского надзора
+                      (список ID записей об изменениях)
+                    </xs:documentation>
+                  </xs:annotation>
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element name="idJournalChangeRecordId" type="bt:GUID" maxOccurs="unbounded">
+                        <xs:annotation>
+                          <xs:documentation>ID записи об изменениях в журнале авторского надзора</xs:documentation>
+                        </xs:annotation>
+                      </xs:element>
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+                <xs:element name="journalLogStartDate" type="xs:date">
+                  <xs:annotation>
+                    <xs:documentation>Дата начала ведения журнала</xs:documentation>
+                  </xs:annotation>
+                </xs:element>
+                <xs:element name="journalLogEndDate" type="xs:date" minOccurs="0">
+                  <xs:annotation>
+                    <xs:documentation>Дата окончания ведения журнала</xs:documentation>
+                  </xs:annotation>
+                </xs:element>
+                <xs:element
+                  name="journalEndMark"
+                  type="xs:string"
+                  fixed="Работы по осуществлению авторского надзора завершены. Журнал закрыт."
+                  minOccurs="0"
+                >
+                  <xs:annotation>
+                    <xs:documentation>
+                      Отметка об окончании ведения журнала
+                      (фиксированное значение: "Работы по осуществлению авторского надзора завершены. Журнал закрыт.")
+                    </xs:documentation>
+                  </xs:annotation>
+                </xs:element>
+                <xs:element name="representativeDesignerControl" type="ct:actsRepresentativeWithIdAndOrderAndIDNR" minOccurs="0">
+                  <xs:annotation>
+                    <xs:documentation>Представитель лица, осуществляющего авторский надзор</xs:documentation>
+                  </xs:annotation>
+                </xs:element>
+              </xs:sequence>
+              <xs:attribute name="id" type="bt:GUIDandUnderscore" use="required">
+                <xs:annotation>
+                  <xs:documentation>
+                    ID подписываемой части журнала авторского надзора
+                    (подписант - представитель лица, осуществляющего авторский надзор; ставится закрывающая подпись)
+                  </xs:documentation>
+                </xs:annotation>
+              </xs:attribute>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="representativeDesignerControlSignature" type="ct:signature" minOccurs="0">
+            <xs:annotation>
+              <xs:documentation>
+                Закрывающая подпись представителя лица, осуществляющего авторский надзор
+              </xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="docServiceAttributes" type="ct:anDocServiceAttributes">
+            <xs:annotation>
+              <xs:documentation>Служебные атрибуты документа</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="extraParametersList" type="ct:extraParametersList" minOccurs="0">
+            <xs:annotation>
+              <xs:documentation>Список дополнительных параметров</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+        <xs:attribute name="docSchemaVersion" type="bt:docSchemaVersion" use="required" fixed="1.1">
+          <xs:annotation>
+            <xs:documentation>Версия схемы, по которой составлен документ</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="idSpJournalDesignerControl" type="cf:idSpJournalDesignerControl" />
+</xs:schema>
