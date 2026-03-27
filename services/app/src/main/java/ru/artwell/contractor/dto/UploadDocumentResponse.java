@@ -15,10 +15,11 @@ public class UploadDocumentResponse {
     private UUID id;
     private UUID groupId;
     private String docType;
-    private String documentNumber;
+    private UUID documentNumber;
     private int version;
     private LocalDateTime uploadedAt;
     private boolean valid;
+    private ru.artwell.contractor.persistence.entity.DocumentValidationStatus validationStatus;
     private List<ValidationErrorDto> validationErrors;
 }
 

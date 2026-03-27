@@ -13,7 +13,7 @@ import java.util.UUID;
 public class DocumentListItemResponse {
     private UUID id;
     private String docType;
-    private String documentNumber;
+    private UUID documentNumber;
     private int version;
     private LocalDateTime uploadedAt;
 }

@@ -15,7 +15,7 @@ public class DocumentDetailResponse {
     private UUID id;
     private UUID groupId;
     private String docType;
-    private String documentNumber;
+    private UUID documentNumber;
     private LocalDateTime uploadedAt;
     private List<DocumentVersionInfoResponse> versions;
 }

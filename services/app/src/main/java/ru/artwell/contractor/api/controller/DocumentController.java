@@ -50,11 +50,11 @@ public class DocumentController implements ContractorApi {
     @ApiResponses({
             @ApiResponse(
                     responseCode = "201",
-                    description = "Документ успешно сохранён",
+                    description = "Документ успешно сохранён. В ответе есть `validationStatus=VALID` и `documentNumber` (UUID) для группировки версий",
                     content = @Content(schema = @Schema(implementation = UploadDocumentResponse.class))),
             @ApiResponse(
                     responseCode = "400",
-                    description = "Невалидный XML по схеме или неизвестный тип (тело UploadDocumentResponse); ошибка чтения multipart (тело ErrorResponse «При загрузке документа…»); некорректное содержимое (ErrorResponse, например не экземпляр бизнес-документа)",
+                    description = "Документ сохранён как невалидный (в ответе `validationStatus=INVALID_*` и список ошибок в `validationErrors`). Ошибка чтения multipart/некорректный XML могут вернуться как ErrorResponse",
                     content = @Content(schema = @Schema(implementation = UploadDocumentResponse.class)))
     })
     @PostMapping(
@@ -97,8 +97,8 @@ public class DocumentController implements ContractorApi {
             @Parameter(
                     name = "documentNumber",
                     in = ParameterIn.QUERY,
-                    description = "Фильтр по номеру документа из XML, без фильтра — все номера",
-                    example = "12-34/2024"
+                    description = "Фильтр по `documentNumber` (UUID), который возвращается в UploadDocumentResponse. Без фильтра — все документы",
+                    example = "550e8400-e29b-41d4-a716-446655440000"
             )
             @RequestParam(name = "documentNumber", required = false) String documentNumber
     ) {
@@ -169,11 +169,11 @@ public class DocumentController implements ContractorApi {
     @ApiResponses({
             @ApiResponse(
                     responseCode = "200",
-                    description = "Новая версия успешно сохранена",
+                    description = "Новая версия успешно сохранена (validationStatus=VALID)",
                     content = @Content(schema = @Schema(implementation = UploadDocumentResponse.class))),
             @ApiResponse(
                     responseCode = "400",
-                    description = "Невалидный XML по схеме или неизвестный тип (UploadDocumentResponse); ошибка чтения файла (ErrorResponse)",
+                    description = "Новая версия сохранена как невалидная (validationStatus=INVALID_* и validationErrors) либо ошибка чтения файла (ErrorResponse)",
                     content = @Content(schema = @Schema(implementation = UploadDocumentResponse.class))),
             @ApiResponse(
                     responseCode = "404",
@@ -181,7 +181,7 @@ public class DocumentController implements ContractorApi {
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
             @ApiResponse(
                     responseCode = "409",
-                    description = "Конфликт: другой тип документа или другой номер относительно сохранённой версии",
+                    description = "Конфликт (validationStatus=INVALID_CONFLICT): другой тип/номер относительно выбранной версии",
                     content = @Content(schema = @Schema(implementation = UploadDocumentResponse.class)))
     })
     @PutMapping(

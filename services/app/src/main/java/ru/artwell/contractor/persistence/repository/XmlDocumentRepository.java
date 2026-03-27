@@ -10,7 +10,7 @@ import java.util.UUID;
 
 public interface XmlDocumentRepository extends JpaRepository<XmlDocumentEntity, UUID> {
 
-    Optional<XmlDocumentEntity> findTopByDocTypeAndDocumentNumberOrderByVersionDesc(String docType, String documentNumber);
+    Optional<XmlDocumentEntity> findTopByDocTypeAndDocumentNumberOrderByVersionDesc(String docType, UUID documentNumber);
 
     Optional<XmlDocumentEntity> findTopByGroupIdOrderByVersionDesc(UUID groupId);
 
@@ -22,9 +22,9 @@ public interface XmlDocumentRepository extends JpaRepository<XmlDocumentEntity, 
             select max(d2.version) from XmlDocumentEntity d2 where d2.groupId = d.groupId
         )
         and (:docType is null or d.docType = :docType)
-        and (:documentNumber is null or lower(d.documentNumber) like lower(concat('%', :documentNumber, '%')))
+        and (:documentNumber is null or d.documentNumber = :documentNumber)
         order by d.uploadedAt desc
     """)
-    List<XmlDocumentEntity> findLatestVersions(String docType, String documentNumber);
+    List<XmlDocumentEntity> findLatestVersions(String docType, UUID documentNumber);
 }
 

@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<gsn221 
+    xmlns="http://gsn/gsn221.xsd"
+    xmlns:ct="http://types/CommonTypes.xsd"
+    xmlns:bt="http://types/BaseTypes.xsd"
+    xmlns:bd="http://types/BaseDocument.xsd"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://gsn/gsn221.xsd ../schemas/gsn221.xsd">
+    
+    <!-- Подписываемая часть контролируемым лицом -->
+    <controlledPersonSignedPart id="ctrl_770e8400-e29b-41d4-a716-446655440004">
+        <actInfo>
+            <!-- Реквизиты акта -->
+            <actRequisites>
+                <documentDetails>
+                    <documentName>Акт внеплановой выездной проверки</documentName>
+                    <documentNumber>ГН-2024-003</documentNumber>
+                    <documentDate>2024-01-20</documentDate>
+                </documentDetails>
+                
+                <controlEventType>Внеплановая</controlEventType>
+                
+                <controlEventRegistryRecord>
+                    <controlEventRegistryNumber>77-2024-000123</controlEventRegistryNumber>
+                    <controlEventDate>2024-01-20</controlEventDate>
+                    <controlEventRegistryLink>https://reestr.gov.ru/77-2024-000123</controlEventRegistryLink>
+                </controlEventRegistryRecord>
+                
+                <supervisoryAuthorityInfo>
+                    <organizationName>Главгосстройнадзор России</organizationName>
+                    <organizationInn>7701234567</organizationInn>
+                    <organizationOgrn>1027700123456</organizationOgrn>
+                </supervisoryAuthorityInfo>
+                
+                <compilationPlace>г. Москва</compilationPlace>
+                
+                <compilationTime>
+                    <hours>14</hours>
+                    <minutes>30</minutes>
+                </compilationTime>
+            </actRequisites>
+            
+            <!-- Содержание акта -->
+            <actContent>
+                <controlEventDecision>
+                    <documentName>Приказ о проведении проверки</documentName>
+                    <documentNumber>ПР-2024-001</documentNumber>
+                    <documentDate>2024-01-15</documentDate>
+                </controlEventDecision>
+                
+                <controlType>Государственный строительный надзор</controlType>
+                
+                <!-- Уполномоченные лица -->
+                <authorizedPersonsList>
+                    <authorizedPersonsListItem>
+                        <fullName>Петров Николай Иванович</fullName>
+                        <position>Главный инспектор</position>
+                        <organization>Главгосстройнадзор России</organization>
+                    </authorizedPersonsListItem>
+                    <authorizedPersonsListItem>
+                        <fullName>Смирнова Елена Петровна</fullName>
+                        <position>Инспектор</position>
+                        <organization>Главгосстройнадзор России</organization>
+                    </authorizedPersonsListItem>
+                </authorizedPersonsList>
+                
+                <!-- Привлеченные специалисты -->
+                <involvedSpecialists>
+                    <involvedSpecialistList>
+                        <involvedSpecialistListItem>
+                            <fullName>Козлов Дмитрий Александрович</fullName>
+                            <position>Эксперт по строительным конструкциям</position>
+                            <organization>ООО "СтройЭксперт"</organization>
+                        </involvedSpecialistListItem>
+                    </involvedSpecialistList>
+                </involvedSpecialists>
+                
+                <!-- Экспертные организации -->
+                <expertOrganizationsOrExperts>
+                    <involvedExpertOrganizationsList>
+                        <involvedExpertOrganizationsListItem>
+                            <expertOrganizationName>ООО "ЛабораторияКонтроль"</expertOrganizationName>
+                            <expertOrganizationAccreditationName>Росаккредитация</expertOrganizationAccreditationName>
+                            <expertOrganizationDocument>
+                                <documentName>Аттестат аккредитации</documentName>
+                                <documentNumber>РА-2023-001</documentNumber>
+                            </expertOrganizationDocument>
+                        </involvedExpertOrganizationsListItem>
+                    </involvedExpertOrganizationsList>
+                </expertOrganizationsOrExperts>
+                
+                <!-- Объект строительства -->
+                <permanentObjectInfo>
+                    <objectName>Торговый центр "Плаза"</objectName>
+                    <objectId>880e8400-e29b-41d4-a716-446655440005</objectId>
+                    <address>г. Москва, ул. Ленина, д. 10</address>
+                </permanentObjectInfo>
+                
+                <!-- Контролируемое лицо -->
+                <controlledPerson>
+                    <legalEntity>
+                        <organizationName>АО "СтройМонтаж"</organizationName>
+                        <organizationInn>7709876543</organizationInn>
+                        <organizationOgrn>1027700987654</organizationOgrn>
+                    </legalEntity>
+                </controlledPerson>
+                
+                <!-- Срок проверки -->
+                <controlFactPeriod>
+                    <controlPeriod>
+                        <startDate>2024-01-20T09:00:00</startDate>
+                        <endDate>2024-01-20T18:00:00</endDate>
+                    </controlPeriod>
+                    
+                    <interactionPeriod>
+                        <obligatoryHours>
+                            <hours>8</hours>
+                            <minutes>0</minutes>
+                        </obligatoryHours>
+                    </interactionPeriod>
+                </controlFactPeriod>
+                
+                <!-- Контрольные действия -->
+                <controlActionsList>
+                    <controlActionsListItem>
+                        <controlActionInfo>
+                            <controlActionNumber>1</controlActionNumber>
+                            <controlActionName>Визуальный осмотр конструкций</controlActionName>
+                            <controlActionPeriod>
+                                <startDate>2024-01-20T10:00:00</startDate>
+                                <endDate>2024-01-20T12:00:00</endDate>
+                            </controlActionPeriod>
+                            <controlActionPlace>2 этаж, секция А</controlActionPlace>
+                        </controlActionInfo>
+                        <controlActionDocs>
+                            <controlActionDocsList>
+                                <controlActionDocsListItem>
+                                    <documentName>Фотофиксация</documentName>
+                                    <documentNumber>Ф-001</documentNumber>
+                                </controlActionDocsListItem>
+                            </controlActionDocsList>
+                        </controlActionDocs>
+                    </controlActionsListItem>
+                </controlActionsList>
+                
+                <!-- Результаты проверки -->
+                <controlEventResult>
+                    <identifiedViolationsList>
+                        <identifiedViolationsListItem>
+                            <violationNumber>1</violationNumber>
+                            <violationDescription>
+                                <violationDescriptionText>
+                                    Отклонение монолитных конструкций от проектных значений превышает допустимые нормы
+                                </violationDescriptionText>
+                                <technicalRegulationsList>
+                                    <technicalRegulationsListItem>
+                                        <documentName>ФЗ-384 "Технический регламент о безопасности зданий"</documentName>
+                                        <documentNumber>384-ФЗ</documentNumber>
+                                        <technicalRegulationsSectionsList>
+                                            <technicalRegulationsSectionsListItem>
+                                                <documentName>Статья 10</documentName>
+                                                <documentSection>Требования к несущим конструкциям</documentSection>
+                                            </technicalRegulationsSectionsListItem>
+                                        </technicalRegulationsSectionsList>
+                                    </technicalRegulationsListItem>
+                                </technicalRegulationsList>
+                            </violationDescription>
+                            <violationFixInfo>
+                                <violationFixFactDate>2024-02-01</violationFixFactDate>
+                                <violationFixDescription>Нарушения устранены полностью</violationFixDescription>
+                            </violationFixInfo>
+                        </identifiedViolationsListItem>
+                    </identifiedViolationsList>
+                </controlEventResult>
+            </actContent>
+        </actInfo>
+        
+        <!-- Информация о лицах -->
+        <actPersonsInfo>
+            <documentAuthor>
+                <fullName>Петров Николай Иванович</fullName>
+                <position>Главный инспектор</position>
+                <organization>Главгосстройнадзор России</organization>
+                <contactInfo>
+                    <phone>+7 (495) 123-45-67</phone>
+                    <email>petrov@gosnadzor.ru</email>
+                </contactInfo>
+            </documentAuthor>
+            
+            <controlEventActingPersonsList>
+                <controlEventActingPersonsListItem>
+                    <fullName>Петров Николай Иванович</fullName>
+                    <position>Главный инспектор</position>
+                    <organization>Главгосстройнадзор России</organization>
+                </controlEventActingPersonsListItem>
+                <controlEventActingPersonsListItem>
+                    <fullName>Смирнова Елена Петровна</fullName>
+                    <position>Инспектор</position>
+                    <organization>Главгосстройнадзор России</organization>
+                </controlEventActingPersonsListItem>
+            </controlEventActingPersonsList>
+        </actPersonsInfo>
+    </controlledPersonSignedPart>
+    
+    <!-- Подписи -->
+    <signatures>
+        <signature>
+            <signerRole>Представитель контролирующего органа</signerRole>
+            <representative>
+                <fullName>Петров Николай Иванович</fullName>
+                <position>Главный инспектор</position>
+            </representative>
+            <signatureDate>2024-01-20</signatureDate>
+        </signature>
+        <signature>
+            <signerRole>Представитель контролируемого лица</signerRole>
+            <representative>
+                <fullName>Сидоров Алексей Владимирович</fullName>
+                <position>Директор проекта</position>
+                <organization>АО "СтройМонтаж"</organization>
+            </representative>
+            <signatureDate>2024-01-20</signatureDate>
+        </signature>
+    </signatures>
+    
+    <!-- Дополнительные параметры -->
+    <extraParametersList>
+        <parameter>
+            <name>Тип проверки</name>
+            <value>Выездная</value>
+        </parameter>
+        <parameter>
+            <name>Основание проверки</name>
+            <value>Обращение гражданина</value>
+        </parameter>
+    </extraParametersList>
+</gsn221>

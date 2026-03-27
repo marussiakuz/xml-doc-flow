@@ -10,6 +10,7 @@ import ru.artwell.contractor.dto.ErrorResponse;
 import ru.artwell.contractor.dto.UploadDocumentResponse;
 import ru.artwell.contractor.dto.ValidationErrorDto;
 import ru.artwell.contractor.exception.MultipartFileReadException;
+import ru.artwell.contractor.persistence.entity.DocumentValidationStatus;
 import ru.artwell.contractor.service.DocumentService;
 import ru.artwell.contractor.service.XsdCatalogService;
 
@@ -34,13 +35,13 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(DocumentService.ConflictException.class)
     public ResponseEntity<UploadDocumentResponse> handleConflict(DocumentService.ConflictException ex) {
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(uploadErrorEnvelope(ex.getMessage()));
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(uploadErrorEnvelope(ex.getMessage(), DocumentValidationStatus.INVALID_CONFLICT));
     }
 
     @ExceptionHandler(XsdCatalogService.UnknownDocumentTypeException.class)
     public ResponseEntity<UploadDocumentResponse> handleUnknownDocumentType(
             XsdCatalogService.UnknownDocumentTypeException ex) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(uploadErrorEnvelope(ex.getMessage()));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(uploadErrorEnvelope(ex.getMessage(), DocumentValidationStatus.INVALID_UNKNOWN_DOCUMENT_TYPE));
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
@@ -55,7 +56,7 @@ public class GlobalExceptionHandler {
         ));
     }
 
-    private UploadDocumentResponse uploadErrorEnvelope(String message) {
+    private UploadDocumentResponse uploadErrorEnvelope(String message, DocumentValidationStatus status) {
         return new UploadDocumentResponse(
                 null,
                 null,
@@ -64,6 +65,7 @@ public class GlobalExceptionHandler {
                 0,
                 LocalDateTime.now(applicationZoneId),
                 false,
+                status,
                 List.of(new ValidationErrorDto(message, null, null))
         );
     }

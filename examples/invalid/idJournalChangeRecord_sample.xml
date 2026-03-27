@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<idJournalChangeRecord 
+    xmlns="http://v_17_0/idJournals/idJournalChangeRecord.xsd"
+    xmlns:ct="http://v_17_0/types/CommonTypes.xsd"
+    xmlns:bt="http://v_17_0/types/BaseTypes.xsd"
+    xmlns:bd="http://v_17_0/types/BaseDocument.xsd"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://v_17_0/idJournals/idJournalChangeRecord.xsd ../schemas/idJournalChangeRecord.xsd"
+    docSchemaVersion="1.1">
+    
+    <!-- Подписываемая часть -->
+    <signedPart id="sign_990e8400-e29b-41d4-a716-446655440006">
+        <docId>990e8400-e29b-41d4-a716-446655440006</docId>
+        <permanentObjectId>550e8400-e29b-41d4-a716-446655440001</permanentObjectId>
+        <idJournalId>aa0e8400-e29b-41d4-a716-446655440007</idJournalId>
+        <sequenceNumber>25</sequenceNumber>
+        <changeDate>2024-01-25</changeDate>
+        
+        <changeDescriptionWithBasis>
+            <description>
+                Внесены изменения в запись №20 от 15.01.2024: 
+                исправлен объем бетонных работ с 150 м³ на 155 м³
+            </description>
+            <basis>
+                Акт корректировки объемов работ №АК-2024-005 от 24.01.2024
+            </basis>
+        </changeDescriptionWithBasis>
+        
+        <representative>
+            <fullName>Иванов Петр Сергеевич</fullName>
+            <position>Ответственный производитель работ</position>
+            <organization>АО "СтройМонтаж"</organization>
+            <orderNumber>Приказ №15 от 10.01.2024</orderNumber>
+        </representative>
+    </signedPart>
+    
+    <!-- Подпись представителя -->
+    <representativeSignature>
+        <signatureValue>MIIGpQYJKoZIhvcNAQcCoIIGljCCBpICAQExDzANBglghkgBZQMEAgEFADALBgkq...</signatureValue>
+        <signatureDate>2024-01-25</signatureDate>
+        <certificateInfo>
+            <certificateNumber>1234567890ABCDEF</certificateNumber>
+            <certificateOwner>Иванов Петр Сергеевич</certificateOwner>
+            <certificateIssuer>УЦ Минцифры России</certificateIssuer>
+            <certificateValidFrom>2023-01-01</certificateValidFrom>
+            <certificateValidTo>2024-12-31</certificateValidTo>
+        </certificateInfo>
+    </representativeSignature>
+    
+    <!-- Служебные атрибуты -->
+    <docServiceAttributes>
+        <documentGuid>990e8400-e29b-41d4-a716-446655440006</documentGuid>
+        <creationDate>2024-01-25T15:30:00</creationDate>
+        <schemaVersion>1.1</schemaVersion>
+        <documentStatus>ACTIVE</documentStatus>
+    </docServiceAttributes>
+    
+    <!-- Дополнительные параметры -->
+    <extraParametersList>
+        <parameter>
+            <name>Тип изменения</name>
+            <value>Корректировка объема</value>
+        </parameter>
+        <parameter>
+            <name>Влияет на смету</name>
+            <value>true</value>
+        </parameter>
+        <parameter>
+            <name>Требует согласования</name>
+            <value>true</value>
+        </parameter>
+    </extraParametersList>
+</idJournalChangeRecord>

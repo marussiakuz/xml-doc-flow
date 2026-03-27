@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<aogrooks 
+    xmlns="http://idActs/AOGROOKS.xsd"
+    xmlns:ct="http://types/CommonTypes.xsd"
+    xmlns:bt="http://types/BaseTypes.xsd"
+    xmlns:bd="http://types/BaseDocument.xsd"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://idActs/AOGROOKS.xsd ../schemas/AOGROOKS.xsd">
+    
+    <!-- Подписываемая часть акта -->
+    <actInfo id="actInfo">
+        <!-- Общие данные для актов -->
+        <commonActInfoGroup>
+            <documentNumber>ГРО-2024-001</documentNumber>
+            <documentDate>2024-01-15</documentDate>
+            <constructionSeason>2024</constructionSeason>
+        </commonActInfoGroup>
+        
+        <!-- Информация об объекте -->
+        <inspectionObject>
+            <permanentObjectName>Жилой комплекс "Северный"</permanentObjectName>
+            <permanentObjectId>550e8400-e29b-41d4-a716-446655440001</permanentObjectId>
+            <workAndControlJournalsRecords>
+                <journalRecord>
+                    <journalType>ОБЩИЙ_ЖУРНАЛ_РАБОТ</journalType>
+                    <journalNumber>ЖР-2024-001</journalNumber>
+                    <recordNumber>15</recordNumber>
+                </journalRecord>
+            </workAndControlJournalsRecords>
+        </inspectionObject>
+        
+        <!-- Геодезические знаки -->
+        <geodeticSurveyMarkersInspection>
+            <workAndProjectDocumentationsList>
+                <workAndProjectDocumentationsListItem>
+                    <workAndProjectDocumentation>
+                        <documentName>Раздел ПЗ</documentName>
+                        <documentNumber>ПЗ-01</documentNumber>
+                        <documentDate>2023-12-01</documentDate>
+                    </workAndProjectDocumentation>
+                    <organization>
+                        <fullOrganizationInfo>
+                            <organizationName>ООО "ПроектСтрой"</organizationName>
+                            <organizationInn>7701234567</organizationInn>
+                            <organizationOgrn>1027700123456</organizationOgrn>
+                        </fullOrganizationInfo>
+                    </organization>
+                </workAndProjectDocumentationsListItem>
+            </workAndProjectDocumentationsList>
+            
+            <!-- Нормативные документы -->
+            <ntd>
+                <regulationDocument>
+                    <documentName>СП 126.13330.2012</documentName>
+                    <documentSection>Геодезические работы в строительстве</documentSection>
+                </regulationDocument>
+            </ntd>
+        </geodeticSurveyMarkersInspection>
+        
+        <!-- Приложения -->
+        <attachmentsList>
+            <attachmentsListItem>
+                <asBuiltSchema>
+                    <documentName>Исполнительная схема разбивки осей</documentName>
+                    <documentNumber>ИС-001</documentNumber>
+                    <asBuiltSchemaDate>2024-01-15</asBuiltSchemaDate>
+                    <docId>660e8400-e29b-41d4-a716-446655440002</docId>
+                </asBuiltSchema>
+            </attachmentsListItem>
+            <attachmentsListItem>
+                <coordinatesRecords>
+                    <documentName>Ведомость координат и отметок</documentName>
+                    <documentNumber>ВК-001</documentNumber>
+                </coordinatesRecords>
+            </attachmentsListItem>
+        </attachmentsList>
+    </actInfo>
+    
+    <!-- Подписи участников -->
+    <signatures>
+        <signature>
+            <signerRole>Разработчик проектной документации</signerRole>
+            <representative>
+                <fullName>Иванов Петр Сергеевич</fullName>
+                <position>Главный инженер проекта</position>
+                <organization>ООО "ПроектСтрой"</organization>
+            </representative>
+            <signatureDate>2024-01-15</signatureDate>
+        </signature>
+        <signature>
+            <signerRole>Генеральный подрядчик</signerRole>
+            <representative>
+                <fullName>Сидоров Алексей Владимирович</fullName>
+                <position>Начальник геодезической службы</position>
+                <organization>АО "СтройМонтаж"</organization>
+            </representative>
+            <signatureDate>2024-01-15</signatureDate>
+        </signature>
+    </signatures>
+    
+    <!-- Служебные атрибуты -->
+    <actsServiceAttributes>
+        <documentGuid>770e8400-e29b-41d4-a716-446655440003</documentGuid>
+        <creationDate>2024-01-15T10:30:00</creationDate>
+        <schemaVersion>1.0.0</schemaVersion>
+    </actsServiceAttributes>
+    
+    <!-- Дополнительные параметры -->
+    <extraParametersList>
+        <parameter>
+            <name>Количество знаков</name>
+            <value>12</value>
+        </parameter>
+        <parameter>
+            <name>Метод разбивки</name>
+            <value>Полярные координаты</value>
+        </parameter>
+    </extraParametersList>
+</aogrooks>

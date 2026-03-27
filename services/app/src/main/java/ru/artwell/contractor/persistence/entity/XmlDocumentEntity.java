@@ -28,8 +28,8 @@ public class XmlDocumentEntity {
     @Column(name = "doc_type", nullable = false, length = 256)
     private String docType;
 
-    @Column(name = "document_number", nullable = false, length = 256)
-    private String documentNumber;
+    @Column(name = "document_number", nullable = false)
+    private UUID documentNumber;
 
     @Column(name = "version", nullable = false)
     private int version;
@@ -44,16 +44,26 @@ public class XmlDocumentEntity {
     @Column(name = "previous_version_id")
     private UUID previousVersionId;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "validation_status", nullable = false, length = 64)
+    private DocumentValidationStatus validationStatus;
+
+    @Lob
+    @Column(name = "validation_errors")
+    private String validationErrors;
+
     protected XmlDocumentEntity() {
     }
 
     public XmlDocumentEntity(UUID groupId,
                                String docType,
-                               String documentNumber,
+                               UUID documentNumber,
                                int version,
                                byte[] xmlContent,
                                LocalDateTime uploadedAt,
-                               UUID previousVersionId) {
+                               UUID previousVersionId,
+                               DocumentValidationStatus validationStatus,
+                               String validationErrors) {
         this.groupId = groupId;
         this.docType = docType;
         this.documentNumber = documentNumber;
@@ -61,6 +71,8 @@ public class XmlDocumentEntity {
         this.xmlContent = xmlContent;
         this.uploadedAt = uploadedAt;
         this.previousVersionId = previousVersionId;
+        this.validationStatus = validationStatus;
+        this.validationErrors = validationErrors;
     }
 
     public UUID getId() {
@@ -75,7 +87,7 @@ public class XmlDocumentEntity {
         return docType;
     }
 
-    public String getDocumentNumber() {
+    public UUID getDocumentNumber() {
         return documentNumber;
     }
 
@@ -93,6 +105,14 @@ public class XmlDocumentEntity {
 
     public UUID getPreviousVersionId() {
         return previousVersionId;
+    }
+
+    public DocumentValidationStatus getValidationStatus() {
+        return validationStatus;
+    }
+
+    public String getValidationErrors() {
+        return validationErrors;
     }
 }
 
