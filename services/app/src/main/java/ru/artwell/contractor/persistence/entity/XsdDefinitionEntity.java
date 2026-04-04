@@ -52,6 +52,21 @@ public class XsdDefinitionEntity {
         this.loadedAt = loadedAt;
     }
 
+    /**
+     * Обновление после повторного сканирования classpath (новые XSD или правка схемы).
+     */
+    public void syncFromClasspath(String namespaceUri,
+                                  String rootElementLocalName,
+                                  String documentType,
+                                  String xsdContent,
+                                  LocalDateTime loadedAt) {
+        this.namespaceUri = namespaceUri;
+        this.rootElementLocalName = rootElementLocalName;
+        this.documentType = documentType;
+        this.xsdContent = xsdContent;
+        this.loadedAt = loadedAt;
+    }
+
     public UUID getId() {
         return id;
     }

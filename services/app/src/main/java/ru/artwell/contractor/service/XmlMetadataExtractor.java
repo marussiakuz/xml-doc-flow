@@ -13,6 +13,9 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathFactory;
 import java.io.StringReader;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
+import java.util.Optional;
 
 @Component
 public class XmlMetadataExtractor {
@@ -111,6 +114,54 @@ public class XmlMetadataExtractor {
             }
             throw new IllegalArgumentException("Ошибка извлечения номера документа из XML: " + e.getMessage(), e);
         }
+    }
+
+    /**
+     * Пытается извлечь дату документа из типовых узлов Минстроя; при отсутствии — {@link Optional#empty()}.
+     */
+    public Optional<LocalDate> extractDocumentDate(String xml) {
+        Document document = parseXmlSecurely(xml);
+        XPathFactory xPathFactory = XPathFactory.newInstance();
+        XPath xPath = xPathFactory.newXPath();
+        String[] xpaths = new String[]{
+                "//*[local-name()='actInfo']//*[local-name()='documentInfo']/*[local-name()='date'][1]/text()",
+                "//*[local-name()='actInfo']//*[local-name()='documentDetails']//*[local-name()='date'][1]/text()",
+                "//*[local-name()='documentDetails']//*[local-name()='date'][1]/text()",
+                "//*[local-name()='documentInfo']//*[local-name()='date'][1]/text()"
+        };
+        for (String xp : xpaths) {
+            try {
+                String raw = (String) xPath.compile(xp).evaluate(document, XPathConstants.STRING);
+                if (raw != null && !raw.isBlank()) {
+                    Optional<LocalDate> parsed = parseFlexibleDate(raw.trim());
+                    if (parsed.isPresent()) {
+                        return parsed;
+                    }
+                }
+            } catch (Exception ignored) {
+            }
+        }
+        return Optional.empty();
+    }
+
+    private static Optional<LocalDate> parseFlexibleDate(String raw) {
+        String s = raw;
+        if (s.length() >= 10 && s.charAt(4) == '-' && s.charAt(7) == '-') {
+            try {
+                return Optional.of(LocalDate.parse(s.substring(0, 10)));
+            } catch (DateTimeParseException ignored) {
+            }
+        }
+        if (s.length() >= 10 && s.charAt(2) == '.' && s.charAt(5) == '.') {
+            try {
+                int d = Integer.parseInt(s.substring(0, 2));
+                int m = Integer.parseInt(s.substring(3, 5));
+                int y = Integer.parseInt(s.substring(6, 10));
+                return Optional.of(LocalDate.of(y, m, d));
+            } catch (Exception ignored) {
+            }
+        }
+        return Optional.empty();
     }
 
     private static Document parseXmlSecurely(String xml) {

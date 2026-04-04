@@ -5,16 +5,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class DocumentListItemResponse {
-    private UUID id;
+    /** Идентификатор актуальной версии ({@code document_versions.id}). */
+    private Long id;
     private String docType;
-    private UUID documentNumber;
+    private String documentNumber;
     private int version;
     private LocalDateTime uploadedAt;
 }
-

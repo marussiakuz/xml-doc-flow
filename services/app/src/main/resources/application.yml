@@ -4,6 +4,12 @@ server:
 # Часовой пояс для бизнес-времени (LocalDateTime.now(zone)) и Jackson
 app:
   time-zone: Europe/Moscow
+  storage:
+    xml-root: ${APP_STORAGE_XML_ROOT:./data/xml-documents}
+  seed:
+    test-username: ${APP_SEED_TEST_USERNAME:test}
+    test-password: ${APP_SEED_TEST_PASSWORD:test}
+    organization-inn: ${APP_SEED_ORG_INN:0000000000}
 
 spring:
   jackson:
@@ -15,8 +21,7 @@ spring:
   datasource:
     url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/xml_doc_flow}
     username: ${SPRING_DATASOURCE_USERNAME:postgres}
-    password: ${SPRING_DATASOURCE_PASSWORD:iamroot
-  }
+    password: ${SPRING_DATASOURCE_PASSWORD:iamroot}
     driver-class-name: org.postgresql.Driver
   jpa:
     open-in-view: false

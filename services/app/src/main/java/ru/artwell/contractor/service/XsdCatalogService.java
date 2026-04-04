@@ -1,6 +1,5 @@
 package ru.artwell.contractor.service;
 
-import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
@@ -46,23 +45,70 @@ public class XsdCatalogService {
         this.applicationZoneId = applicationZoneId;
     }
 
-    @PostConstruct
+    /**
+     * Вызывается из {@link ru.artwell.contractor.config.XsdCatalogBootstrap} (раньше {@code @PostConstruct}),
+     * чтобы транзакция Spring точно применялась и данные попадали в БД до обработки HTTP-запросов.
+     */
     @Transactional
-    public void init() throws IOException {
-        if (xsdDefinitionRepository.count() == 0) {
-            scanAndStoreXsdDefinitions();
-        }
+    public void bootstrapCatalog() throws IOException {
+        syncXsdDefinitionsFromClasspath();
         reloadFromDbIntoMemory();
     }
 
     public DocumentTypeMapping detectDocumentType(XmlMetadataExtractor.RootQName rootQName) {
         String key = qNameKey(rootQName.namespaceUri(), rootQName.localName());
         DocumentTypeMapping mapping = mappingByQName.get(key);
+        if (mapping != null) {
+            return mapping;
+        }
+        try {
+            mapping = resolveByScanningIdActsSchemas(rootQName);
+        } catch (IOException e) {
+            throw new IllegalStateException("Ошибка чтения XSD при определении типа документа: " + e.getMessage(), e);
+        }
         if (mapping == null) {
             throw new UnknownDocumentTypeException("Не удалось определить тип документа по корню XML: {" +
                     rootQName.namespaceUri() + "}" + rootQName.localName());
         }
+        mappingByQName.put(key, mapping);
         return mapping;
+    }
+
+    /**
+     * Если в БД/памяти нет записи (например, устаревшая {@code xsd_definitions}), ищем среди
+     * {@code validation-files/**/idActs/*.xsd} на classpath файл с тем же targetNamespace и корневым элементом.
+     */
+    private DocumentTypeMapping resolveByScanningIdActsSchemas(XmlMetadataExtractor.RootQName rootQName) throws IOException {
+        PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
+        Resource[] resources = resolver.getResources("classpath*:/validation-files/**/idActs/*.xsd");
+        for (Resource resource : resources) {
+            String path = toClasspathResourcePath(resource);
+            if (path == null) {
+                continue;
+            }
+            byte[] bytes;
+            try (InputStream is = resource.getInputStream()) {
+                bytes = is.readAllBytes();
+            }
+            String content = new String(bytes, StandardCharsets.UTF_8);
+            String ns = extractTargetNamespace(content);
+            String root = extractRootElementLocalNameForIdActsEntry(content);
+            if (root == null || ns == null || ns.isBlank()) {
+                continue;
+            }
+            if (!Objects.equals(ns, rootQName.namespaceUri()) || !Objects.equals(root, rootQName.localName())) {
+                continue;
+            }
+            String docType = extractDocumentTypeFromPath(path);
+            if (docType == null || docType.isBlank()) {
+                continue;
+            }
+            String filename = path.substring(path.lastIndexOf('/') + 1);
+            xsdContentByFilename.putIfAbsent(filename, content);
+            xsdContentByNamespace.putIfAbsent(ns, content);
+            return new DocumentTypeMapping(docType, ns, root, content, path);
+        }
+        return null;
     }
 
     public Schema getSchema(DocumentTypeMapping mapping) {
@@ -114,21 +160,16 @@ public class XsdCatalogService {
         }
     }
 
-    private void scanAndStoreXsdDefinitions() throws IOException {
-        // Store every XSD under validation-files into reference table for MVP.
-        // For type detection we still rely only on those XSD that declare a root element.
+    private void syncXsdDefinitionsFromClasspath() throws IOException {
         PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
         Resource[] resources = resolver.getResources("classpath*:/validation-files/**/*.xsd");
 
-        List<XsdDefinitionEntity> entities = new ArrayList<>();
+        List<XsdDefinitionEntity> newEntities = new ArrayList<>();
+        LocalDateTime now = LocalDateTime.now(applicationZoneId);
+
         for (Resource resource : resources) {
             String classpathPath = toClasspathResourcePath(resource);
             if (classpathPath == null) {
-                continue;
-            }
-
-            // Avoid duplicates if any
-            if (xsdDefinitionRepository.findByXsdResourcePath(classpathPath).isPresent()) {
                 continue;
             }
 
@@ -139,21 +180,40 @@ public class XsdCatalogService {
             String content = new String(bytes, StandardCharsets.UTF_8);
 
             String namespaceUri = extractTargetNamespace(content);
-            String rootElementLocalName = extractRootElementLocalName(content);
+            String rootElementLocalName = isIdActsEntryPath(classpathPath)
+                    ? extractRootElementLocalNameForIdActsEntry(content)
+                    : extractRootElementLocalName(content);
             String documentType = extractDocumentTypeFromPath(classpathPath);
 
-            // Only persist root element mapping for type detection in memory later.
-            entities.add(new XsdDefinitionEntity(
+            Optional<XsdDefinitionEntity> existing = xsdDefinitionRepository.findByXsdResourcePath(classpathPath);
+            if (existing.isPresent()) {
+                XsdDefinitionEntity e = existing.get();
+                boolean contentChanged = !Objects.equals(content, e.getXsdContent());
+                boolean metaChanged = !Objects.equals(namespaceUri, e.getNamespaceUri())
+                        || !Objects.equals(rootElementLocalName, e.getRootElementLocalName())
+                        || !Objects.equals(documentType, e.getDocumentType());
+                boolean repairMissingRoot = rootElementLocalName != null
+                        && (e.getRootElementLocalName() == null || e.getRootElementLocalName().isBlank());
+                if (contentChanged || metaChanged || repairMissingRoot) {
+                    e.syncFromClasspath(namespaceUri, rootElementLocalName, documentType, content, now);
+                    xsdDefinitionRepository.save(e);
+                }
+                continue;
+            }
+
+            newEntities.add(new XsdDefinitionEntity(
                     namespaceUri,
                     rootElementLocalName,
                     documentType,
                     classpathPath,
                     content,
-                    LocalDateTime.now(applicationZoneId)
+                    now
             ));
         }
 
-        xsdDefinitionRepository.saveAll(entities);
+        if (!newEntities.isEmpty()) {
+            xsdDefinitionRepository.saveAll(newEntities);
+        }
     }
 
     private static String toClasspathResourcePath(Resource resource) throws IOException {
@@ -179,6 +239,26 @@ public class XsdCatalogService {
         // Most of our schemas define root element as: <xs:element name="xyz" type="cf:xyz" />
         Matcher m = Pattern.compile("<xs:element[^>]*name\\s*=\\s*\"([^\"]+)\"[^>]*type\\s*=\\s*\"cf:").matcher(xsdContent);
         return m.find() ? m.group(1) : null;
+    }
+
+    private static boolean isIdActsEntryPath(String classpathPath) {
+        if (classpathPath == null) {
+            return false;
+        }
+        return classpathPath.replace('\\', '/').contains("/idActs/");
+    }
+
+    /**
+     * Для входных схем в {@code idActs} глобальный корень обычно объявлен в конце файла; берём последнее совпадение.
+     */
+    private static String extractRootElementLocalNameForIdActsEntry(String xsdContent) {
+        Pattern p = Pattern.compile("<xs:element[^>]*name\\s*=\\s*\"([^\"]+)\"[^>]*type\\s*=\\s*\"cf:");
+        Matcher m = p.matcher(xsdContent);
+        String last = null;
+        while (m.find()) {
+            last = m.group(1);
+        }
+        return last;
     }
 
     private static String extractDocumentTypeFromPath(String classpathPath) {

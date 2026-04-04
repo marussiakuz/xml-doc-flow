@@ -1,26 +1,29 @@
 package ru.artwell.contractor.service;
 
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.artwell.contractor.config.AppTimeConfiguration;
+import ru.artwell.contractor.config.ReferenceDataInitializer;
 import ru.artwell.contractor.dto.DocumentDetailResponse;
 import ru.artwell.contractor.dto.DocumentListItemResponse;
 import ru.artwell.contractor.dto.DocumentVersionInfoResponse;
 import ru.artwell.contractor.dto.UploadDocumentResponse;
 import ru.artwell.contractor.dto.ValidationErrorDto;
-import ru.artwell.contractor.persistence.entity.AuditEventEntity;
-import ru.artwell.contractor.persistence.entity.DocumentValidationStatus;
-import ru.artwell.contractor.persistence.entity.XmlDocumentEntity;
-import ru.artwell.contractor.persistence.repository.AuditEventRepository;
-import ru.artwell.contractor.persistence.repository.XmlDocumentRepository;
+import ru.artwell.contractor.persistence.entity.*;
+import ru.artwell.contractor.persistence.repository.*;
 
 import javax.xml.validation.Schema;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -31,179 +34,228 @@ public class DocumentService {
     private final XmlMetadataExtractor xmlMetadataExtractor;
     private final XsdCatalogService xsdCatalogService;
     private final XmlValidator xmlValidator;
-    private final XmlDocumentRepository xmlDocumentRepository;
-    private final AuditEventRepository auditEventRepository;
+    private final XmlFileStorageService xmlFileStorageService;
+    private final UserRepository userRepository;
+    private final ConstructionObjectRepository constructionObjectRepository;
+    private final DocumentTypeRepository documentTypeRepository;
+    private final DocumentRepository documentRepository;
+    private final DocumentVersionRepository documentVersionRepository;
+    private final AuditLogRepository auditLogRepository;
+    private final String seedTestUsername;
 
     public DocumentService(@Qualifier(AppTimeConfiguration.APPLICATION_ZONE_ID) ZoneId applicationZoneId,
-                            XmlMetadataExtractor xmlMetadataExtractor,
-                            XsdCatalogService xsdCatalogService,
-                            XmlValidator xmlValidator,
-                            XmlDocumentRepository xmlDocumentRepository,
-                            AuditEventRepository auditEventRepository) {
+                           XmlMetadataExtractor xmlMetadataExtractor,
+                           XsdCatalogService xsdCatalogService,
+                           XmlValidator xmlValidator,
+                           XmlFileStorageService xmlFileStorageService,
+                           UserRepository userRepository,
+                           ConstructionObjectRepository constructionObjectRepository,
+                           DocumentTypeRepository documentTypeRepository,
+                           DocumentRepository documentRepository,
+                           DocumentVersionRepository documentVersionRepository,
+                           AuditLogRepository auditLogRepository,
+                           @Value("${app.seed.test-username}") String seedTestUsername) {
         this.applicationZoneId = applicationZoneId;
         this.xmlMetadataExtractor = xmlMetadataExtractor;
         this.xsdCatalogService = xsdCatalogService;
         this.xmlValidator = xmlValidator;
-        this.xmlDocumentRepository = xmlDocumentRepository;
-        this.auditEventRepository = auditEventRepository;
+        this.xmlFileStorageService = xmlFileStorageService;
+        this.userRepository = userRepository;
+        this.constructionObjectRepository = constructionObjectRepository;
+        this.documentTypeRepository = documentTypeRepository;
+        this.documentRepository = documentRepository;
+        this.documentVersionRepository = documentVersionRepository;
+        this.auditLogRepository = auditLogRepository;
+        this.seedTestUsername = seedTestUsername;
     }
 
     @Transactional
-    public UploadDocumentResponse uploadXml(byte[] xmlBytes) {
+    public UploadDocumentResponse uploadXml(byte[] xmlBytes, String originalFileName) {
         LocalDateTime now = LocalDateTime.now(applicationZoneId);
         String xml = new String(xmlBytes, StandardCharsets.UTF_8);
+        String fileLabel = (originalFileName == null || originalFileName.isBlank()) ? "document.xml" : originalFileName.trim();
 
-        String docType = FALLBACK_DOC_TYPE;
-        UUID documentNumber = UUID.randomUUID();
-        DocumentValidationStatus status = DocumentValidationStatus.INVALID_XML;
+        String docTypeCode = FALLBACK_DOC_TYPE;
+        String businessNumber = "UNKNOWN-" + UUID.randomUUID();
+        DocumentValidationStatus apiStatus = DocumentValidationStatus.INVALID_XML;
         List<ValidationErrorDto> responseErrors = Collections.emptyList();
         String storedErrors = null;
+        Optional<LocalDate> documentDate = Optional.empty();
 
         try {
             XmlMetadataExtractor.RootQName rootQName = xmlMetadataExtractor.extractRootQName(xml);
             try {
                 xmlMetadataExtractor.assertBusinessDocumentRoot(rootQName);
             } catch (IllegalArgumentException e) {
-                status = DocumentValidationStatus.INVALID_DOCUMENT_ROOT;
+                apiStatus = DocumentValidationStatus.INVALID_DOCUMENT_ROOT;
                 storedErrors = e.getMessage();
                 responseErrors = List.of(new ValidationErrorDto(e.getMessage(), null, null));
-                return saveUploaded(now, xmlBytes, docType, documentNumber, status, storedErrors, responseErrors);
+                return saveUploaded(now, xmlBytes, fileLabel, docTypeCode, businessNumber, documentDate, apiStatus, storedErrors, responseErrors);
             }
 
             XsdCatalogService.DocumentTypeMapping mapping;
             try {
                 mapping = xsdCatalogService.detectDocumentType(rootQName);
             } catch (XsdCatalogService.UnknownDocumentTypeException e) {
-                status = DocumentValidationStatus.INVALID_UNKNOWN_DOCUMENT_TYPE;
+                apiStatus = DocumentValidationStatus.INVALID_UNKNOWN_DOCUMENT_TYPE;
                 storedErrors = e.getMessage();
                 responseErrors = List.of(new ValidationErrorDto(e.getMessage(), null, null));
-                return saveUploaded(now, xmlBytes, docType, documentNumber, status, storedErrors, responseErrors);
+                return saveUploaded(now, xmlBytes, fileLabel, docTypeCode, businessNumber, documentDate, apiStatus, storedErrors, responseErrors);
             }
 
-            docType = mapping.documentType();
+            docTypeCode = mapping.documentType();
 
-            // Stable UUID "document number" for grouping: docType + extracted business number.
             try {
-                String businessNumber = xmlMetadataExtractor.extractDocumentNumber(xml);
-                documentNumber = UUID.nameUUIDFromBytes((docType + "|" + businessNumber).getBytes(StandardCharsets.UTF_8));
+                businessNumber = xmlMetadataExtractor.extractDocumentNumber(xml);
             } catch (IllegalArgumentException e) {
-                documentNumber = UUID.randomUUID();
+                businessNumber = "UNKNOWN-" + UUID.randomUUID();
             }
+
+            documentDate = xmlMetadataExtractor.extractDocumentDate(xml);
 
             Schema schema = xsdCatalogService.getSchema(mapping);
             List<XmlValidator.ValidationError> errors = xmlValidator.validateXml(xml, schema);
             boolean valid = errors.isEmpty();
             if (valid) {
-                status = DocumentValidationStatus.VALID;
+                apiStatus = DocumentValidationStatus.VALID;
                 responseErrors = Collections.emptyList();
             } else {
-                status = DocumentValidationStatus.INVALID_SCHEMA;
+                apiStatus = DocumentValidationStatus.INVALID_SCHEMA;
                 responseErrors = errors.stream()
                         .map(e -> new ValidationErrorDto(e.message(), e.lineNumber(), e.columnNumber()))
                         .toList();
                 storedErrors = errorsToText(errors);
             }
 
-            return saveUploaded(now, xmlBytes, docType, documentNumber, status, storedErrors, responseErrors);
+            return saveUploaded(now, xmlBytes, fileLabel, docTypeCode, businessNumber, documentDate, apiStatus, storedErrors, responseErrors);
         } catch (IllegalArgumentException e) {
-            // XML could not be parsed at all
-            status = DocumentValidationStatus.INVALID_XML;
+            apiStatus = DocumentValidationStatus.INVALID_XML;
             storedErrors = e.getMessage();
             responseErrors = List.of(new ValidationErrorDto(e.getMessage(), null, null));
-            return saveUploaded(now, xmlBytes, docType, documentNumber, status, storedErrors, responseErrors);
+            return saveUploaded(now, xmlBytes, fileLabel, docTypeCode, businessNumber, documentDate, apiStatus, storedErrors, responseErrors);
         }
     }
 
     private UploadDocumentResponse saveUploaded(
             LocalDateTime now,
             byte[] xmlBytes,
-            String docType,
-            UUID documentNumber,
-            DocumentValidationStatus status,
+            String originalFileName,
+            String docTypeCode,
+            String businessDocumentNumber,
+            Optional<LocalDate> documentDate,
+            DocumentValidationStatus apiStatus,
             String storedErrors,
             List<ValidationErrorDto> responseErrors
     ) {
-        XmlDocumentEntity previous = xmlDocumentRepository
-                .findTopByDocTypeAndDocumentNumberOrderByVersionDesc(docType, documentNumber)
+        UserEntity actor = systemUser();
+        ConstructionObjectEntity object = defaultConstructionObject();
+        DocumentTypeEntity docType = documentTypeRepository.findByTypeCode(docTypeCode)
+                .orElseThrow(() -> new IllegalStateException("Нет записи в document_types для кода: " + docTypeCode));
+
+        DocumentEntity document = documentRepository
+                .findByDocumentType_TypeCodeAndDocumentNumber(docTypeCode, businessDocumentNumber)
                 .orElse(null);
 
-        UUID groupId;
+        DocumentVersionEntity previousVersion = null;
         int nextVersion;
-        UUID previousVersionId;
-        if (previous == null) {
-            groupId = UUID.randomUUID();
+        if (document == null) {
             nextVersion = 1;
-            previousVersionId = null;
+            document = documentRepository.save(new DocumentEntity(
+                    businessDocumentNumber,
+                    documentDate.orElse(null),
+                    docType,
+                    object,
+                    buildTitle(originalFileName, businessDocumentNumber),
+                    1,
+                    true,
+                    actor,
+                    now,
+                    "active"
+            ));
         } else {
-            groupId = previous.getGroupId();
-            nextVersion = previous.getVersion() + 1;
-            previousVersionId = previous.getId();
+            previousVersion = documentVersionRepository
+                    .findTopByDocument_IdOrderByVersionNumberDesc(document.getId())
+                    .orElseThrow();
+            nextVersion = previousVersion.getVersionNumber() + 1;
         }
 
-        XmlDocumentEntity entity = new XmlDocumentEntity(
-                groupId,
-                docType,
-                documentNumber,
+        String relativePath;
+        try {
+            relativePath = xmlFileStorageService.store(document.getId(), nextVersion, xmlBytes);
+        } catch (IOException e) {
+            throw new IllegalStateException("Не удалось сохранить XML на диск: " + e.getMessage(), e);
+        }
+
+        DocumentVersionEntity version = new DocumentVersionEntity(
+                document,
                 nextVersion,
-                xmlBytes,
+                relativePath,
+                originalFileName,
+                xmlBytes.length,
+                toVersionValidationStatus(apiStatus),
+                storedErrors,
+                actor,
                 now,
-                previousVersionId,
-                status,
-                storedErrors
+                previousVersion
         );
+        DocumentVersionEntity savedVersion = documentVersionRepository.save(version);
 
-        XmlDocumentEntity saved = xmlDocumentRepository.save(entity);
-        auditEventRepository.save(new AuditEventEntity(
-                now,
-                "UPLOAD",
-                "anonymous",
-                saved.getId(),
-                saved.getGroupId(),
-                "Uploaded XML. Status=" + status
-        ));
+        document.setCurrentVersion(nextVersion);
+        document.setUploadedAt(now);
+        document.setUploadedBy(actor);
+        documentDate.ifPresent(document::setDocumentDate);
+        documentRepository.save(document);
 
-        boolean valid = status == DocumentValidationStatus.VALID;
-        return toUploadResponse(saved, valid, status, responseErrors);
+        audit(actor, "UPLOAD", "VERSION", savedVersion.getId(), "Uploaded XML. apiStatus=" + apiStatus);
+
+        boolean valid = apiStatus == DocumentValidationStatus.VALID;
+        return toUploadResponse(savedVersion, document, valid, apiStatus, responseErrors);
     }
 
     @Transactional
-    public UploadDocumentResponse replaceXml(UUID id, byte[] xmlBytes) {
+    public UploadDocumentResponse replaceXml(Long id, byte[] xmlBytes, String originalFileName) {
         LocalDateTime now = LocalDateTime.now(applicationZoneId);
-        XmlDocumentEntity existing = xmlDocumentRepository.findById(id)
+        String fileLabel = (originalFileName == null || originalFileName.isBlank()) ? "document.xml" : originalFileName.trim();
+
+        DocumentVersionEntity existing = documentVersionRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Документ не найден: " + id));
 
-        String xml = new String(xmlBytes, StandardCharsets.UTF_8);
-        XmlDocumentEntity latest = xmlDocumentRepository.findTopByGroupIdOrderByVersionDesc(existing.getGroupId())
+        DocumentEntity doc = existing.getDocument();
+        DocumentVersionEntity latest = documentVersionRepository.findTopByDocument_IdOrderByVersionNumberDesc(doc.getId())
                 .orElseThrow();
 
-        int nextVersion = latest.getVersion() + 1;
+        int nextVersion = latest.getVersionNumber() + 1;
+        UserEntity actor = systemUser();
 
-        DocumentValidationStatus status;
+        DocumentValidationStatus apiStatus;
         String storedErrors = null;
         List<ValidationErrorDto> responseErrors = Collections.emptyList();
+        Optional<LocalDate> documentDate = Optional.empty();
 
+        String xml = new String(xmlBytes, StandardCharsets.UTF_8);
         try {
             XmlMetadataExtractor.RootQName rootQName = xmlMetadataExtractor.extractRootQName(xml);
             xmlMetadataExtractor.assertBusinessDocumentRoot(rootQName);
             XsdCatalogService.DocumentTypeMapping mapping = xsdCatalogService.detectDocumentType(rootQName);
             String newDocumentNumber = xmlMetadataExtractor.extractDocumentNumber(xml);
+            documentDate = xmlMetadataExtractor.extractDocumentDate(xml);
 
-            if (!existing.getDocType().equals(mapping.documentType())) {
-                status = DocumentValidationStatus.INVALID_CONFLICT;
-                storedErrors = "Новый XML имеет другой тип документа. Текущий: " + existing.getDocType() + ", новый: " + mapping.documentType();
+            if (!doc.getDocumentType().getTypeCode().equals(mapping.documentType())) {
+                apiStatus = DocumentValidationStatus.INVALID_CONFLICT;
+                storedErrors = "Новый XML имеет другой тип документа. Текущий: " + doc.getDocumentType().getTypeCode() + ", новый: " + mapping.documentType();
                 responseErrors = List.of(new ValidationErrorDto(storedErrors, null, null));
-            } else if (!existing.getDocumentNumber().equals(newDocumentNumber)) {
-                status = DocumentValidationStatus.INVALID_CONFLICT;
-                storedErrors = "Новый XML имеет другой номер документа. Текущий: " + existing.getDocumentNumber() + ", новый: " + newDocumentNumber;
+            } else if (!doc.getDocumentNumber().equals(newDocumentNumber)) {
+                apiStatus = DocumentValidationStatus.INVALID_CONFLICT;
+                storedErrors = "Новый XML имеет другой номер документа. Текущий: " + doc.getDocumentNumber() + ", новый: " + newDocumentNumber;
                 responseErrors = List.of(new ValidationErrorDto(storedErrors, null, null));
             } else {
                 Schema schema = xsdCatalogService.getSchema(mapping);
                 List<XmlValidator.ValidationError> errors = xmlValidator.validateXml(xml, schema);
                 boolean valid = errors.isEmpty();
                 if (valid) {
-                    status = DocumentValidationStatus.VALID;
+                    apiStatus = DocumentValidationStatus.VALID;
                 } else {
-                    status = DocumentValidationStatus.INVALID_SCHEMA;
+                    apiStatus = DocumentValidationStatus.INVALID_SCHEMA;
                     responseErrors = errors.stream()
                             .map(e -> new ValidationErrorDto(e.message(), e.lineNumber(), e.columnNumber()))
                             .toList();
@@ -211,39 +263,86 @@ public class DocumentService {
                 }
             }
         } catch (XsdCatalogService.UnknownDocumentTypeException e) {
-            status = DocumentValidationStatus.INVALID_UNKNOWN_DOCUMENT_TYPE;
+            apiStatus = DocumentValidationStatus.INVALID_UNKNOWN_DOCUMENT_TYPE;
             storedErrors = e.getMessage();
             responseErrors = List.of(new ValidationErrorDto(e.getMessage(), null, null));
         } catch (IllegalArgumentException e) {
-            status = DocumentValidationStatus.INVALID_XML;
+            apiStatus = DocumentValidationStatus.INVALID_XML;
             storedErrors = e.getMessage();
             responseErrors = List.of(new ValidationErrorDto(e.getMessage(), null, null));
         }
 
-        XmlDocumentEntity entity = new XmlDocumentEntity(
-                existing.getGroupId(),
-                existing.getDocType(),
-                existing.getDocumentNumber(),
+        String relativePath;
+        try {
+            relativePath = xmlFileStorageService.store(doc.getId(), nextVersion, xmlBytes);
+        } catch (IOException e) {
+            throw new IllegalStateException("Не удалось сохранить XML на диск: " + e.getMessage(), e);
+        }
+
+        DocumentVersionEntity entity = new DocumentVersionEntity(
+                doc,
                 nextVersion,
-                xmlBytes,
+                relativePath,
+                fileLabel,
+                xmlBytes.length,
+                toVersionValidationStatus(apiStatus),
+                storedErrors,
+                actor,
                 now,
-                latest.getId(),
-                status,
-                storedErrors
+                latest
         );
+        DocumentVersionEntity saved = documentVersionRepository.save(entity);
 
-        XmlDocumentEntity saved = xmlDocumentRepository.save(entity);
-        auditEventRepository.save(new AuditEventEntity(
-                now,
-                "REPLACE",
-                "anonymous",
-                saved.getId(),
-                saved.getGroupId(),
-                "Replaced XML. Status=" + status
+        doc.setCurrentVersion(nextVersion);
+        doc.setUploadedAt(now);
+        doc.setUploadedBy(actor);
+        documentDate.ifPresent(doc::setDocumentDate);
+        documentRepository.save(doc);
+
+        audit(actor, "REPLACE", "VERSION", saved.getId(), "Replaced XML. apiStatus=" + apiStatus);
+
+        boolean valid = apiStatus == DocumentValidationStatus.VALID;
+        return toUploadResponse(saved, doc, valid, apiStatus, responseErrors);
+    }
+
+    private static String buildTitle(String originalFileName, String businessNumber) {
+        return "Документ № " + businessNumber + " (" + originalFileName + ")";
+    }
+
+    private UserEntity systemUser() {
+        return userRepository.findByUsername(seedTestUsername)
+                .orElseThrow(() -> new IllegalStateException("Тестовый пользователь не найден: " + seedTestUsername));
+    }
+
+    private ConstructionObjectEntity defaultConstructionObject() {
+        return constructionObjectRepository.findByObjectCode(ReferenceDataInitializer.DEFAULT_OBJECT_CODE)
+                .orElseThrow(() -> new IllegalStateException("Объект по умолчанию не найден: " + ReferenceDataInitializer.DEFAULT_OBJECT_CODE));
+    }
+
+    private void audit(UserEntity user, String actionType, String entityType, Long entityId, String message) {
+        auditLogRepository.save(new AuditLogEntity(
+                user,
+                user.getUsername(),
+                actionType,
+                entityType,
+                entityId,
+                Map.of("message", message),
+                null,
+                LocalDateTime.now(applicationZoneId)
         ));
+    }
 
-        boolean valid = status == DocumentValidationStatus.VALID;
-        return toUploadResponse(saved, valid, status, responseErrors);
+    private static VersionValidationStatus toVersionValidationStatus(DocumentValidationStatus api) {
+        if (api == DocumentValidationStatus.VALID) {
+            return VersionValidationStatus.VALID;
+        }
+        if (api == null) {
+            return VersionValidationStatus.ERROR;
+        }
+        if (api.name().startsWith("INVALID")) {
+            return VersionValidationStatus.INVALID;
+        }
+        return VersionValidationStatus.ERROR;
     }
 
     private static String errorsToText(List<XmlValidator.ValidationError> errors) {
@@ -252,7 +351,9 @@ public class DocumentService {
         }
         StringBuilder sb = new StringBuilder();
         for (XmlValidator.ValidationError e : errors) {
-            if (sb.length() > 0) sb.append('\n');
+            if (sb.length() > 0) {
+                sb.append('\n');
+            }
             sb.append('[')
                     .append(e.lineNumber() == null ? "?" : e.lineNumber())
                     .append(':')
@@ -265,101 +366,79 @@ public class DocumentService {
 
     @Transactional(readOnly = true)
     public List<DocumentListItemResponse> listLatestVersions(String docType, String documentNumber) {
-        LocalDateTime now = LocalDateTime.now(applicationZoneId);
-        UUID documentNumberUuid = null;
-        if (documentNumber != null && !documentNumber.isBlank()) {
-            try {
-                documentNumberUuid = UUID.fromString(documentNumber.trim());
-            } catch (IllegalArgumentException ignored) {
-                documentNumberUuid = null;
-            }
-        }
+        String typeCode = docType != null && !docType.isBlank() ? docType.trim() : null;
+        String docNum = documentNumber != null && !documentNumber.isBlank() ? documentNumber.trim() : null;
 
-        List<DocumentListItemResponse> result = xmlDocumentRepository.findLatestVersions(docType, documentNumberUuid).stream()
+        List<DocumentListItemResponse> result = documentVersionRepository.findCurrentVersions(typeCode, docNum).stream()
                 .map(d -> new DocumentListItemResponse(
                         d.getId(),
-                        d.getDocType(),
-                        d.getDocumentNumber(),
-                        d.getVersion(),
+                        d.getDocument().getDocumentType().getTypeCode(),
+                        d.getDocument().getDocumentNumber(),
+                        d.getVersionNumber(),
                         d.getUploadedAt()
                 ))
                 .toList();
 
-        auditEventRepository.save(new AuditEventEntity(
-                now,
-                "VIEW_LIST",
-                "anonymous",
-                null,
-                null,
-                "Viewed document list"
-        ));
+        UserEntity actor = systemUser();
+        audit(actor, "VIEW_LIST", "DOCUMENT", null, "Viewed document list");
 
         return result;
     }
 
     @Transactional(readOnly = true)
-    public DocumentDetailResponse getDetail(UUID id) {
-        LocalDateTime now = LocalDateTime.now(applicationZoneId);
-        XmlDocumentEntity entity = xmlDocumentRepository.findById(id)
+    public DocumentDetailResponse getDetail(Long id) {
+        DocumentVersionEntity entity = documentVersionRepository.findByIdWithDocument(id)
                 .orElseThrow(() -> new NotFoundException("Документ не найден: " + id));
 
-        List<XmlDocumentEntity> versions = xmlDocumentRepository.findByGroupIdOrderByVersionDesc(entity.getGroupId());
-        auditEventRepository.save(new AuditEventEntity(
-                now,
-                "VIEW_DETAIL",
-                "anonymous",
-                entity.getId(),
-                entity.getGroupId(),
-                "Viewed document detail"
-        ));
+        List<DocumentVersionEntity> versions = documentVersionRepository.findByDocument_IdOrderByVersionNumberDesc(entity.getDocument().getId());
+        UserEntity actor = systemUser();
+        audit(actor, "VIEW_DETAIL", "VERSION", entity.getId(), "Viewed document detail");
 
         List<DocumentVersionInfoResponse> versionInfos = versions.stream()
                 .map(v -> new DocumentVersionInfoResponse(
                         v.getId(),
-                        v.getVersion(),
-                        v.getPreviousVersionId(),
+                        v.getVersionNumber(),
+                        v.getPreviousVersion() == null ? null : v.getPreviousVersion().getId(),
                         v.getUploadedAt()
                 ))
                 .toList();
 
         return new DocumentDetailResponse(
                 entity.getId(),
-                entity.getGroupId(),
-                entity.getDocType(),
-                entity.getDocumentNumber(),
+                entity.getDocument().getId(),
+                entity.getDocument().getDocumentType().getTypeCode(),
+                entity.getDocument().getDocumentNumber(),
                 entity.getUploadedAt(),
                 versionInfos
         );
     }
 
     @Transactional(readOnly = true)
-    public byte[] downloadXml(UUID id) {
-        LocalDateTime now = LocalDateTime.now(applicationZoneId);
-        XmlDocumentEntity entity = xmlDocumentRepository.findById(id)
+    public byte[] downloadXml(Long id) {
+        DocumentVersionEntity entity = documentVersionRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Документ не найден: " + id));
 
-        auditEventRepository.save(new AuditEventEntity(
-                now,
-                "DOWNLOAD_XML",
-                "anonymous",
-                entity.getId(),
-                entity.getGroupId(),
-                "Downloaded original XML"
-        ));
+        UserEntity actor = systemUser();
+        audit(actor, "DOWNLOAD_XML", "VERSION", entity.getId(), "Downloaded original XML");
 
-        return entity.getXmlContent();
+        try {
+            return xmlFileStorageService.load(entity.getXmlFilePath());
+        } catch (IOException e) {
+            throw new IllegalStateException("Не удалось прочитать XML с диска: " + e.getMessage(), e);
+        }
     }
 
-    private static UploadDocumentResponse toUploadResponse(XmlDocumentEntity saved,
-                                                            boolean valid,
-                                                            DocumentValidationStatus validationStatus,
-                                                            List<ValidationErrorDto> errors) {
+    private static UploadDocumentResponse toUploadResponse(DocumentVersionEntity saved,
+                                                           DocumentEntity document,
+                                                           boolean valid,
+                                                           DocumentValidationStatus validationStatus,
+                                                           List<ValidationErrorDto> errors) {
         return new UploadDocumentResponse(
                 saved.getId(),
-                saved.getGroupId(),
-                saved.getDocType(),
-                saved.getDocumentNumber(),
-                saved.getVersion(),
+                document.getId(),
+                document.getDocumentType().getTypeCode(),
+                document.getDocumentNumber(),
+                saved.getVersionNumber(),
                 saved.getUploadedAt(),
                 valid,
                 validationStatus,
@@ -379,4 +458,3 @@ public class DocumentService {
         }
     }
 }
-

@@ -32,7 +32,6 @@ import ru.artwell.contractor.io.MultipartFiles;
 import ru.artwell.contractor.service.DocumentService;
 
 import java.util.List;
-import java.util.UUID;
 
 @Tag(name = "01. API загрузки строительных документов", description = "Загрузка XML, валидация по XSD, версионирование и выдача документов")
 @RestController
@@ -50,7 +49,7 @@ public class DocumentController implements ContractorApi {
     @ApiResponses({
             @ApiResponse(
                     responseCode = "201",
-                    description = "Документ успешно сохранён. В ответе есть `validationStatus=VALID` и `documentNumber` (UUID) для группировки версий",
+                    description = "Документ успешно сохранён. В ответе есть `validationStatus=VALID`, `documentId` (логический документ) и `documentNumber` (номер из XML) для группировки версий",
                     content = @Content(schema = @Schema(implementation = UploadDocumentResponse.class))),
             @ApiResponse(
                     responseCode = "400",
@@ -70,7 +69,7 @@ public class DocumentController implements ContractorApi {
             )
             @RequestPart("file") MultipartFile file
     ) {
-        UploadDocumentResponse resp = documentService.uploadXml(MultipartFiles.readBytes(file));
+        UploadDocumentResponse resp = documentService.uploadXml(MultipartFiles.readBytes(file), file.getOriginalFilename());
         if (resp.isValid()) {
             return ResponseEntity.status(HttpStatus.CREATED).body(resp);
         }
@@ -97,8 +96,8 @@ public class DocumentController implements ContractorApi {
             @Parameter(
                     name = "documentNumber",
                     in = ParameterIn.QUERY,
-                    description = "Фильтр по `documentNumber` (UUID), который возвращается в UploadDocumentResponse. Без фильтра — все документы",
-                    example = "550e8400-e29b-41d4-a716-446655440000"
+                    description = "Фильтр по бизнес-номеру документа из XML (как в UploadDocumentResponse.documentNumber). Без фильтра — все документы",
+                    example = "123/2024"
             )
             @RequestParam(name = "documentNumber", required = false) String documentNumber
     ) {
@@ -122,10 +121,10 @@ public class DocumentController implements ContractorApi {
             @Parameter(
                     name = "id",
                     in = ParameterIn.PATH,
-                    description = "Идентификатор сохранённой версии документа (UUID)",
-                    example = "550e8400-e29b-41d4-a716-446655440000"
+                    description = "Идентификатор сохранённой версии документа",
+                    example = "1"
             )
-            @PathVariable UUID id
+            @PathVariable Long id
     ) {
         return ResponseEntity.ok(documentService.getDetail(id));
     }
@@ -148,9 +147,9 @@ public class DocumentController implements ContractorApi {
                     name = "id",
                     in = ParameterIn.PATH,
                     description = "Идентификатор версии документа для скачивания XML",
-                    example = "550e8400-e29b-41d4-a716-446655440000"
+                    example = "1"
             )
-            @PathVariable UUID id
+            @PathVariable Long id
     ) {
         byte[] bytes = documentService.downloadXml(id);
         HttpHeaders headers = new HttpHeaders();
@@ -194,9 +193,9 @@ public class DocumentController implements ContractorApi {
                     name = "id",
                     in = ParameterIn.PATH,
                     description = "Id существующей версии документа, от которой ведётся замена",
-                    example = "550e8400-e29b-41d4-a716-446655440000"
+                    example = "1"
             )
-            @PathVariable UUID id,
+            @PathVariable Long id,
             @Parameter(
                     name = "file",
                     in = ParameterIn.DEFAULT,
@@ -205,7 +204,7 @@ public class DocumentController implements ContractorApi {
             )
             @RequestPart("file") MultipartFile file
     ) {
-        UploadDocumentResponse resp = documentService.replaceXml(id, MultipartFiles.readBytes(file));
+        UploadDocumentResponse resp = documentService.replaceXml(id, MultipartFiles.readBytes(file), file.getOriginalFilename());
         if (resp.isValid()) {
             return ResponseEntity.ok(resp);
         }

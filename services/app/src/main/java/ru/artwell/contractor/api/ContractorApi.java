@@ -15,7 +15,6 @@ import ru.artwell.contractor.dto.DocumentListItemResponse;
 import ru.artwell.contractor.dto.UploadDocumentResponse;
 
 import java.util.List;
-import java.util.UUID;
 
 @RequestMapping("/api/documents")
 public interface ContractorApi {
@@ -30,14 +29,14 @@ public interface ContractorApi {
     );
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    ResponseEntity<DocumentDetailResponse> getById(@PathVariable UUID id);
+    ResponseEntity<DocumentDetailResponse> getById(@PathVariable Long id);
 
     @GetMapping(value = "/{id}/xml", produces = MediaType.APPLICATION_XML_VALUE)
-    ResponseEntity<byte[]> downloadXml(@PathVariable UUID id);
+    ResponseEntity<byte[]> downloadXml(@PathVariable Long id);
 
     @PutMapping(value = "/{id}/replace", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<UploadDocumentResponse> replace(
-            @PathVariable UUID id,
+            @PathVariable Long id,
             @RequestPart("file") MultipartFile file
     );
 }

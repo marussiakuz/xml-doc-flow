@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aook
+  xmlns="http://idActs/AOOK.xsd"
+  xmlns:ct="http://types/CommonTypes.xsd"
+  xmlns:bd="http://types/BaseDocument.xsd"
+  schemaVersion="draft.1"
+>
+  <bd:uuid>650e8400-e29b-41d4-a716-446655440001</bd:uuid>
+  <bd:permanentObjectUUID>650e8400-e29b-41d4-a716-446655440002</bd:permanentObjectUUID>
+  <bd:edition>1</bd:edition>
+
+  <actInfo id="actInfo">
+    <ct:permanentObjectInfo>
+      <ct:permanentObjectName>Тестовый объект КС (пример для валидации АООК)</ct:permanentObjectName>
+      <ct:permanentObjectAddress>
+        <ct:postalAddress>
+          <ct:stringAddress>Россия, г. Москва, ул. Примерная, д. 1</ct:stringAddress>
+        </ct:postalAddress>
+      </ct:permanentObjectAddress>
+      <ct:permanentObjectId>650e8400-e29b-41d4-a716-446655440003</ct:permanentObjectId>
+    </ct:permanentObjectInfo>
+
+    <ct:developer>
+      <ct:participantId>650e8400-e29b-41d4-a716-446655440004</ct:participantId>
+      <ct:organization>
+        <ct:legalEntity>
+          <ct:name>ООО «Застройщик Тест»</ct:name>
+          <ct:ogrn>1027700132195</ct:ogrn>
+          <ct:inn>7707083893</ct:inn>
+          <ct:address>
+            <ct:stringAddress>Россия, 101000, г. Москва, ул. Застройщиков, д. 2</ct:stringAddress>
+          </ct:address>
+        </ct:legalEntity>
+      </ct:organization>
+    </ct:developer>
+
+    <ct:buildingContractor>
+      <ct:organizationInfo>
+        <ct:legalEntity>
+          <ct:name>ООО «Генподрядчик Тест»</ct:name>
+          <ct:ogrn>1027700132196</ct:ogrn>
+          <ct:inn>7707083894</ct:inn>
+          <ct:address>
+            <ct:stringAddress>Россия, г. Москва, ул. Строителей, д. 3</ct:stringAddress>
+          </ct:address>
+        </ct:legalEntity>
+      </ct:organizationInfo>
+      <ct:participantId>650e8400-e29b-41d4-a716-446655440005</ct:participantId>
+    </ct:buildingContractor>
+
+    <ct:projectDocumentationContractor>
+      <ct:organizationInfo>
+        <ct:legalEntity>
+          <ct:name>ООО «Проектировщик Тест»</ct:name>
+          <ct:ogrn>1027700132197</ct:ogrn>
+          <ct:inn>7707083895</ct:inn>
+          <ct:address>
+            <ct:stringAddress>Россия, г. Москва, ул. Проектная, д. 4</ct:stringAddress>
+          </ct:address>
+        </ct:legalEntity>
+      </ct:organizationInfo>
+      <ct:participantId>650e8400-e29b-41d4-a716-446655440006</ct:participantId>
+    </ct:projectDocumentationContractor>
+
+    <ct:documentInfo>
+      <ct:name>Акт освидетельствования ответственных конструкций (АООК), тестовый экземпляр</ct:name>
+      <ct:docId>650e8400-e29b-41d4-a716-446655440007</ct:docId>
+      <ct:number>АООК-ТЕСТ-2026-001</ct:number>
+      <ct:date>2026-04-04</ct:date>
+      <ct:edition>1</ct:edition>
+    </ct:documentInfo>
+
+    <ct:buildingContractorRepresentative>
+      <ct:lastName>Иванов</ct:lastName>
+      <ct:firstName>Иван</ct:firstName>
+      <ct:position>Представитель по строительству</ct:position>
+      <ct:personId>650e8400-e29b-41d4-a716-446655440008</ct:personId>
+      <ct:administrativeDocument>
+        <ct:name>Приказ о назначении</ct:name>
+        <ct:number>П-10</ct:number>
+        <ct:date>2026-01-10</ct:date>
+      </ct:administrativeDocument>
+    </ct:buildingContractorRepresentative>
+
+    <ct:constructionManagementRepresentative>
+      <ct:lastName>Петров</ct:lastName>
+      <ct:firstName>Пётр</ct:firstName>
+      <ct:position>Инженер строительного контроля</ct:position>
+      <ct:personId>650e8400-e29b-41d4-a716-446655440009</ct:personId>
+      <ct:administrativeDocument>
+        <ct:name>Приказ о полномочиях</ct:name>
+        <ct:number>П-20</ct:number>
+        <ct:date>2026-01-15</ct:date>
+      </ct:administrativeDocument>
+    </ct:constructionManagementRepresentative>
+
+    <criticalConstructionsInspector>
+      <ct:legalEntity>ООО «Исполнитель работ»</ct:legalEntity>
+      <ct:participantId>EXEC-PARTICIPANT-001</ct:participantId>
+    </criticalConstructionsInspector>
+
+    <inspectedCriticalConstructionsList>
+      <inspectedCriticalConstructionsListItem>
+        <workAndControlJournalsRecords>
+          <ct:generalWorkJournalRecordsIdsList>
+            <ct:generalWorkJournalRecordsIdsListItem>
+              <ct:generalWorkJournalRecordId>650e8400-e29b-41d4-a716-446655440010</ct:generalWorkJournalRecordId>
+            </ct:generalWorkJournalRecordsIdsListItem>
+          </ct:generalWorkJournalRecordsIdsList>
+        </workAndControlJournalsRecords>
+        <structureElementName>Несущая колонна монолитная, ось А/1</structureElementName>
+        <location>
+          <ct:place>Оси А–Б, между отм. +3.000 и +6.000</ct:place>
+        </location>
+      </inspectedCriticalConstructionsListItem>
+    </inspectedCriticalConstructionsList>
+
+    <workAndProjectDocumentationsList>
+      <workAndProjectDocumentationsListItem>
+        <workAndProjectDocumentation>
+          <ct:obligatoryProjectDocumentation>
+            <ct:projectDocumentationSectionsList>
+              <ct:projectDocumentationSectionsListItem>
+                <ct:projectDocumentationSectionCode>КЖ</ct:projectDocumentationSectionCode>
+                <ct:projectDocumentationSectionName>Конструкции железобетонные</ct:projectDocumentationSectionName>
+              </ct:projectDocumentationSectionsListItem>
+            </ct:projectDocumentationSectionsList>
+          </ct:obligatoryProjectDocumentation>
+        </workAndProjectDocumentation>
+        <organization>
+          <fullOrganizationInfo>
+            <ct:organizationInfo>
+              <ct:legalEntity>
+                <ct:name>ООО «Проектировщик Тест»</ct:name>
+                <ct:ogrn>1027700132197</ct:ogrn>
+                <ct:inn>7707083895</ct:inn>
+                <ct:address>
+                  <ct:stringAddress>Россия, г. Москва, ул. Проектная, д. 4</ct:stringAddress>
+                </ct:address>
+              </ct:legalEntity>
+            </ct:organizationInfo>
+            <ct:participantId>650e8400-e29b-41d4-a716-446655440006</ct:participantId>
+          </fullOrganizationInfo>
+        </organization>
+      </workAndProjectDocumentationsListItem>
+    </workAndProjectDocumentationsList>
+
+    <usedMaterialslist>
+      <usedMaterialslistItem>
+        <ct:name>Бетон В25, марка по прочности</ct:name>
+        <ct:incomingMaterialControlJournalRecordId>650e8400-e29b-41d4-a716-446655440011</ct:incomingMaterialControlJournalRecordId>
+      </usedMaterialslistItem>
+    </usedMaterialslist>
+
+    <examinationDocuments>
+      <ct:obligatoryAsBuiltSchemas>
+        <ct:asBuiltSchemasList>
+          <ct:asBuiltSchemasListItem>
+            <ct:name>Исполнительная схема армирования колонн</ct:name>
+            <ct:number>ИС-КЖ-001</ct:number>
+            <ct:date>2026-03-01</ct:date>
+            <ct:docId>650e8400-e29b-41d4-a716-446655440012</ct:docId>
+          </ct:asBuiltSchemasListItem>
+        </ct:asBuiltSchemasList>
+      </ct:obligatoryAsBuiltSchemas>
+    </examinationDocuments>
+
+    <worksDates>
+      <ct:beginDate>2026-03-01</ct:beginDate>
+      <ct:endDate>2026-03-30</ct:endDate>
+    </worksDates>
+
+    <accordantWorkAndProjectDocumentation>
+      <ct:shortWorkAndProjectDocumentation>
+        <ct:obligatoryShortProjectDocumentation>
+          <ct:shortProjectDocumentationSectionsList>
+            <ct:shortProjectDocumentationSectionsListItem>
+              <ct:name>Раздел КЖ</ct:name>
+              <ct:number>КЖ-Тест-01</ct:number>
+            </ct:shortProjectDocumentationSectionsListItem>
+          </ct:shortProjectDocumentationSectionsList>
+        </ct:obligatoryShortProjectDocumentation>
+      </ct:shortWorkAndProjectDocumentation>
+      <ct:technicalRegulationsDocumentation>
+        <ct:technicalRegulationDetailsList>
+          <ct:technicalRegulationDetailsListItem>
+            <ct:name>СП 63.13330.2018</ct:name>
+            <ct:number>СП 63.13330.2018</ct:number>
+          </ct:technicalRegulationDetailsListItem>
+        </ct:technicalRegulationDetailsList>
+      </ct:technicalRegulationsDocumentation>
+    </accordantWorkAndProjectDocumentation>
+
+    <permittedActions>
+      <allowedToUseForPurpose>Разрешается использование конструкций по назначению</allowedToUseForPurpose>
+    </permittedActions>
+  </actInfo>
+
+  <actsServiceAttributes>
+    <ct:status>
+      <ct:docStatus>Created</ct:docStatus>
+    </ct:status>
+    <ct:senderId>650e8400-e29b-41d4-a716-446655440013</ct:senderId>
+  </actsServiceAttributes>
+</aook>

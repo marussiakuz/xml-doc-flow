@@ -6,17 +6,16 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class DocumentDetailResponse {
-    private UUID id;
-    private UUID groupId;
+    /** Идентификатор версии, по которой открыта карточка. */
+    private Long id;
+    private Long documentId;
     private String docType;
-    private UUID documentNumber;
+    private String documentNumber;
     private LocalDateTime uploadedAt;
     private List<DocumentVersionInfoResponse> versions;
 }
-
