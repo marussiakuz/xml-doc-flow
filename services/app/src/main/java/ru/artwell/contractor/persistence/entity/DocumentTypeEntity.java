@@ -13,16 +13,17 @@ public class DocumentTypeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "type_code", nullable = false, unique = true, length = 128)
+    /** Код совпадает с именем каталога в {@code validation-files/…} — может быть длинным (кириллица, полные названия). */
+    @Column(name = "type_code", nullable = false, unique = true, length = 1024)
     private String typeCode;
 
-    @Column(name = "type_name", nullable = false)
+    @Column(name = "type_name", nullable = false, length = 1024)
     private String typeName;
 
     @Column(name = "category", length = 256)
     private String category;
 
-    @Column(name = "xsd_schema_path", length = 1024)
+    @Column(name = "xsd_schema_path", length = 2048)
     private String xsdSchemaPath;
 
     @Column(name = "is_active", nullable = false)
@@ -49,6 +50,14 @@ public class DocumentTypeEntity {
 
     public String getTypeCode() {
         return typeCode;
+    }
+
+    public String getTypeName() {
+        return typeName;
+    }
+
+    public String getCategory() {
+        return category;
     }
 
     public String getXsdSchemaPath() {

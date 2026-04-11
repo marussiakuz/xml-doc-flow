@@ -1287,7 +1287,7 @@
       /><polygon clip-path="url(#clipPath1)" fill="url(#linearGradient3)" points=" 36 91 45 87 45 89 53 89 53 93 45 93 45 95" stroke="none" stroke-width="1"
       /><polygon clip-path="url(#clipPath1)" fill="none" points=" 36 91 45 87 45 89 53 89 53 93 45 93 45 95" stroke="black" stroke-width="1"
       /><text clip-path="url(#clipPath1)" fill="black" stroke="none" stroke-width="1" x="60" xml:space="preserve" y="95"
-      >import: http://types/CommonTypes.xsd (../types/CommonTypes.xsd)</text
+      >import: http://types/CommonTypes.xsd (../CommonTypes.xsd)</text
     ></g
     ><g font-family="sans-serif" font-size="11px" stroke-linecap="butt" text-rendering="optimizeLegibility"
     ><circle clip-path="url(#clipPath1)" cx="22" cy="91" fill="none" r="5"
@@ -1300,7 +1300,7 @@
       /><polygon clip-path="url(#clipPath1)" fill="url(#linearGradient4)" points=" 36 131 45 127 45 129 53 129 53 133 45 133 45 135" stroke="none" stroke-width="1"
       /><polygon clip-path="url(#clipPath1)" fill="none" points=" 36 131 45 127 45 129 53 129 53 133 45 133 45 135" stroke="black" stroke-width="1"
       /><text clip-path="url(#clipPath1)" fill="black" stroke="none" stroke-width="1" x="60" xml:space="preserve" y="135"
-      >import: http://types/BaseTypes.xsd (../types/BaseTypes.xsd)</text
+      >import: http://types/BaseTypes.xsd (../BaseTypes.xsd)</text
     ></g
     ><g font-family="sans-serif" font-size="11px" stroke-linecap="butt" text-rendering="optimizeLegibility"
     ><circle clip-path="url(#clipPath1)" cx="22" cy="131" fill="none" r="5"
@@ -1313,7 +1313,7 @@
       /><polygon clip-path="url(#clipPath1)" fill="url(#linearGradient5)" points=" 36 171 45 167 45 169 53 169 53 173 45 173 45 175" stroke="none" stroke-width="1"
       /><polygon clip-path="url(#clipPath1)" fill="none" points=" 36 171 45 167 45 169 53 169 53 173 45 173 45 175" stroke="black" stroke-width="1"
       /><text clip-path="url(#clipPath1)" fill="black" stroke="none" stroke-width="1" x="60" xml:space="preserve" y="175"
-      >import: http://types/BaseDocument.xsd (../types/BaseDocument.xsd)</text
+      >import: http://types/BaseDocument.xsd (../BaseDocument.xsd)</text
     ></g
     ><g font-family="sans-serif" font-size="11px" stroke-linecap="butt" text-rendering="optimizeLegibility"
     ><circle clip-path="url(#clipPath1)" cx="22" cy="171" fill="none" r="5"
@@ -1326,7 +1326,7 @@
       /><polygon clip-path="url(#clipPath1)" fill="url(#linearGradient6)" points=" 36 211 45 207 45 209 53 209 53 213 45 213 45 215" stroke="none" stroke-width="1"
       /><polygon clip-path="url(#clipPath1)" fill="none" points=" 36 211 45 207 45 209 53 209 53 213 45 213 45 215" stroke="black" stroke-width="1"
       /><text clip-path="url(#clipPath1)" fill="black" stroke="none" stroke-width="1" x="60" xml:space="preserve" y="215"
-      >import: http://www.w3.org/2000/09/xmldsig# (../types/Xmldsig.xsd)</text
+      >import: http://www.w3.org/2000/09/xmldsig# (../Xmldsig.xsd)</text
     ></g
     ><g font-family="sans-serif" font-size="11px" stroke-linecap="butt" text-rendering="optimizeLegibility"
     ><circle clip-path="url(#clipPath1)" cx="22" cy="211" fill="none" r="5"

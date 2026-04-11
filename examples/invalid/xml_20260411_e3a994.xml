@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aook xmlns="http://idActs/AOOK.xsd"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://idActs/AOOK.xsd AOOK.xsd"
+      schemaVersion="draft.1">
+    
+    <uuid>12345678-1234-1234-8abc-123456789abc</uuid>
+    <permanentObjectUUID>87654321-4321-4321-9def-87654321def9</permanentObjectUUID>
+    <edition>1</edition>
+    
+    <actInfo id="actInfo">
+        <permanentObjectInfo>
+            <permanentObjectName>Тестовый объект капитального строительства</permanentObjectName>
+            <permanentObjectAddress>
+                <postalAddress>
+                    <detalizedAddress>
+                        <country>Российская Федерация</country>
+                        <entityOfFederation>Москва</entityOfFederation>
+                        <districtOrRegionCode>Центральный административный округ</districtOrRegionCode>
+                        <oktmo>45375000000</oktmo>
+                    </detalizedAddress>
+                </postalAddress>
+            </permanentObjectAddress>
+            <permanentObjectId>aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee</permanentObjectId>
+        </permanentObjectInfo>
+        
+        <developer>
+            <participantId>11111111-1111-1111-8abc-111111111111</participantId>
+            <organization>
+                <legalEntity>
+                    <name>ООО Застройщик-Инвест</name>
+                    <ogrn>1234567890123</ogrn>
+                    <inn>123456789012</inn>
+                    <address>
+                        <detalizedAddress>
+                            <country>Российская Федерация</country>
+                            <entityOfFederation>Москва</entityOfFederation>
+                            <districtOrRegionCode>ЦАО</districtOrRegionCode>
+                            <oktmo>45375000000</oktmo>
+                        </detalizedAddress>
+                    </address>
+                </legalEntity>
+            </organization>
+        </developer>
+        
+        <buildingContractor>
+            <organizationInfo>
+                <legalEntity>
+                    <name>АО СтройМонтаж</name>
+                    <ogrn>9876543210987</ogrn>
+                    <inn>987654321098</inn>
+                    <address>
+                        <detalizedAddress>
+                            <country>Российская Федерация</country>
+                            <entityOfFederation>Москва</entityOfFederation>
+                            <districtOrRegionCode>ЦАО</districtOrRegionCode>
+                            <oktmo>45375000000</oktmo>
+                        </detalizedAddress>
+                    </address>
+                </legalEntity>
+            </organizationInfo>
+            <participantId>22222222-2222-2222-8abc-222222222222</participantId>
+        </buildingContractor>
+        
+        <projectDocumentationContractor>
+            <organizationInfo>
+                <legalEntity>
+                    <name>ООО Проект-Сервис</name>
+                    <ogrn>1122334455667</ogrn>
+                    <inn>112233445566</inn>
+                    <address>
+                        <detalizedAddress>
+                            <country>Российская Федерация</country>
+                            <entityOfFederation>Москва</entityOfFederation>
+                            <districtOrRegionCode>САО</districtOrRegionCode>
+                            <oktmo>45375000000</oktmo>
+                        </detalizedAddress>
+                    </address>
+                </legalEntity>
+            </organizationInfo>
+            <participantId>33333333-3333-3333-8abc-333333333333</participantId>
+        </projectDocumentationContractor>
+        
+        <documentInfo>
+            <name>Акт освидетельствования ответственных конструкций</name>
+            <docId>44444444-4444-4444-8abc-444444444444</docId>
+            <number>АООК-2025-001</number>
+            <date>2025-03-15</date>
+            <edition>1</edition>
+        </documentInfo>
+        
+        <buildingContractorRepresentative>
+            <lastName>Иванов</lastName>
+            <firstName>Петр</firstName>
+            <middleName>Сергеевич</middleName>
+            <position>Главный инженер</position>
+            <personId>55555555-5555-5555-8abc-555555555555</personId>
+            <administrativeDocument>
+                <name>Приказ</name>
+                <number>45-к</number>
+                <date>2025-01-10</date>
+            </administrativeDocument>
+        </buildingContractorRepresentative>
+        
+        <constructionManagementRepresentative>
+            <lastName>Петров</lastName>
+            <firstName>Алексей</firstName>
+            <middleName>Владимирович</middleName>
+            <position>Специалист по организации строительства</position>
+            <personId>66666666-6666-6666-8abc-666666666666</personId>
+            <administrativeDocument>
+                <name>Приказ</name>
+                <number>78-к</number>
+                <date>2025-01-15</date>
+            </administrativeDocument>
+            <specialistIdNumber>1234567890</specialistIdNumber>
+        </constructionManagementRepresentative>
+        
+        <criticalConstructionsInspector>
+            <individualEntrepreneur>
+                <lastName>Сидоров</lastName>
+                <firstName>Дмитрий</firstName>
+                <middleName>Андреевич</middleName>
+            </individualEntrepreneur>
+            <participantId>77777777-7777-7777-8abc-777777777777</participantId>
+        </criticalConstructionsInspector>
+        
+        <inspectedCriticalConstructionsList>
+            <inspectedCriticalConstructionsListItem>
+                <workAndControlJournalsRecords>
+                    <generalWorkJournalRecordsIdsList>
+                        <generalWorkJournalRecordsIdsListItem>
+                            <generalWorkJournalRecordId>99999999-9999-9999-8abc-999999999999</generalWorkJournalRecordId>
+                        </generalWorkJournalRecordsIdsListItem>
+                    </generalWorkJournalRecordsIdsList>
+                </workAndControlJournalsRecords>
+                <structureElementName>Фундаментная плита</structureElementName>
+                <location>
+                    <obligatoryAxes>
+                        <axes>А-Д, 1-10</axes>
+                    </obligatoryAxes>
+                </location>
+            </inspectedCriticalConstructionsListItem>
+        </inspectedCriticalConstructionsList>
+        
+        <workAndProjectDocumentationsList>
+            <workAndProjectDocumentationsListItem>
+                <workAndProjectDocumentation>
+                    <obligatoryProjectDocumentation>
+                        <projectDocumentationSectionsList>
+                            <projectDocumentationSectionsListItem>
+                                <projectDocumentationSectionCode>АР</projectDocumentationSectionCode>
+                                <projectDocumentationSectionName>Архитектурные решения</projectDocumentationSectionName>
+                            </projectDocumentationSectionsListItem>
+                        </projectDocumentationSectionsList>
+                    </obligatoryProjectDocumentation>
+                </workAndProjectDocumentation>
+                <organization>
+                    <fullOrganizationInfo>
+                        <organizationInfo>
+                            <legalEntity>
+                                <name>ООО Проект-Сервис</name>
+                                <ogrn>1122334455667</ogrn>
+                                <inn>112233445566</inn>
+                                <address>
+                                    <detalizedAddress>
+                                        <country>Российская Федерация</country>
+                                        <entityOfFederation>Москва</entityOfFederation>
+                                        <districtOrRegionCode>САО</districtOrRegionCode>
+                                        <oktmo>45375000000</oktmo>
+                                    </detalizedAddress>
+                                </address>
+                            </legalEntity>
+                        </organizationInfo>
+                        <participantId>33333333-3333-3333-8abc-333333333333</participantId>
+                    </fullOrganizationInfo>
+                </organization>
+            </workAndProjectDocumentationsListItem>
+        </workAndProjectDocumentationsList>
+        
+        <usedMaterialslist>
+            <usedMaterialslistItem>
+                <name>Бетон В25</name>
+                <incomingMaterialControlJournalRecordId>aaaaaaaa-aaaa-aaaa-8abc-aaaaaaaaaaaa</incomingMaterialControlJournalRecordId>
+            </usedMaterialslistItem>
+        </usedMaterialslist>
+        
+        <examinationDocuments>
+            <obligatoryAsBuiltSchemas>
+                <asBuiltSchemasList>
+                    <asBuiltSchemasListItem>
+                        <docInfoGroup>
+                            <name>Исполнительная схема</name>
+                            <number>ИС-001</number>
+                        </docInfoGroup>
+                        <date>2025-03-15</date>
+                        <docId>bbbbbbbb-bbbb-bbbb-8abc-bbbbbbbbbbbb</docId>
+                    </asBuiltSchemasListItem>
+                </asBuiltSchemasList>
+            </obligatoryAsBuiltSchemas>
+        </examinationDocuments>
+        
+        <worksDates>
+            <beginDate>2025-02-01</beginDate>
+            <endDate>2025-03-14</endDate>
+        </worksDates>
+        
+        <accordantWorkAndProjectDocumentation>
+            <shortWorkAndProjectDocumentation>
+                <obligatoryShortProjectDocumentation>
+                    <shortProjectDocumentationSectionsList>
+                        <shortProjectDocumentationSectionsListItem>
+                            <docInfoGroup>
+                                <name>Конструктивные решения</name>
+                                <number>КР</number>
+                            </docInfoGroup>
+                        </shortProjectDocumentationSectionsListItem>
+                    </shortProjectDocumentationSectionsList>
+                </obligatoryShortProjectDocumentation>
+            </shortWorkAndProjectDocumentation>
+            <technicalRegulationsDocumentation>
+                <technicalRegulationDetailsList>
+                    <technicalRegulationDetailsListItem>
+                        <docInfoGroup>
+                            <name>СП 63.13330.2018</name>
+                            <number>СП 63.13330.2018</number>
+                        </docInfoGroup>
+                    </technicalRegulationDetailsListItem>
+                </technicalRegulationDetailsList>
+            </technicalRegulationsDocumentation>
+        </accordantWorkAndProjectDocumentation>
+        
+        <permittedActions>
+            <allowedToUseForPurpose>Разрешается использование конструкций по назначению</allowedToUseForPurpose>
+        </permittedActions>
+    </actInfo>
+    
+    <actsServiceAttributes>
+        <status>
+            <docStatus>Signed</docStatus>
+        </status>
+        <senderId>11111111-2222-3333-4444-555555555555</senderId>
+    </actsServiceAttributes>
+</aook>

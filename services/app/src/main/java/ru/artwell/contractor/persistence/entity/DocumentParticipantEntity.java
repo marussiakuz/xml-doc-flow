@@ -29,6 +29,46 @@ public class DocumentParticipantEntity {
     @Column(name = "participant_kpp", length = 32)
     private String participantKpp;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "organization_id")
+    private OrganizationEntity organization;
+
     protected DocumentParticipantEntity() {
+    }
+
+    public DocumentParticipantEntity(DocumentVersionEntity documentVersion,
+                                     OrganizationEntity organization,
+                                     String participantRole,
+                                     String participantType,
+                                     String participantName,
+                                     String participantInn,
+                                     String participantKpp) {
+        this.documentVersion = documentVersion;
+        this.organization = organization;
+        this.participantRole = participantRole;
+        this.participantType = participantType;
+        this.participantName = participantName;
+        this.participantInn = participantInn;
+        this.participantKpp = participantKpp;
+    }
+
+    public DocumentVersionEntity getDocumentVersion() {
+        return documentVersion;
+    }
+
+    public String getParticipantRole() {
+        return participantRole;
+    }
+
+    public String getParticipantName() {
+        return participantName;
+    }
+
+    public String getParticipantInn() {
+        return participantInn;
+    }
+
+    public OrganizationEntity getOrganization() {
+        return organization;
     }
 }

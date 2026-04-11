@@ -7,9 +7,9 @@
   xmlns:bd="http://types/BaseDocument.xsd"
   xmlns:cf="http://gsn/gsn39.xsd"
 >
-  <xs:import schemaLocation="../types/CommonTypes.xsd" namespace="http://types/CommonTypes.xsd" />
-  <xs:import schemaLocation="../types/BaseTypes.xsd" namespace="http://types/BaseTypes.xsd" />
-  <xs:import schemaLocation="../types/BaseDocument.xsd" namespace="http://types/BaseDocument.xsd" />
+  <xs:import schemaLocation="../CommonTypes.xsd" namespace="http://types/CommonTypes.xsd" />
+  <xs:import schemaLocation="../BaseTypes.xsd" namespace="http://types/BaseTypes.xsd" />
+  <xs:import schemaLocation="../BaseDocument.xsd" namespace="http://types/BaseDocument.xsd" />
 
   <xs:complexType name="gsn39">
     <xs:annotation>

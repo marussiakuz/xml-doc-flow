@@ -8,4 +8,6 @@ import java.util.Optional;
 public interface ConstructionObjectRepository extends JpaRepository<ConstructionObjectEntity, Long> {
 
     Optional<ConstructionObjectEntity> findByObjectCode(String objectCode);
+
+    Optional<ConstructionObjectEntity> findByPermanentObjectUuid(String permanentObjectUuid);
 }

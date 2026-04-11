@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(
@@ -55,6 +57,9 @@ public class DocumentEntity {
 
     @Column(name = "status", nullable = false, length = 32)
     private String status = "active";
+
+    @OneToMany(mappedBy = "document", fetch = FetchType.LAZY)
+    private List<DocumentVersionEntity> versions = new ArrayList<>();
 
     protected DocumentEntity() {
     }
@@ -121,7 +126,35 @@ public class DocumentEntity {
         return constructionObject;
     }
 
+    public void setConstructionObject(ConstructionObjectEntity constructionObject) {
+        this.constructionObject = constructionObject;
+    }
+
     public LocalDateTime getUploadedAt() {
         return uploadedAt;
+    }
+
+    public LocalDate getDocumentDate() {
+        return documentDate;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public UserEntity getUploadedBy() {
+        return uploadedBy;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public boolean isLatestVersion() {
+        return latestVersion;
+    }
+
+    public List<DocumentVersionEntity> getVersions() {
+        return versions;
     }
 }

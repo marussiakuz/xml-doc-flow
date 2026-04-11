@@ -8,10 +8,10 @@
   xmlns:bd="http://types/BaseDocument.xsd"
   xmlns:sg="http://www.w3.org/2000/09/xmldsig#"
 >
-  <xs:import schemaLocation="../types/CommonTypes.xsd" namespace="http://types/CommonTypes.xsd" />
-  <xs:import schemaLocation="../types/BaseTypes.xsd" namespace="http://types/BaseTypes.xsd" />
-  <xs:import schemaLocation="../types/BaseDocument.xsd" namespace="http://types/BaseDocument.xsd" />
-  <xs:import schemaLocation="../types/Xmldsig.xsd" namespace="http://www.w3.org/2000/09/xmldsig#" />
+  <xs:import schemaLocation="../CommonTypes.xsd" namespace="http://types/CommonTypes.xsd" />
+  <xs:import schemaLocation="../BaseTypes.xsd" namespace="http://types/BaseTypes.xsd" />
+  <xs:import schemaLocation="../BaseDocument.xsd" namespace="http://types/BaseDocument.xsd" />
+  <xs:import schemaLocation="../Xmldsig.xsd" namespace="http://www.w3.org/2000/09/xmldsig#" />
 
   <xs:complexType name="workInfo">
     <xs:annotation>

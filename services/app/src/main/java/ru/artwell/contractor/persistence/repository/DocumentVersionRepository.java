@@ -14,19 +14,7 @@ public interface DocumentVersionRepository extends JpaRepository<DocumentVersion
 
     List<DocumentVersionEntity> findByDocument_IdOrderByVersionNumberDesc(Long documentId);
 
-    @Query("""
-            select v from DocumentVersionEntity v
-            join fetch v.document d
-            join fetch d.documentType
-            where v.versionNumber = d.currentVersion
-            and (:typeCode is null or d.documentType.typeCode = :typeCode)
-            and (:docNum is null or d.documentNumber = :docNum)
-            order by v.uploadedAt desc
-            """)
-    List<DocumentVersionEntity> findCurrentVersions(
-            @Param("typeCode") String typeCode,
-            @Param("docNum") String documentNumber
-    );
+    Optional<DocumentVersionEntity> findByDocument_IdAndVersionNumber(Long documentId, int versionNumber);
 
     @Query("""
             select v from DocumentVersionEntity v

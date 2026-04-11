@@ -21,6 +21,28 @@ public class UserObjectAccessEntity {
     @Column(name = "access_level", length = 32)
     private String accessLevel;
 
+    public UserObjectAccessEntity(UserEntity user, ConstructionObjectEntity constructionObject, String accessLevel) {
+        this.user = user;
+        this.constructionObject = constructionObject;
+        this.accessLevel = accessLevel;
+    }
+
     protected UserObjectAccessEntity() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public UserEntity getUser() {
+        return user;
+    }
+
+    public ConstructionObjectEntity getConstructionObject() {
+        return constructionObject;
+    }
+
+    public String getAccessLevel() {
+        return accessLevel;
     }
 }

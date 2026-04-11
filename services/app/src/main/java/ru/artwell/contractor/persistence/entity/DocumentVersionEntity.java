@@ -29,8 +29,15 @@ public class DocumentVersionEntity {
     @Column(name = "version_number", nullable = false)
     private int versionNumber;
 
+    /**
+     * Устарело: относительный путь к файлу на диске. В старых БД колонка {@code xml_file_path} остаётся NOT NULL —
+     * при вставке пишем пустую строку. После {@code ALTER TABLE ... DROP COLUMN xml_file_path} поле удалить.
+     */
     @Column(name = "xml_file_path", nullable = false, length = 2048)
-    private String xmlFilePath;
+    private String xmlFilePath = "";
+
+    @Column(name = "xml_content", columnDefinition = "bytea")
+    private byte[] xmlContent;
 
     @Column(name = "xml_file_name", nullable = false, length = 512)
     private String xmlFileName;
@@ -60,7 +67,7 @@ public class DocumentVersionEntity {
 
     public DocumentVersionEntity(DocumentEntity document,
                                int versionNumber,
-                               String xmlFilePath,
+                               byte[] xmlContent,
                                String xmlFileName,
                                long xmlFileSize,
                                VersionValidationStatus validationStatus,
@@ -70,7 +77,8 @@ public class DocumentVersionEntity {
                                DocumentVersionEntity previousVersion) {
         this.document = document;
         this.versionNumber = versionNumber;
-        this.xmlFilePath = xmlFilePath;
+        this.xmlFilePath = "";
+        this.xmlContent = xmlContent;
         this.xmlFileName = xmlFileName;
         this.xmlFileSize = xmlFileSize;
         this.validationStatus = validationStatus;
@@ -92,8 +100,16 @@ public class DocumentVersionEntity {
         return versionNumber;
     }
 
-    public String getXmlFilePath() {
-        return xmlFilePath;
+    public byte[] getXmlContent() {
+        return xmlContent;
+    }
+
+    public String getXmlFileName() {
+        return xmlFileName;
+    }
+
+    public long getXmlFileSize() {
+        return xmlFileSize;
     }
 
     public VersionValidationStatus getValidationStatus() {

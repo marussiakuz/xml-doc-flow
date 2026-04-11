@@ -1,6 +1,5 @@
 package ru.artwell.contractor.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.artwell.contractor.persistence.entity.DocumentValidationStatus;
@@ -10,7 +9,6 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 public class UploadDocumentResponse {
     /** Идентификатор сохранённой версии ({@code document_versions.id}). */
     private Long id;
@@ -24,4 +22,18 @@ public class UploadDocumentResponse {
     private boolean valid;
     private DocumentValidationStatus validationStatus;
     private List<ValidationErrorDto> validationErrors;
+
+    public UploadDocumentResponse(Long id, Long documentId, String docType, String documentNumber, int version,
+                                  LocalDateTime uploadedAt, boolean valid, DocumentValidationStatus validationStatus,
+                                  List<ValidationErrorDto> validationErrors) {
+        this.id = id;
+        this.documentId = documentId;
+        this.docType = docType;
+        this.documentNumber = documentNumber;
+        this.version = version;
+        this.uploadedAt = uploadedAt;
+        this.valid = valid;
+        this.validationStatus = validationStatus;
+        this.validationErrors = validationErrors;
+    }
 }

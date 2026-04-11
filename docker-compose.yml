@@ -21,14 +21,10 @@ services:
       SPRING_DATASOURCE_USERNAME: xml_doc_flow
       SPRING_DATASOURCE_PASSWORD: xml_doc_flow
       PORT: 8080
-      APP_STORAGE_XML_ROOT: /data/xml-documents
     ports:
       - "8080:8080"
-    volumes:
-      - app-xml:/data/xml-documents
     depends_on:
       - db
 
 volumes:
   pgdata:
-  app-xml:

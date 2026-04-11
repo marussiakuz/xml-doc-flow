@@ -9,9 +9,9 @@
   xmlns:bt="http://v_17_0/types/BaseTypes.xsd"
   xmlns:bd="http://v_17_0/types/BaseDocument.xsd"
 >
-  <xs:import schemaLocation="../types/CommonTypes.xsd" namespace="http://v_17_0/types/CommonTypes.xsd" />
-  <xs:import schemaLocation="../types/BaseTypes.xsd" namespace="http://v_17_0/types/BaseTypes.xsd" />
-  <xs:import schemaLocation="../types/BaseDocument.xsd" namespace="http://v_17_0/types/BaseDocument.xsd" />
+  <xs:import schemaLocation="../CommonTypes.xsd" namespace="http://v_17_0/types/CommonTypes.xsd" />
+  <xs:import schemaLocation="../BaseTypes.xsd" namespace="http://v_17_0/types/BaseTypes.xsd" />
+  <xs:import schemaLocation="../BaseDocument.xsd" namespace="http://v_17_0/types/BaseDocument.xsd" />
 
   <xs:complexType name="idSpJournalDesignerControl">
     <xs:annotation>

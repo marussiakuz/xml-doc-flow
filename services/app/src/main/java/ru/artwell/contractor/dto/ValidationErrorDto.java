@@ -1,15 +1,19 @@
 package ru.artwell.contractor.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 public class ValidationErrorDto {
     private String message;
     private Integer lineNumber;
     private Integer columnNumber;
+
+    public ValidationErrorDto(String message, Integer lineNumber, Integer columnNumber) {
+        this.message = message;
+        this.lineNumber = lineNumber;
+        this.columnNumber = columnNumber;
+    }
 }
 

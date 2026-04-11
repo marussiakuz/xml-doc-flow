@@ -4,8 +4,6 @@ server:
 # Часовой пояс для бизнес-времени (LocalDateTime.now(zone)) и Jackson
 app:
   time-zone: Europe/Moscow
-  storage:
-    xml-root: ${APP_STORAGE_XML_ROOT:./data/xml-documents}
   seed:
     test-username: ${APP_SEED_TEST_USERNAME:test}
     test-password: ${APP_SEED_TEST_PASSWORD:test}

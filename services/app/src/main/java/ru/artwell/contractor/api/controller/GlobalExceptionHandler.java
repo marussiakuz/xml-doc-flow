@@ -2,7 +2,10 @@ package ru.artwell.contractor.api.controller;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import ru.artwell.contractor.config.AppTimeConfiguration;
@@ -17,6 +20,7 @@ import ru.artwell.contractor.service.XsdCatalogService;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -30,7 +34,23 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(DocumentService.NotFoundException.class)
     public ResponseEntity<ErrorResponse> handleNotFound(DocumentService.NotFoundException ex) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(ex.getMessage()));
+        ErrorResponse error = new ErrorResponse(ex.getMessage());
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(error);
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ErrorResponse> handleAccessDenied(AccessDeniedException ex) {
+        String msg = ex.getMessage();
+        if (msg == null || msg.isBlank()) {
+            msg = "Доступ запрещён";
+        }
+        return ResponseEntity
+                .status(HttpStatus.FORBIDDEN)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(new ErrorResponse(msg));
     }
 
     @ExceptionHandler(DocumentService.ConflictException.class)
@@ -38,15 +58,30 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(uploadErrorEnvelope(ex.getMessage(), DocumentValidationStatus.INVALID_CONFLICT));
     }
 
+    /** Обычно перехватывается в {@link ru.artwell.contractor.service.DocumentService}; здесь — 201, не 400 (как для сохранённого невалидного XML). */
     @ExceptionHandler(XsdCatalogService.UnknownDocumentTypeException.class)
     public ResponseEntity<UploadDocumentResponse> handleUnknownDocumentType(
             XsdCatalogService.UnknownDocumentTypeException ex) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(uploadErrorEnvelope(ex.getMessage(), DocumentValidationStatus.INVALID_UNKNOWN_DOCUMENT_TYPE));
+        return ResponseEntity.status(HttpStatus.CREATED).body(uploadErrorEnvelope(ex.getMessage(), DocumentValidationStatus.INVALID_UNKNOWN_DOCUMENT_TYPE));
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ErrorResponse> handleBadRequest(IllegalArgumentException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(ex.getMessage()));
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorResponse> handleValidation(MethodArgumentNotValidException ex) {
+        String msg = ex.getBindingResult().getFieldErrors().stream()
+                .map(e -> e.getField() + ": " + e.getDefaultMessage())
+                .collect(Collectors.joining("; "));
+        if (msg.isBlank()) {
+            msg = "Невалидные параметры запроса";
+        }
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(new ErrorResponse(msg));
     }
 
     @ExceptionHandler(MultipartFileReadException.class)

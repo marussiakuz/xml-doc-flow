@@ -1,6 +1,5 @@
 package ru.artwell.contractor.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -9,7 +8,6 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 public class DocumentDetailResponse {
     /** Идентификатор версии, по которой открыта карточка. */
     private Long id;
@@ -18,4 +16,14 @@ public class DocumentDetailResponse {
     private String documentNumber;
     private LocalDateTime uploadedAt;
     private List<DocumentVersionInfoResponse> versions;
+
+    public DocumentDetailResponse(Long id, Long documentId, String docType, String documentNumber, LocalDateTime uploadedAt,
+                                  List<DocumentVersionInfoResponse> versions) {
+        this.id = id;
+        this.documentId = documentId;
+        this.docType = docType;
+        this.documentNumber = documentNumber;
+        this.uploadedAt = uploadedAt;
+        this.versions = versions;
+    }
 }

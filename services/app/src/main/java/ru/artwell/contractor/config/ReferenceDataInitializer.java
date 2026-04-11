@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.core.annotation.Order;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import ru.artwell.contractor.persistence.entity.*;
@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Создаёт тестовую организацию, одного пользователя и объект строительства по умолчанию;
+ * Создаёт тестовую организацию, пользователей с ролями, объект строительства, права на типы документов;
  * синхронизирует справочник {@code document_types} с загруженными XSD.
  */
 @Component
@@ -28,6 +28,9 @@ public class ReferenceDataInitializer implements ApplicationRunner {
     private final ConstructionObjectRepository constructionObjectRepository;
     private final DocumentTypeRepository documentTypeRepository;
     private final XsdDefinitionRepository xsdDefinitionRepository;
+    private final RoleDocumentPermissionRepository roleDocumentPermissionRepository;
+    private final UserObjectAccessRepository userObjectAccessRepository;
+    private final PasswordEncoder passwordEncoder;
 
     private final String testUsername;
     private final String testPassword;
@@ -38,6 +41,9 @@ public class ReferenceDataInitializer implements ApplicationRunner {
                                     ConstructionObjectRepository constructionObjectRepository,
                                     DocumentTypeRepository documentTypeRepository,
                                     XsdDefinitionRepository xsdDefinitionRepository,
+                                    RoleDocumentPermissionRepository roleDocumentPermissionRepository,
+                                    UserObjectAccessRepository userObjectAccessRepository,
+                                    PasswordEncoder passwordEncoder,
                                     @Value("${app.seed.test-username}") String testUsername,
                                     @Value("${app.seed.test-password}") String testPassword,
                                     @Value("${app.seed.organization-inn}") String organizationInn) {
@@ -46,6 +52,9 @@ public class ReferenceDataInitializer implements ApplicationRunner {
         this.constructionObjectRepository = constructionObjectRepository;
         this.documentTypeRepository = documentTypeRepository;
         this.xsdDefinitionRepository = xsdDefinitionRepository;
+        this.roleDocumentPermissionRepository = roleDocumentPermissionRepository;
+        this.userObjectAccessRepository = userObjectAccessRepository;
+        this.passwordEncoder = passwordEncoder;
         this.testUsername = testUsername;
         this.testPassword = testPassword;
         this.organizationInn = organizationInn;
@@ -55,10 +64,14 @@ public class ReferenceDataInitializer implements ApplicationRunner {
     @Transactional
     public void run(ApplicationArguments args) {
         OrganizationEntity organization = ensureOrganization();
-        UserEntity testUser = ensureTestUser(organization);
-        ensureDefaultConstructionObject(testUser);
+        UserEntity admin = ensureTestUser(organization);
+        ConstructionObjectEntity defaultObject = ensureDefaultConstructionObject(admin);
+        ensureContractorUser(organization);
+        UserEntity customer = ensureCustomerUser(organization);
+        ensureCustomerAccessToObject(customer, defaultObject);
         syncDocumentTypesFromXsd();
         ensureUnknownDocumentType();
+        initRoleDocumentPermissions();
     }
 
     private OrganizationEntity ensureOrganization() {
@@ -70,40 +83,75 @@ public class ReferenceDataInitializer implements ApplicationRunner {
                         organizationInn,
                         null,
                         null,
+                        null,
                         true
                 ))
         );
     }
 
     private UserEntity ensureTestUser(OrganizationEntity organization) {
-        return userRepository.findByUsername(testUsername).orElseGet(() -> {
-            String hash = new BCryptPasswordEncoder().encode(testPassword);
-            return userRepository.save(new UserEntity(
-                    testUsername,
-                    hash,
-                    "Тестовый пользователь",
-                    "ADMIN",
-                    organization,
-                    "test@example.local",
-                    true
-            ));
-        });
+        return userRepository.findByUsername(testUsername).orElseGet(() ->
+                userRepository.save(new UserEntity(
+                        testUsername,
+                        passwordEncoder.encode(testPassword),
+                        "Тестовый пользователь (администратор)",
+                        "ADMIN",
+                        organization,
+                        "test@example.local",
+                        true
+                ))
+        );
     }
 
-    private void ensureDefaultConstructionObject(UserEntity testUser) {
-        if (constructionObjectRepository.findByObjectCode(DEFAULT_OBJECT_CODE).isPresent()) {
+    private void ensureContractorUser(OrganizationEntity organization) {
+        if (userRepository.findByUsername("contractor").isPresent()) {
             return;
         }
-        constructionObjectRepository.save(new ConstructionObjectEntity(
-                DEFAULT_OBJECT_CODE,
-                "Тестовый объект капитального строительства",
-                "Адрес не задан",
-                testUser,
-                testUser,
-                testUser,
-                testUser,
-                "active"
+        userRepository.save(new UserEntity(
+                "contractor",
+                passwordEncoder.encode("password"),
+                "Тестовый подрядчик",
+                "CONTRACTOR",
+                organization,
+                "contractor@example.local",
+                true
         ));
+    }
+
+    private UserEntity ensureCustomerUser(OrganizationEntity organization) {
+        return userRepository.findByUsername("customer").orElseGet(() ->
+                userRepository.save(new UserEntity(
+                        "customer",
+                        passwordEncoder.encode("password"),
+                        "Тестовый заказчик",
+                        "CUSTOMER",
+                        organization,
+                        "customer@example.local",
+                        true
+                ))
+        );
+    }
+
+    private void ensureCustomerAccessToObject(UserEntity customer, ConstructionObjectEntity object) {
+        if (userObjectAccessRepository.existsByUser_IdAndConstructionObject_Id(customer.getId(), object.getId())) {
+            return;
+        }
+        userObjectAccessRepository.save(new UserObjectAccessEntity(customer, object, "VIEW"));
+    }
+
+    private ConstructionObjectEntity ensureDefaultConstructionObject(UserEntity testUser) {
+        return constructionObjectRepository.findByObjectCode(DEFAULT_OBJECT_CODE).orElseGet(() ->
+                constructionObjectRepository.save(new ConstructionObjectEntity(
+                        DEFAULT_OBJECT_CODE,
+                        "Тестовый объект капитального строительства",
+                        "Адрес не задан",
+                        testUser,
+                        testUser,
+                        testUser,
+                        testUser,
+                        "active"
+                ))
+        );
     }
 
     private void syncDocumentTypesFromXsd() {
@@ -137,6 +185,36 @@ public class ReferenceDataInitializer implements ApplicationRunner {
                     null,
                     true
             ));
+        }
+    }
+
+    private void initRoleDocumentPermissions() {
+        for (DocumentTypeEntity type : documentTypeRepository.findAll()) {
+            if ("UNKNOWN".equals(type.getTypeCode())) {
+                continue;
+            }
+            if (roleDocumentPermissionRepository.findByRoleAndDocumentType_TypeCode("CONTRACTOR", type.getTypeCode()).isEmpty()) {
+                roleDocumentPermissionRepository.save(new RoleDocumentPermissionEntity(
+                        "CONTRACTOR",
+                        type,
+                        true,
+                        true,
+                        false,
+                        false,
+                        false
+                ));
+            }
+            if (roleDocumentPermissionRepository.findByRoleAndDocumentType_TypeCode("CUSTOMER", type.getTypeCode()).isEmpty()) {
+                roleDocumentPermissionRepository.save(new RoleDocumentPermissionEntity(
+                        "CUSTOMER",
+                        type,
+                        false,
+                        true,
+                        false,
+                        false,
+                        true
+                ));
+            }
         }
     }
 }

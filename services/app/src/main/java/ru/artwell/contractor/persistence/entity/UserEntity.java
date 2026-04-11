@@ -67,4 +67,28 @@ public class UserEntity {
     public String getUsername() {
         return username;
     }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public String getPasswordHash() {
+        return passwordHash;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public OrganizationEntity getOrganization() {
+        return organization;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
 }
