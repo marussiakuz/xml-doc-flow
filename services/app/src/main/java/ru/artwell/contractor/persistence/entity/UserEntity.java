@@ -91,4 +91,8 @@ public class UserEntity {
     public boolean isActive() {
         return active;
     }
+
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
+    }
 }

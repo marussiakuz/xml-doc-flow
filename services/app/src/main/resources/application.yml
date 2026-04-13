@@ -7,6 +7,9 @@ app:
   seed:
     test-username: ${APP_SEED_TEST_USERNAME:test}
     test-password: ${APP_SEED_TEST_PASSWORD:test}
+    # Пароль для тестовых пользователей contractor/customer.
+    # По умолчанию НЕ "password", чтобы Chrome не ругался на утечки.
+    demo-password: ${APP_SEED_DEMO_PASSWORD:artwell-local-2026!}
     organization-inn: ${APP_SEED_ORG_INN:0000000000}
 
 spring:

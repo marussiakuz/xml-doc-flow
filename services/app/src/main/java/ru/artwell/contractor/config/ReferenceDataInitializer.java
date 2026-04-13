@@ -35,6 +35,7 @@ public class ReferenceDataInitializer implements ApplicationRunner {
     private final String testUsername;
     private final String testPassword;
     private final String organizationInn;
+    private final String demoPassword;
 
     public ReferenceDataInitializer(OrganizationRepository organizationRepository,
                                     UserRepository userRepository,
@@ -46,6 +47,7 @@ public class ReferenceDataInitializer implements ApplicationRunner {
                                     PasswordEncoder passwordEncoder,
                                     @Value("${app.seed.test-username}") String testUsername,
                                     @Value("${app.seed.test-password}") String testPassword,
+                                    @Value("${app.seed.demo-password}") String demoPassword,
                                     @Value("${app.seed.organization-inn}") String organizationInn) {
         this.organizationRepository = organizationRepository;
         this.userRepository = userRepository;
@@ -57,6 +59,7 @@ public class ReferenceDataInitializer implements ApplicationRunner {
         this.passwordEncoder = passwordEncoder;
         this.testUsername = testUsername;
         this.testPassword = testPassword;
+        this.demoPassword = demoPassword;
         this.organizationInn = organizationInn;
     }
 
@@ -104,25 +107,29 @@ public class ReferenceDataInitializer implements ApplicationRunner {
     }
 
     private void ensureContractorUser(OrganizationEntity organization) {
-        if (userRepository.findByUsername("contractor").isPresent()) {
-            return;
+        UserEntity u = userRepository.findByUsername("contractor").orElseGet(() ->
+                userRepository.save(new UserEntity(
+                        "contractor",
+                        passwordEncoder.encode(demoPassword),
+                        "Тестовый подрядчик",
+                        "CONTRACTOR",
+                        organization,
+                        "contractor@example.local",
+                        true
+                ))
+        );
+        // Если пользователь уже существовал с "password", обновим на demoPassword (чтобы не ловить предупреждение Chrome).
+        if (passwordEncoder.matches("password", u.getPasswordHash()) && !passwordEncoder.matches(demoPassword, u.getPasswordHash())) {
+            u.setPasswordHash(passwordEncoder.encode(demoPassword));
+            userRepository.save(u);
         }
-        userRepository.save(new UserEntity(
-                "contractor",
-                passwordEncoder.encode("password"),
-                "Тестовый подрядчик",
-                "CONTRACTOR",
-                organization,
-                "contractor@example.local",
-                true
-        ));
     }
 
     private UserEntity ensureCustomerUser(OrganizationEntity organization) {
-        return userRepository.findByUsername("customer").orElseGet(() ->
+        UserEntity u = userRepository.findByUsername("customer").orElseGet(() ->
                 userRepository.save(new UserEntity(
                         "customer",
-                        passwordEncoder.encode("password"),
+                        passwordEncoder.encode(demoPassword),
                         "Тестовый заказчик",
                         "CUSTOMER",
                         organization,
@@ -130,6 +137,11 @@ public class ReferenceDataInitializer implements ApplicationRunner {
                         true
                 ))
         );
+        if (passwordEncoder.matches("password", u.getPasswordHash()) && !passwordEncoder.matches(demoPassword, u.getPasswordHash())) {
+            u.setPasswordHash(passwordEncoder.encode(demoPassword));
+            userRepository.save(u);
+        }
+        return u;
     }
 
     private void ensureCustomerAccessToObject(UserEntity customer, ConstructionObjectEntity object) {

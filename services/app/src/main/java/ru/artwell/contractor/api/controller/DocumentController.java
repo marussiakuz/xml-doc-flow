@@ -117,15 +117,6 @@ public class DocumentController implements ContractorApi {
         return ResponseEntity.ok(body);
     }
 
-    /**
-     * Раньше список отдавался через GET с длинным query; используйте {@code POST /api/documents/search}.
-     */
-    @Deprecated(since = "1.1", forRemoval = true)
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> listDeprecated() {
-        return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).build();
-    }
-
     @Override
     @Operation(summary = "Карточка логического документа: объект, участники, версии, кто загрузил")
     @ApiResponses({
