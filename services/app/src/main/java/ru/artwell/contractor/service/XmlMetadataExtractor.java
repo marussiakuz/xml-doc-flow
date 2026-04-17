@@ -41,7 +41,7 @@ public class XmlMetadataExtractor {
 
     /**
      * Отсекает служебные форматы из validation-files (xsl, xsd, svg и т.п.).
-     * Электронный документ Минстроя — это XML с корнем вида {@code cf:aogrooks} и т.д., а не {@code xsl:stylesheet}.
+     * Электронный документ Минстроя — это XML с корнем вида {@code cf:aogrooks} и т.д..
      */
     public void assertBusinessDocumentRoot(RootQName root) {
         String ns = root.namespaceUri() == null ? "" : root.namespaceUri();
@@ -49,19 +49,18 @@ public class XmlMetadataExtractor {
 
         if (NS_XSLT.equals(ns) && ("stylesheet".equals(local) || "transform".equals(local))) {
             throw new IllegalArgumentException(
-                    "Загружен файл XSLT-стилей (.xsl), а не XML-документ строительного контроля. "
-                            + "Нужно загрузить XML, сформированный по XSD (например корневой элемент вроде cf:aogrooks для AOGROOKS), "
-                            + "а не шаблон отображения AOGROOKS.xsl."
+                    "Загружен файл XSLT-стилей (.xsl). Нужно загрузить XML, сформированный по XSD " +
+                            "(например корневой элемент вроде cf:aogrooks для AOGROOKS)"
             );
         }
         if (NS_XML_SCHEMA.equals(ns) && "schema".equals(local)) {
             throw new IllegalArgumentException(
-                    "Загружен файл XSD-схемы, а не XML-документ. Загрузите XML-экземпляр документа, проверяемый по схеме."
+                    "Загрузите XML-экземпляр документа, проверяемый по схеме."
             );
         }
         if (NS_SVG.equals(ns) && "svg".equals(local)) {
             throw new IllegalArgumentException(
-                    "Загружен SVG-файл, а не XML-документ. Загрузите XML-документ акта/журнала."
+                    "Загрузите XML-документ акта/журнала."
             );
         }
     }
@@ -72,9 +71,6 @@ public class XmlMetadataExtractor {
         XPathFactory xPathFactory = XPathFactory.newInstance();
         XPath xPath = xPathFactory.newXPath();
 
-        // Namespace-agnostic extraction.
-        // For "idActs" schemas document number is usually: actInfo/documentInfo/number.
-        // For "gsn" schemas it is usually: actInfo/documentDetails/.../number.
         try {
             XPathExpression expr = xPath.compile(
                     "//*[local-name()='actInfo']//*[local-name()='documentInfo']/*[local-name()='number'][1]/text()"
@@ -174,8 +170,7 @@ public class XmlMetadataExtractor {
     }
 
     /**
-     * Структурированный адрес объекта ({@code permanentObjectInfo/permanentObjectAddress/.../detalizedAddress}
-     * или {@code stringAddress}).
+     * Структурированный адрес объекта
      */
     public Optional<ConstructionObjectAddressDto> extractPermanentObjectAddressStructured(String xml) {
         Document document = parseXmlSecurely(xml);
@@ -230,7 +225,7 @@ public class XmlMetadataExtractor {
             String lt = elementText(localityEl, "localityType");
             String ln = elementText(localityEl, "localityName");
             locality = Stream.of(lt, ln)
-                    .filter(s -> s != null && !s.isBlank())
+                    .filter(s -> !s.isBlank())
                     .collect(Collectors.joining(" "));
         }
         if (locality.isBlank() && !settlement.isBlank()) {
@@ -242,7 +237,7 @@ public class XmlMetadataExtractor {
             String a = elementText(rn, "roadNetworkElement");
             String b = elementText(rn, "roadNetworkObject");
             street = Stream.of(a, b)
-                    .filter(s -> s != null && !s.isBlank())
+                    .filter(s -> !s.isBlank())
                     .collect(Collectors.joining(", "));
         }
         Element building = findFirstDescendantLocal(det, "building");
@@ -251,7 +246,7 @@ public class XmlMetadataExtractor {
             String bt = elementText(building, "buildingType");
             String bn = elementText(building, "buildingNumber");
             house = Stream.of(bt, bn)
-                    .filter(s -> s != null && !s.isBlank())
+                    .filter(s -> !s.isBlank())
                     .collect(Collectors.joining(" "));
         }
         String postalCode = elementText(det, "postalCode");
@@ -344,7 +339,7 @@ public class XmlMetadataExtractor {
             String firstName = elementText(ie, "firstName");
             String middleName = elementText(ie, "middleName");
             String name = Stream.of(lastName, firstName, middleName)
-                    .filter(s -> s != null && !s.isBlank())
+                    .filter(s -> !s.isBlank())
                     .collect(Collectors.joining(" "));
             String inn = findInnNearIndividual(roleElement, ie);
             String ogrn = elementText(ie, "ogrnip");
@@ -361,9 +356,6 @@ public class XmlMetadataExtractor {
         return Optional.empty();
     }
 
-    /**
-     * Адрес из элемента {@code address} (юрлица / ИП): {@code detalizedAddress} или {@code stringAddress}.
-     */
     private Optional<ConstructionObjectAddressDto> extractPostalAddressFromAddressElement(Element addressContainer) {
         if (addressContainer == null) {
             return Optional.empty();
@@ -501,8 +493,6 @@ public class XmlMetadataExtractor {
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             factory.setNamespaceAware(true);
-
-            // Prevent XXE / SSRF
             factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
             factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
             factory.setFeature("http://xml.org/sax/features/external-general-entities", false);
@@ -519,10 +509,6 @@ public class XmlMetadataExtractor {
 
     public record RootQName(String namespaceUri, String localName) {
 
-        /**
-         * Разбирает нотацию вида {@code {http://idActs/AOOK.xsd}aook} (expanded name / Clark notation)
-         * в пару URI пространства имён и локальное имя элемента.
-         */
         public static Optional<RootQName> parseExpandedForm(String expanded) {
             if (expanded == null || expanded.isEmpty() || expanded.charAt(0) != '{') {
                 return Optional.empty();
@@ -539,7 +525,6 @@ public class XmlMetadataExtractor {
             return Optional.of(new RootQName(uri.isEmpty() ? null : uri, local));
         }
 
-        /** Только локальная часть из строки {@code {uri}local}; например для {@code {http://idActs/AOOK.xsd}aook} → {@code aook}. */
         public static Optional<String> localNameFromExpandedForm(String expanded) {
             return parseExpandedForm(expanded).map(RootQName::localName);
         }

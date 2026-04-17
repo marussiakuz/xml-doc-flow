@@ -58,7 +58,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(uploadErrorEnvelope(ex.getMessage(), DocumentValidationStatus.INVALID_CONFLICT));
     }
 
-    /** Обычно перехватывается в {@link ru.artwell.contractor.service.DocumentService}; здесь — 201, не 400 (как для сохранённого невалидного XML). */
+    /** перехватывается в {@link ru.artwell.contractor.service.DocumentService}; здесь — 201. */
     @ExceptionHandler(XsdCatalogService.UnknownDocumentTypeException.class)
     public ResponseEntity<UploadDocumentResponse> handleUnknownDocumentType(
             XsdCatalogService.UnknownDocumentTypeException ex) {
@@ -93,6 +93,7 @@ public class GlobalExceptionHandler {
 
     private UploadDocumentResponse uploadErrorEnvelope(String message, DocumentValidationStatus status) {
         return new UploadDocumentResponse(
+                null,
                 null,
                 null,
                 null,

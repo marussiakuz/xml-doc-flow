@@ -15,7 +15,7 @@ public class ConstructionObjectEntity {
     @Column(name = "object_code", nullable = false, unique = true, length = 128)
     private String objectCode;
 
-    /** GUID объекта капитального строительства из XML ({@code permanentObjectUUID} / {@code permanentObjectId}). */
+    /** GUID объекта капитального строительства из XML */
     @Column(name = "permanent_object_uuid", length = 64, unique = true)
     private String permanentObjectUuid;
 

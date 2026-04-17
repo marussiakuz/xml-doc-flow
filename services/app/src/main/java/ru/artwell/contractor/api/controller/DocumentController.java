@@ -29,6 +29,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import ru.artwell.contractor.api.ContractorApi;
 import ru.artwell.contractor.security.SecurityUser;
+import ru.artwell.contractor.dto.AuditLogDto;
+import ru.artwell.contractor.dto.AuditLogPageResponse;
 import ru.artwell.contractor.dto.DocumentCardResponse;
 import ru.artwell.contractor.dto.DocumentPageResponse;
 import ru.artwell.contractor.dto.DocumentResponse;
@@ -38,7 +40,11 @@ import ru.artwell.contractor.dto.UploadDocumentResponse;
 import ru.artwell.contractor.dto.VersionInfo;
 import ru.artwell.contractor.dto.XmlDownload;
 import ru.artwell.contractor.io.MultipartFiles;
+import ru.artwell.contractor.persistence.entity.DocumentValidationStatus;
 import ru.artwell.contractor.service.DocumentService;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
@@ -59,11 +65,11 @@ public class DocumentController implements ContractorApi {
     @ApiResponses({
             @ApiResponse(
                     responseCode = "201",
-                    description = "Версия документа сохранена в БД (BYTEA). При `validationStatus=VALID` — XSD пройден; при `INVALID_*` — в теле `validationErrors` и `valid=false`. HTTP 400 не используется для результата валидации",
+                    description = "Версия документа сохранена",
                     content = @Content(schema = @Schema(implementation = UploadDocumentResponse.class))),
             @ApiResponse(
                     responseCode = "400",
-                    description = "Не удалось прочитать файл из multipart (`MultipartFileReadException`, тело `ErrorResponse`)",
+                    description = "Не удалось прочитать файл из multipart",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     @PostMapping(
@@ -74,7 +80,7 @@ public class DocumentController implements ContractorApi {
             @Parameter(
                     name = "file",
                     in = ParameterIn.DEFAULT,
-                    description = "Файл экземпляра XML-документа (не XSL/XSD/SVG)",
+                    description = "Файл экземпляра XML-документа",
                     example = "document.xml"
             )
             @RequestPart("file") MultipartFile file,
@@ -118,11 +124,11 @@ public class DocumentController implements ContractorApi {
     }
 
     @Override
-    @Operation(summary = "Карточка логического документа: объект, участники, версии, кто загрузил")
+    @Operation(summary = "Карточка документа: объект, участники, версии, кто загрузил")
     @ApiResponses({
             @ApiResponse(
                     responseCode = "200",
-                    description = "Полная карточка по идентификатору логического документа (documents.id)",
+                    description = "Полная карточка по идентификатору логического документа",
                     content = @Content(schema = @Schema(implementation = DocumentCardResponse.class))),
             @ApiResponse(
                     responseCode = "404",
@@ -134,7 +140,7 @@ public class DocumentController implements ContractorApi {
             @Parameter(
                     name = "id",
                     in = ParameterIn.PATH,
-                    description = "Идентификатор логического документа (documents.id), не id версии",
+                    description = "Идентификатор документа",
                     example = "13"
             )
             @PathVariable Long id,
@@ -144,7 +150,7 @@ public class DocumentController implements ContractorApi {
     }
 
     @Override
-    @Operation(summary = "Список версий логического документа")
+    @Operation(summary = "Список версий документа")
     @ApiResponses({
             @ApiResponse(
                     responseCode = "200",
@@ -157,7 +163,7 @@ public class DocumentController implements ContractorApi {
     })
     @GetMapping(value = "/{documentId}/versions", produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<VersionInfo>> listVersions(
-            @Parameter(name = "documentId", description = "Идентификатор логического документа (documents.id)")
+            @Parameter(name = "documentId", description = "Идентификатор документа")
             @PathVariable Long documentId,
             @AuthenticationPrincipal @Parameter(hidden = true) SecurityUser currentUser
     ) {
@@ -178,7 +184,7 @@ public class DocumentController implements ContractorApi {
     })
     @GetMapping(value = "/{documentId}/versions/latest/download", produces = org.springframework.http.MediaType.APPLICATION_XML_VALUE)
     public ResponseEntity<byte[]> downloadLatestXml(
-            @Parameter(name = "documentId", description = "Идентификатор логического документа (documents.id)")
+            @Parameter(name = "documentId", description = "Идентификатор документа")
             @PathVariable Long documentId,
             @AuthenticationPrincipal @Parameter(hidden = true) SecurityUser currentUser
     ) {
@@ -200,9 +206,9 @@ public class DocumentController implements ContractorApi {
     })
     @GetMapping(value = "/{documentId}/versions/{versionId}/download", produces = org.springframework.http.MediaType.APPLICATION_XML_VALUE)
     public ResponseEntity<byte[]> downloadXmlByDocumentAndVersion(
-            @Parameter(name = "documentId", description = "Идентификатор логического документа (documents.id)")
+            @Parameter(name = "documentId", description = "Идентификатор документа")
             @PathVariable Long documentId,
-            @Parameter(name = "versionId", description = "Идентификатор версии (document_versions.id)")
+            @Parameter(name = "versionId", description = "Идентификатор версии")
             @PathVariable Long versionId,
             @AuthenticationPrincipal @Parameter(hidden = true) SecurityUser currentUser
     ) {
@@ -250,16 +256,35 @@ public class DocumentController implements ContractorApi {
         return new ResponseEntity<>(bytes, headers, HttpStatus.OK);
     }
 
+    @Operation(summary = "История событий аудита по документу (загрузки, просмотры, скачивания)")
+    @GetMapping(value = "/{documentId}/history", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<AuditLogPageResponse> getHistory(
+            @PathVariable Long documentId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size,
+            @AuthenticationPrincipal @Parameter(hidden = true) SecurityUser currentUser
+    ) {
+        var pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
+        var result = documentService.getDocumentHistory(documentId, pageable, currentUser.getUser());
+        return ResponseEntity.ok(new AuditLogPageResponse(
+                result.getContent(),
+                result.getNumber(),
+                result.getSize(),
+                result.getTotalElements(),
+                result.getTotalPages()
+        ));
+    }
+
     @Override
     @Operation(summary = "Замена XML: новая версия при совпадении типа и номера документа")
     @ApiResponses({
             @ApiResponse(
                     responseCode = "200",
-                    description = "Новая версия сохранена. При `validationStatus=VALID` — XSD пройден; при `INVALID_*` — ошибки в `validationErrors`. HTTP 400 не используется для результата валидации",
+                    description = "Новая версия сохранена",
                     content = @Content(schema = @Schema(implementation = UploadDocumentResponse.class))),
             @ApiResponse(
                     responseCode = "400",
-                    description = "Ошибка чтения файла из multipart (`ErrorResponse`)",
+                    description = "Ошибка чтения файла из multipart",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
             @ApiResponse(
                     responseCode = "404",
@@ -267,7 +292,7 @@ public class DocumentController implements ContractorApi {
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
             @ApiResponse(
                     responseCode = "409",
-                    description = "Конфликт (validationStatus=INVALID_CONFLICT): другой тип/номер относительно выбранной версии",
+                    description = "Конфликт при замене: другой тип/номер относительно выбранной версии",
                     content = @Content(schema = @Schema(implementation = UploadDocumentResponse.class)))
     })
     @PutMapping(
@@ -297,6 +322,9 @@ public class DocumentController implements ContractorApi {
                 MultipartFiles.readBytes(file),
                 file.getOriginalFilename(),
                 currentUser.getUser());
+        if (resp.getValidationStatus() == DocumentValidationStatus.INVALID_CONFLICT) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(resp);
+        }
         return ResponseEntity.ok(resp);
     }
 }

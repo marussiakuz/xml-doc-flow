@@ -23,7 +23,7 @@ import ru.artwell.contractor.dto.AuthUserResponse;
 import ru.artwell.contractor.dto.LoginRequest;
 import ru.artwell.contractor.persistence.entity.UserEntity;
 import ru.artwell.contractor.persistence.repository.UserRepository;
-import ru.artwell.contractor.security.SecurityUser;
+import ru.artwell.contractor.util.NameFormats;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -88,7 +88,7 @@ public class AuthController {
     }
 
     private static AuthUserResponse toResponse(UserEntity u) {
-        return new AuthUserResponse(u.getId(), u.getUsername(), u.getFullName(), u.getRole());
+        return new AuthUserResponse(u.getId(), u.getUsername(), NameFormats.toLastNameWithInitials(u.getFullName()), u.getRole());
     }
 }
 

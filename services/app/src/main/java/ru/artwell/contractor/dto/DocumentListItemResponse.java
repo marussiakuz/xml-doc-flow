@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 public class DocumentListItemResponse {
-    /** Идентификатор актуальной версии ({@code document_versions.id}). */
     private Long id;
     private String docType;
     private String documentNumber;

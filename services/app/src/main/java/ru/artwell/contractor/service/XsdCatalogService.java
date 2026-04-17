@@ -52,7 +52,6 @@ public class XsdCatalogService {
     private final Map<String, DocumentTypeMapping> mappingByQName = new ConcurrentHashMap<>();
     private final Map<String, String> xsdContentByNamespace = new ConcurrentHashMap<>();
     private final Map<String, String> xsdContentByFilename = new ConcurrentHashMap<>();
-    /** Полный classpath-путь → текст (для сборки схемы без «склейки» через resolver). */
     private final Map<String, String> xsdContentByResourcePath = new ConcurrentHashMap<>();
     private final Map<String, Schema> schemaCache = new ConcurrentHashMap<>();
 
@@ -65,7 +64,7 @@ public class XsdCatalogService {
     }
 
     /**
-     * Полная загрузка каталога (через прокси — транзакции на шагах срабатывают).
+     * Полная загрузка каталога.
      */
     public void bootstrapCatalog() throws IOException {
         self.syncClasspathToDatabase();
@@ -261,8 +260,6 @@ public class XsdCatalogService {
             URL rootUrl = rootResource.getURL();
 
             SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-            // Один корневой документ + резолвер импортов по реальному URL и относительным путям —
-            // targetNamespace каждого .xsd сохраняется (в отличие от «плоской» подстановки по имени файла).
             factory.setResourceResolver(this::resolveSchemaResource);
 
             StreamSource rootSource = new StreamSource(new StringReader(content));
@@ -283,7 +280,6 @@ public class XsdCatalogService {
                 return null;
             }
             String sid = systemId.trim();
-            // Подмена внешнего W3C на локальный Xmldsig рядом с импортирующей схемой
             if (sid.startsWith("http://www.w3.org") || sid.startsWith("https://www.w3.org")) {
                 return resolveLocalW3cXmldsig(publicId, sid, baseURI);
             }

@@ -9,7 +9,6 @@ public class ParticipantInfo {
     private String role;
     private String roleName;
     private OrganizationInfo organization;
-    /** Дублирует адрес организации для пути {@code participants[].address}. */
     private ConstructionObjectAddressDto address;
 
     public ParticipantInfo(String role, String roleName, OrganizationInfo organization,

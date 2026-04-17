@@ -63,4 +63,8 @@ public class DocumentTypeEntity {
     public String getXsdSchemaPath() {
         return xsdSchemaPath;
     }
+
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
+    }
 }

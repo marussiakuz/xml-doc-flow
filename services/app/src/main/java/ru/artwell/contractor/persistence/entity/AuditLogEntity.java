@@ -41,6 +41,15 @@ public class AuditLogEntity {
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
+    public Long getId() { return id; }
+    public String getActionType() { return actionType; }
+    public String getEntityType() { return entityType; }
+    public Long getEntityId() { return entityId; }
+    public String getUsername() { return username; }
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public Map<String, Object> getActionDetails() { return actionDetails; }
+    public String getIpAddress() { return ipAddress; }
+
     protected AuditLogEntity() {
     }
 

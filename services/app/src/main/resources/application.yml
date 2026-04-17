@@ -28,6 +28,7 @@ spring:
     open-in-view: false
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
+      # TODO: заменить на Flyway + ddl-auto: validate перед выходом в production
       ddl-auto: update
     properties:
       hibernate:

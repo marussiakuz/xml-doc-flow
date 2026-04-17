@@ -23,4 +23,7 @@ public interface DocumentVersionRepository extends JpaRepository<DocumentVersion
             where v.id = :id
             """)
     Optional<DocumentVersionEntity> findByIdWithDocument(@Param("id") Long id);
+
+    @Query("SELECT v.id FROM DocumentVersionEntity v WHERE v.document.id = :documentId")
+    List<Long> findIdsByDocumentId(@Param("documentId") Long documentId);
 }

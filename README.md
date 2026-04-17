@@ -73,7 +73,6 @@
 | `user_object_access` | Права доступа пользователей к объектам строительства (разграничение по объектам) |
 | `role_assignment_history` | История назначения ролей пользователям (аудит изменений ролей) |
 | `audit_log` | Журнал аудита всех действий пользователей (загрузка, просмотр, скачивание, удаление) |
-| `notifications` | Системные уведомления для пользователей (валидация, новые версии, статусы) |
 
 ---
 
@@ -232,22 +231,11 @@ erDiagram
         timestamp created_at "дата и время действия"
     }
 
-    notifications {
-        bigserial id PK "уникальный идентификатор уведомления"
-        bigint user_id FK "получатель уведомления"
-        varchar notification_type "тип: DOCUMENT_VALIDATED/NEW_VERSION/STATUS_CHANGED/VALIDATION_ERROR"
-        varchar title "заголовок уведомления"
-        text message "текст уведомления"
-        boolean is_read "прочитано / не прочитано"
-        timestamp created_at "дата и время создания"
-    }
-
     %% ==================== СВЯЗИ ====================
     organizations ||--o{ users : "имеет сотрудников"
     users ||--o{ documents : "загружает"
     users ||--o{ document_versions : "загружает версию"
     users ||--o{ audit_log : "совершает действия"
-    users ||--o{ notifications : "получает"
     users ||--o{ user_object_access : "имеет доступ к"
     users ||--o{ role_assignment_history : "имеет историю ролей"
     

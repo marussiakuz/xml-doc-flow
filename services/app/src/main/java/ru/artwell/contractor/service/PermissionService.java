@@ -40,6 +40,10 @@ public class PermissionService {
         if (!ROLE_CONTRACTOR.equals(user.getRole())) {
             return false;
         }
+        // Для нераспознанного типа разрешаем сохранение — статус INVALID уже выставлен в apiStatus
+        if (documentTypeCode == null || documentTypeCode.isBlank() || "UNKNOWN".equals(documentTypeCode)) {
+            return true;
+        }
         return permissionRepository.existsByRoleAndDocumentType_TypeCodeAndCanUploadTrue(user.getRole(), documentTypeCode);
     }
 

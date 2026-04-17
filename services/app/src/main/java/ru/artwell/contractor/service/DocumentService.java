@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.artwell.contractor.config.AppTimeConfiguration;
 import ru.artwell.contractor.config.ReferenceDataInitializer;
+import ru.artwell.contractor.dto.AuditLogDto;
 import ru.artwell.contractor.dto.ConstructionObjectAddressDto;
 import ru.artwell.contractor.dto.ConstructionObjectInfo;
 import ru.artwell.contractor.dto.ConstructionObjectDto;
@@ -26,18 +27,24 @@ import ru.artwell.contractor.dto.UserInfo;
 import ru.artwell.contractor.dto.XmlDownload;
 import ru.artwell.contractor.dto.ValidationErrorDto;
 import ru.artwell.contractor.dto.VersionInfo;
+import ru.artwell.contractor.util.NameFormats;
 import ru.artwell.contractor.persistence.entity.*;
 import ru.artwell.contractor.persistence.repository.*;
 import ru.artwell.contractor.persistence.spec.DocumentSpecifications;
 
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
 import javax.xml.validation.Schema;
 import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -114,9 +121,9 @@ public class DocumentService {
         String fileLabel = (originalFileName == null || originalFileName.isBlank()) ? "document.xml" : originalFileName.trim();
 
         String docTypeCode = FALLBACK_DOC_TYPE;
-        String businessNumber = "UNKNOWN-" + UUID.randomUUID();
-        DocumentValidationStatus apiStatus = DocumentValidationStatus.INVALID_XML;
-        List<ValidationErrorDto> responseErrors = Collections.emptyList();
+        String businessNumber = "UNKNOWN-" + sha256Prefix(xmlBytes);
+        DocumentValidationStatus apiStatus;
+        List<ValidationErrorDto> responseErrors;
         String storedErrors = null;
         Optional<LocalDate> documentDate = Optional.empty();
 
@@ -146,7 +153,7 @@ public class DocumentService {
             try {
                 businessNumber = xmlMetadataExtractor.extractDocumentNumber(xml);
             } catch (IllegalArgumentException e) {
-                businessNumber = "UNKNOWN-" + UUID.randomUUID();
+                businessNumber = "UNKNOWN-" + sha256Prefix(xmlBytes);
             }
 
             documentDate = xmlMetadataExtractor.extractDocumentDate(xml);
@@ -213,6 +220,7 @@ public class DocumentService {
                     "active"
             ));
         } else {
+            ensureCanView(actor, document);
             document.setConstructionObject(object);
             previousVersion = documentVersionRepository
                     .findTopByDocument_IdOrderByVersionNumberDesc(document.getId())
@@ -519,60 +527,44 @@ public class DocumentService {
                 entityType,
                 entityId,
                 Map.of("message", message),
-                null,
+                getCurrentRequestIp(),
                 LocalDateTime.now(applicationZoneId)
         ));
     }
 
-    private void auditDocumentsList(UserEntity user, DocumentFilter filter, Pageable pageable) {
-        Map<String, Object> details = new LinkedHashMap<>();
-        details.put("page", pageable.getPageNumber());
-        details.put("size", pageable.getPageSize());
-        details.put("sort", pageable.getSort().toString());
-        // Без вложенных Map и без LocalDate/LocalDateTime — иначе Hibernate JSON (jsonb) не сериализует в Map<String, Object>
-        putAuditFilterFields(details, filter);
-        auditLogRepository.save(new AuditLogEntity(
-                user,
-                user.getUsername(),
-                "VIEW_DOCUMENTS_LIST",
-                "DOCUMENT",
-                null,
-                details,
-                null,
-                LocalDateTime.now(applicationZoneId)
-        ));
-    }
-
-    private static void putAuditFilterFields(Map<String, Object> details, DocumentFilter filter) {
-        putIfNotNull(details, "filter.objectId", filter.objectId());
-        putIfNotNull(details, "filter.objectCode", filter.objectCode());
-        putIfNotNull(details, "filter.documentType", filter.documentType());
-        putIfNotNull(details, "filter.documentNumber", filter.documentNumber());
-        putIfNotNull(details, "filter.status", filter.status());
-        putIfNotNull(details, "filter.validationStatus", filter.validationStatus());
-        if (filter.fromDate() != null) {
-            details.put("filter.fromDate", filter.fromDate().toString());
-        }
-        if (filter.toDate() != null) {
-            details.put("filter.toDate", filter.toDate().toString());
-        }
-        if (filter.uploadedFrom() != null) {
-            details.put("filter.uploadedFrom", filter.uploadedFrom().toString());
-        }
-        if (filter.uploadedTo() != null) {
-            details.put("filter.uploadedTo", filter.uploadedTo().toString());
-        }
-        details.put("filter.latestOnly", filter.latestOnly());
-    }
-
-    private static void putIfNotNull(Map<String, Object> map, String key, Object value) {
-        if (value != null) {
-            if (value instanceof String s && s.isBlank()) {
-                return;
+    private static String sha256Prefix(byte[] data) {
+        try {
+            byte[] digest = MessageDigest.getInstance("SHA-256").digest(data);
+            StringBuilder sb = new StringBuilder(16);
+            for (int i = 0; i < 8; i++) {
+                sb.append(String.format("%02x", digest[i]));
             }
-            map.put(key, value);
+            return sb.toString();
+        } catch (NoSuchAlgorithmException e) {
+            return UUID.randomUUID().toString().replace("-", "").substring(0, 16);
         }
     }
+
+    private static String getCurrentRequestIp() {
+        try {
+            ServletRequestAttributes attrs =
+                    (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+            if (attrs == null) return null;
+            HttpServletRequest req = attrs.getRequest();
+            String forwarded = req.getHeader("X-Forwarded-For");
+            String ip = (forwarded != null && !forwarded.isBlank())
+                    ? forwarded.split(",")[0].trim()
+                    : req.getRemoteAddr();
+            // IPv6 loopback → читаемый вид
+            if ("0:0:0:0:0:0:0:1".equals(ip) || "::1".equals(ip)) {
+                return "127.0.0.1";
+            }
+            return ip;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
 
     private static VersionValidationStatus toVersionValidationStatus(DocumentValidationStatus api) {
         if (api == DocumentValidationStatus.VALID) {
@@ -628,8 +620,6 @@ public class DocumentService {
 
         Page<DocumentEntity> page = documentRepository.findAll(combined, pageable);
 
-        auditDocumentsList(currentUser, filter, pageable);
-
         return page.map(this::toDocumentResponse);
     }
 
@@ -656,7 +646,7 @@ public class DocumentService {
         );
 
         UserEntity uploader = doc.getUploadedBy();
-        UserDto userDto = new UserDto(uploader.getId(), uploader.getUsername(), uploader.getFullName());
+        UserDto userDto = new UserDto(uploader.getId(), uploader.getUsername(), NameFormats.toLastNameWithInitials(uploader.getFullName()));
 
         long documentId = doc.getId();
         String base = "/api/documents/" + documentId;
@@ -739,7 +729,7 @@ public class DocumentService {
                 .toList();
 
         UserEntity uploader = document.getUploadedBy();
-        UserInfo userInfo = new UserInfo(uploader.getId(), uploader.getUsername(), uploader.getFullName());
+        UserInfo userInfo = new UserInfo(uploader.getId(), uploader.getUsername(), NameFormats.toLastNameWithInitials(uploader.getFullName()));
 
         return new DocumentCardResponse(
                 document.getId(),
@@ -834,6 +824,22 @@ public class DocumentService {
         return xmlDownloadFromVersion(entity, currentUser);
     }
 
+    @Transactional(readOnly = true)
+    public org.springframework.data.domain.Page<AuditLogDto> getDocumentHistory(
+            Long documentId,
+            org.springframework.data.domain.Pageable pageable,
+            UserEntity currentUser) {
+        DocumentEntity document = documentRepository.findById(documentId)
+                .orElseThrow(() -> new NotFoundException(String.format(DOCUMENT_ABSENT_MSG, documentId)));
+        ensureCanView(currentUser, document);
+        List<Long> versionIds = documentVersionRepository.findIdsByDocumentId(documentId);
+        org.springframework.data.domain.Page<ru.artwell.contractor.persistence.entity.AuditLogEntity> page =
+                versionIds.isEmpty()
+                        ? auditLogRepository.findByDocumentId(documentId, pageable)
+                        : auditLogRepository.findDocumentHistory(documentId, versionIds, pageable);
+        return page.map(AuditLogDto::from);
+    }
+
     @Transactional
     public XmlDownload downloadLatestXml(Long documentId, UserEntity currentUser) {
         DocumentEntity document = documentRepository.findById(documentId)
@@ -852,7 +858,7 @@ public class DocumentService {
         byte[] content = entity.getXmlContent();
         if (content == null || content.length == 0) {
             throw new IllegalStateException(
-                    "XML для версии " + id + " отсутствует в БД (устаревшая запись до миграции в BYTEA).");
+                    "XML для версии " + id + " отсутствует в БД");
         }
         String name = entity.getXmlFileName();
         if (name == null || name.isBlank()) {
@@ -870,6 +876,7 @@ public class DocumentService {
                 saved.getId(),
                 document.getId(),
                 document.getDocumentType().getTypeCode(),
+                document.getDocumentType().getTypeName(),
                 document.getDocumentNumber(),
                 saved.getVersionNumber(),
                 saved.getUploadedAt(),

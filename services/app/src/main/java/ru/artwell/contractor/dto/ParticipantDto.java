@@ -1,7 +1,7 @@
 package ru.artwell.contractor.dto;
 
 /**
- * Участник по данным XML (типичный блок actInfo Минстроя).
+ * Участник по данным XML.
  */
 public record ParticipantDto(
         String role,

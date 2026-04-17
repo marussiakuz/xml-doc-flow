@@ -4,10 +4,6 @@ import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 
-/**
- * Пользователь. Поле {@code additional_roles varchar[]} из целевой схемы пока не маппится: в Hibernate 6.2
- * {@code @JdbcTypeCode(ARRAY)} для {@code String[]} приводит к NPE при INSERT; вернём при внедрении ролей.
- */
 @Entity
 @Table(name = "users")
 public class UserEntity {
@@ -41,6 +37,9 @@ public class UserEntity {
     @Column(name = "last_login")
     private LocalDateTime lastLogin;
 
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private LocalDateTime createdAt = LocalDateTime.now();
+
     protected UserEntity() {
     }
 
@@ -58,6 +57,7 @@ public class UserEntity {
         this.organization = organization;
         this.email = email;
         this.active = active;
+        this.createdAt = LocalDateTime.now();
     }
 
     public Long getId() {
@@ -90,6 +90,34 @@ public class UserEntity {
 
     public boolean isActive() {
         return active;
+    }
+
+    public LocalDateTime getLastLogin() {
+        return lastLogin;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setOrganization(OrganizationEntity organization) {
+        this.organization = organization;
     }
 
     public void setPasswordHash(String passwordHash) {

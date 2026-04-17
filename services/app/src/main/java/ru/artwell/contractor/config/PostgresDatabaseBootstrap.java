@@ -28,7 +28,7 @@ public final class PostgresDatabaseBootstrap {
 
         ParsedPostgresUrl parsed = parsePostgresUrl(jdbcUrl);
         if (parsed == null) {
-            log.warn("Не удалось разобрать JDBC URL PostgreSQL, пропуск предсоздания БД");
+            log.warn("Не удалось распарсить JDBC URL PostgreSQL, пропуск предсоздания БД");
             return;
         }
 
@@ -36,15 +36,12 @@ public final class PostgresDatabaseBootstrap {
             log.warn("Небезопасное имя БД в URL, пропуск предсоздания: {}", parsed.database());
             return;
         }
-        if (username == null || !isSafeIdentifier(username)) {
+        if (!isSafeIdentifier(username)) {
             log.warn("Небезопасное имя пользователя, пропуск предсоздания БД");
             return;
         }
 
-        // Не пытаемся «создать» служебные БД
-        if ("postgres".equalsIgnoreCase(parsed.database())
-                || "template0".equalsIgnoreCase(parsed.database())
-                || "template1".equalsIgnoreCase(parsed.database())) {
+        if ("postgres".equalsIgnoreCase(parsed.database())) {
             return;
         }
 
@@ -63,7 +60,7 @@ public final class PostgresDatabaseBootstrap {
             log.error("Не удалось предсоздать БД '{}': {}", parsed.database(), e.getMessage());
             throw new IllegalStateException(
                     "Не удалось создать БД '" + parsed.database()
-                            + "'. Убедитесь, что PostgreSQL запущен и у пользователя есть право CREATEDB. "
+                            + "'. Убедитесь, что PostgreSQL запущен и у пользователя есть право на создание БД. "
                             + "Причина: " + e.getMessage(), e);
         }
     }
@@ -78,7 +75,6 @@ public final class PostgresDatabaseBootstrap {
     }
 
     private static void createDatabase(Connection conn, String dbName, String owner) throws SQLException {
-        // dbName и owner уже проверены isSafeIdentifier — безопасно для подстановки как идентификаторы
         String sql = "CREATE DATABASE " + dbName + " WITH OWNER " + owner + " ENCODING 'UTF8'";
         try (Statement st = conn.createStatement()) {
             st.executeUpdate(sql);
@@ -119,7 +115,6 @@ public final class PostgresDatabaseBootstrap {
             String host;
             int port = 5432;
             if (hostPort.startsWith("[")) {
-                // IPv6: [::1]:5432
                 int close = hostPort.indexOf(']');
                 if (close < 0) {
                     return null;

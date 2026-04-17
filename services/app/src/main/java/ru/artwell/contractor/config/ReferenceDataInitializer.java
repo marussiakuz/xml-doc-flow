@@ -21,6 +21,33 @@ import java.util.Map;
 @Order(0)
 public class ReferenceDataInitializer implements ApplicationRunner {
 
+    /** Читаемые названия для типов с латинскими кодами директорий. */
+    private static final java.util.Map<String, String> LATIN_CODE_TYPE_NAMES =
+            java.util.Map.ofEntries(
+                    java.util.Map.entry("AOGROOKS",
+                            "Акт освидетельствования геодезической разбивочной основы ОКС"),
+                    java.util.Map.entry("AOOK",
+                            "Акт освидетельствования ответственных конструкций"),
+                    java.util.Map.entry("AOSR",
+                            "Акт освидетельствования скрытых работ"),
+                    java.util.Map.entry("AOUSITO",
+                            "Акт освидетельствования участков сетей ИТО"),
+                    java.util.Map.entry("AROOKSNM",
+                            "Акт разбивки осей объекта капитального строительства на местности"),
+                    java.util.Map.entry("gsn221",
+                            "Акт выездной внеплановой проверки"),
+                    java.util.Map.entry("gsn222",
+                            "Акт документарной внеплановой проверки"),
+                    java.util.Map.entry("gsn31",
+                            "Извещение об устранении нарушений"),
+                    java.util.Map.entry("gsnProtocolInspection",
+                            "Протокол осмотра")
+            );
+
+    private static String resolveTypeName(String code) {
+        return LATIN_CODE_TYPE_NAMES.getOrDefault(code, code);
+    }
+
     public static final String DEFAULT_OBJECT_CODE = "DEFAULT-OBJECT-1";
 
     private final OrganizationRepository organizationRepository;
@@ -118,7 +145,7 @@ public class ReferenceDataInitializer implements ApplicationRunner {
                         true
                 ))
         );
-        // Если пользователь уже существовал с "password", обновим на demoPassword (чтобы не ловить предупреждение Chrome).
+
         if (passwordEncoder.matches("password", u.getPasswordHash()) && !passwordEncoder.matches(demoPassword, u.getPasswordHash())) {
             u.setPasswordHash(passwordEncoder.encode(demoPassword));
             userRepository.save(u);
@@ -176,15 +203,23 @@ public class ReferenceDataInitializer implements ApplicationRunner {
         }
         for (Map.Entry<String, String> e : typeCodeToXsdPath.entrySet()) {
             String code = e.getKey();
-            if (documentTypeRepository.findByTypeCode(code).isEmpty()) {
-                documentTypeRepository.save(new DocumentTypeEntity(
-                        code,
-                        code,
-                        "Исполнительная документация",
-                        e.getValue(),
-                        true
-                ));
-            }
+            String humanName = resolveTypeName(code);
+            documentTypeRepository.findByTypeCode(code).ifPresentOrElse(
+                    existing -> {
+                        // Обновляем typeName если он был сохранён как технический код
+                        if (existing.getTypeName() == null || existing.getTypeName().equals(existing.getTypeCode())) {
+                            existing.setTypeName(humanName);
+                            documentTypeRepository.save(existing);
+                        }
+                    },
+                    () -> documentTypeRepository.save(new DocumentTypeEntity(
+                            code,
+                            humanName,
+                            "Исполнительная документация",
+                            e.getValue(),
+                            true
+                    ))
+            );
         }
     }
 

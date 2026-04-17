@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aosr xmlns="http://idActs/AOSR.xsd"
+      xmlns:bd="http://types/BaseDocument.xsd"
+      xmlns:ct="http://types/CommonTypes.xsd"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://idActs/AOSR.xsd AOSR.xsd
+                          http://types/BaseDocument.xsd BaseDocument.xsd
+                          http://types/CommonTypes.xsd CommonTypes.xsd"
+      schemaVersion="draft.1">
+
+    <bd:uuid>aabbccdd-1122-1122-8abc-aabbccddeeff</bd:uuid>
+    <bd:permanentObjectUUID>11223344-5566-1566-8abc-112233445566</bd:permanentObjectUUID>
+    <bd:edition>1</bd:edition>
+
+    <actInfo id="actInfo">
+
+        <ct:permanentObjectInfo>
+            <ct:permanentObjectName>Жилой комплекс «Северный парк», корпус 3</ct:permanentObjectName>
+            <ct:permanentObjectAddress>
+                <ct:postalAddress>
+                    <ct:detalizedAddress>
+                        <ct:country>Российская Федерация</ct:country>
+                        <ct:entityOfFederation>Москва</ct:entityOfFederation>
+                        <ct:districtOrRegionCode>СВАО</ct:districtOrRegionCode>
+                        <ct:oktmo>45263000000</ct:oktmo>
+                    </ct:detalizedAddress>
+                </ct:postalAddress>
+            </ct:permanentObjectAddress>
+            <ct:permanentObjectId>11223344-5566-1566-8abc-112233445566</ct:permanentObjectId>
+        </ct:permanentObjectInfo>
+
+        <ct:developer>
+            <ct:participantId>aaaabbbb-1111-1111-8abc-aaaabbbbcccc</ct:participantId>
+            <ct:organization>
+                <ct:legalEntity>
+                    <ct:name>ООО «СеверСтройГрупп»</ct:name>
+                    <ct:ogrn>1027700123456</ct:ogrn>
+                    <ct:inn>770112345678</ct:inn>
+                    <ct:address>
+                        <ct:detalizedAddress>
+                            <ct:country>Российская Федерация</ct:country>
+                            <ct:entityOfFederation>Москва</ct:entityOfFederation>
+                            <ct:districtOrRegionCode>СВАО</ct:districtOrRegionCode>
+                            <ct:oktmo>45263000000</ct:oktmo>
+                        </ct:detalizedAddress>
+                    </ct:address>
+                </ct:legalEntity>
+            </ct:organization>
+        </ct:developer>
+
+        <ct:buildingContractor>
+            <ct:organizationInfo>
+                <ct:legalEntity>
+                    <ct:name>АО «ГенПодряд-Строй»</ct:name>
+                    <ct:ogrn>1057712345678</ct:ogrn>
+                    <ct:inn>771234567890</ct:inn>
+                    <ct:address>
+                        <ct:detalizedAddress>
+                            <ct:country>Российская Федерация</ct:country>
+                            <ct:entityOfFederation>Москва</ct:entityOfFederation>
+                            <ct:districtOrRegionCode>ЦАО</ct:districtOrRegionCode>
+                            <ct:oktmo>45375000000</ct:oktmo>
+                        </ct:detalizedAddress>
+                    </ct:address>
+                </ct:legalEntity>
+            </ct:organizationInfo>
+            <ct:participantId>bbbbcccc-2222-1222-8abc-bbbbccccdddd</ct:participantId>
+        </ct:buildingContractor>
+
+        <ct:projectDocumentationContractor>
+            <ct:organizationInfo>
+                <ct:legalEntity>
+                    <ct:name>ООО «АрхПроект»</ct:name>
+                    <ct:ogrn>1047709876543</ct:ogrn>
+                    <ct:inn>770987654321</ct:inn>
+                    <ct:address>
+                        <ct:detalizedAddress>
+                            <ct:country>Российская Федерация</ct:country>
+                            <ct:entityOfFederation>Москва</ct:entityOfFederation>
+                            <ct:districtOrRegionCode>ЗАО</ct:districtOrRegionCode>
+                            <ct:oktmo>45375000000</ct:oktmo>
+                        </ct:detalizedAddress>
+                    </ct:address>
+                </ct:legalEntity>
+            </ct:organizationInfo>
+            <ct:participantId>ccccdddd-3333-1333-8abc-ccccddddeeee</ct:participantId>
+        </ct:projectDocumentationContractor>
+
+        <ct:documentInfo>
+            <ct:name>Акт освидетельствования скрытых работ</ct:name>
+            <ct:docId>ddddeeee-4444-1444-8abc-ddddeeee1111</ct:docId>
+            <ct:number>АОСР-2026-007</ct:number>
+            <ct:date>2026-04-10</ct:date>
+            <ct:edition>1</ct:edition>
+        </ct:documentInfo>
+
+        <ct:buildingContractorRepresentative>
+            <ct:lastName>Новиков</ct:lastName>
+            <ct:firstName>Андрей</ct:firstName>
+            <ct:middleName>Борисович</ct:middleName>
+            <ct:position>Производитель работ</ct:position>
+            <ct:personId>eeeeffff-5555-1555-8abc-eeeeffff0000</ct:personId>
+            <ct:administrativeDocument>
+                <ct:name>Приказ о назначении</ct:name>
+                <ct:number>32-к</ct:number>
+                <ct:date>2026-01-12</ct:date>
+            </ct:administrativeDocument>
+        </ct:buildingContractorRepresentative>
+
+        <ct:constructionManagementRepresentative>
+            <ct:lastName>Карпов</ct:lastName>
+            <ct:firstName>Сергей</ct:firstName>
+            <ct:middleName>Михайлович</ct:middleName>
+            <ct:position>Специалист по организации строительства</ct:position>
+            <ct:personId>ffff0000-6666-1666-8abc-ffff00001111</ct:personId>
+            <ct:administrativeDocument>
+                <ct:name>Приказ о назначении</ct:name>
+                <ct:number>55-к</ct:number>
+                <ct:date>2026-01-15</ct:date>
+            </ct:administrativeDocument>
+            <ct:specialistIdNumber>9876543210</ct:specialistIdNumber>
+        </ct:constructionManagementRepresentative>
+
+        <workExecutor>
+            <ct:legalEntity>АО «ГенПодряд-Строй»</ct:legalEntity>
+            <ct:participantId>bbbbcccc-2222-1222-8abc-bbbbccccdddd</ct:participantId>
+        </workExecutor>
+
+        <worksList>
+            <worksListItem>
+                <workJournalRecords>
+                    <ct:generalWorkJournalRecordsIdsList>
+                        <ct:generalWorkJournalRecordsIdsListItem>
+                            <ct:generalWorkJournalRecordId>11112222-1111-1111-8abc-111122223333</ct:generalWorkJournalRecordId>
+                        </ct:generalWorkJournalRecordsIdsListItem>
+                    </ct:generalWorkJournalRecordsIdsList>
+                </workJournalRecords>
+                <workDescription>
+                    <ct:workName>Устройство гидроизоляции фундаментной плиты</ct:workName>
+                    <ct:constructionStructureElement>
+                        <ct:structureElementName>Фундаментная плита</ct:structureElementName>
+                    </ct:constructionStructureElement>
+                </workDescription>
+                <location>
+                    <ct:obligatoryAxes>
+                        <ct:axes>А-Е, 1-12</ct:axes>
+                        <ct:marks>-3.600</ct:marks>
+                    </ct:obligatoryAxes>
+                </location>
+            </worksListItem>
+        </worksList>
+
+        <workAndProjectDocumentationsList>
+            <workAndProjectDocumentationsListItem>
+                <workAndProjectDocumentation>
+                    <ct:obligatoryProjectDocumentation>
+                        <ct:projectDocumentationSectionsList>
+                            <ct:projectDocumentationSectionsListItem>
+                                <ct:projectDocumentationSectionCode>КР</ct:projectDocumentationSectionCode>
+                                <ct:projectDocumentationSectionName>Конструктивные и объёмно-планировочные решения</ct:projectDocumentationSectionName>
+                            </ct:projectDocumentationSectionsListItem>
+                        </ct:projectDocumentationSectionsList>
+                    </ct:obligatoryProjectDocumentation>
+                </workAndProjectDocumentation>
+                <organization>
+                    <fullOrganizationInfo>
+                        <ct:organizationInfo>
+                            <ct:legalEntity>
+                                <ct:name>ООО «АрхПроект»</ct:name>
+                                <ct:ogrn>1047709876543</ct:ogrn>
+                                <ct:inn>770987654321</ct:inn>
+                                <ct:address>
+                                    <ct:detalizedAddress>
+                                        <ct:country>Российская Федерация</ct:country>
+                                        <ct:entityOfFederation>Москва</ct:entityOfFederation>
+                                        <ct:districtOrRegionCode>ЗАО</ct:districtOrRegionCode>
+                                        <ct:oktmo>45375000000</ct:oktmo>
+                                    </ct:detalizedAddress>
+                                </ct:address>
+                            </ct:legalEntity>
+                        </ct:organizationInfo>
+                        <ct:participantId>ccccdddd-3333-1333-8abc-ccccddddeeee</ct:participantId>
+                    </fullOrganizationInfo>
+                </organization>
+            </workAndProjectDocumentationsListItem>
+        </workAndProjectDocumentationsList>
+
+        <worksDate>
+            <ct:beginDate>2026-03-25</ct:beginDate>
+            <ct:endDate>2026-04-09</ct:endDate>
+        </worksDate>
+
+        <accordantWorkAndProjectDocumentation>
+            <ct:shortWorkAndProjectDocumentation>
+                <ct:obligatoryShortProjectDocumentation>
+                    <ct:shortProjectDocumentationSectionsList>
+                        <ct:shortProjectDocumentationSectionsListItem>
+                            <ct:name>Конструктивные решения</ct:name>
+                            <ct:number>КР</ct:number>
+                        </ct:shortProjectDocumentationSectionsListItem>
+                    </ct:shortProjectDocumentationSectionsList>
+                </ct:obligatoryShortProjectDocumentation>
+            </ct:shortWorkAndProjectDocumentation>
+            <ct:technicalRegulationsDocumentation>
+                <ct:technicalRegulationDetailsList>
+                    <ct:technicalRegulationDetailsListItem>
+                        <ct:name>СП 20.13330.2017 Нагрузки и воздействия</ct:name>
+                        <ct:number>СП 20.13330.2017</ct:number>
+                    </ct:technicalRegulationDetailsListItem>
+                </ct:technicalRegulationDetailsList>
+            </ct:technicalRegulationsDocumentation>
+        </accordantWorkAndProjectDocumentation>
+
+        <allowedWorksList>
+            <allowedWorksListItem>
+                <worksName>Укладка бетона перекрытия 1-го этажа</worksName>
+            </allowedWorksListItem>
+        </allowedWorksList>
+
+    </actInfo>
+
+    <actsServiceAttributes>
+        <ct:status>
+            <ct:docStatus>Signed</ct:docStatus>
+        </ct:status>
+        <ct:senderId>aaaabbbb-1111-1234-8abc-aaaabbbbcccc</ct:senderId>
+    </actsServiceAttributes>
+
+</aosr>

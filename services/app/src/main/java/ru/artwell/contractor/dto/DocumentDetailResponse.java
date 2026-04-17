@@ -9,7 +9,6 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 public class DocumentDetailResponse {
-    /** Идентификатор версии, по которой открыта карточка. */
     private Long id;
     private Long documentId;
     private String docType;
