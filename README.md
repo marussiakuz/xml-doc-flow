@@ -1,11 +1,11 @@
 # xml-doc-flow
 
-## Что это
+## Описание сервиса
 Сервис на Spring Boot для загрузки, определения типа и валидации строительных XML-документов по XSD (Минстрой РФ) с сохранением в PostgreSQL.
 
 При старте приложения Hibernate создаёт минимальные таблицы, а содержимое XSD из `services/app/src/main/resources/validation-files/**.xsd` загружается в справочную таблицу `xsd_definitions`.
 
-Если в `spring.datasource.url` указана БД PostgreSQL, которой ещё нет (например `xml_doc_flow`), приложение **до подключения Hibernate** подключается к служебной БД `postgres` и выполняет `CREATE DATABASE`, если база отсутствует. Нужны права на создание БД у пользователя из `spring.datasource.username` (в Docker-образе `postgres` это обычно так).
+Если в `spring.datasource.url` указана БД PostgreSQL, которой ещё нет (например `xml_doc_flow`), приложение **до подключения Hibernate** подключается к служебной БД `postgres` и выполняет `CREATE DATABASE`, если база отсутствует. Нужны права на создание БД у пользователя из `spring.datasource.username`.
 
 Часовой пояс для `LocalDateTime` и Jackson задаётся в `application.yml`: `app.time-zone` (по умолчанию `Europe/Moscow`). Переопределить можно тем же ключом через внешний конфиг, JVM-свойство `-Dapp.time-zone=UTC` или переменные Spring Boot для соответствующего свойства.
 
@@ -21,37 +21,71 @@
 3. OpenAPI JSON:
    - http://localhost:8080/v3/api-docs
 
-## API (5 эндпоинтов MVP)
-Базовый URL: `/api/documents`
+## Пользователи при первом запуске (seed)
 
-В загрузку нужно передавать **XML-документ** (экземпляр по схеме Минстроя: корень вида `aogrooks` в своём namespace и т.п.). Файлы **`.xsl` / `.xsd` / `.svg`** из `validation-files` — это шаблоны отображения и схемы, они **не являются** документом для валидации и будут отклонены с понятным сообщением.
+При старте приложения выполняется `ReferenceDataInitializer`, который создаёт тестовую организацию и пользователей, если их ещё нет.
 
-1. Загрузка XML и валидация (с сохранением при успехе)
-   ```bash
-   curl -i -X POST "http://localhost:8080/api/documents" \
-     -F "file=@/path/to/document.xml"
-   ```
+### Создаваемые пользователи
+- **Администратор (логин настраивается)**
+   - Логин: `${APP_SEED_TEST_USERNAME}` (по умолчанию `test`)
+   - Пароль: `${APP_SEED_TEST_PASSWORD}` (по умолчанию `test`)
+   - Роль: `ADMIN`
 
-2. Список документов (актуальная версия по каждому документу)
-   ```bash
-   curl -i "http://localhost:8080/api/documents?docType=AOGROOKS&documentNumber=123"
-   ```
+- **Демо-подрядчик**
+   - Логин: `contractor`
+   - Пароль: `${APP_SEED_DEMO_PASSWORD}` (по умолчанию `artwell-local-2026!`)
+   - Роль: `CONTRACTOR`
 
-3. Детальный просмотр документа по `id` (все версии)
-   ```bash
-   curl -i "http://localhost:8080/api/documents/<id>"
-   ```
+- **Демо-заказчик**
+   - Логин: `customer`
+   - Пароль: `${APP_SEED_DEMO_PASSWORD}` (по умолчанию `artwell-local-2026!`)
+   - Роль: `CUSTOMER`
 
-4. Скачивание XML по `id`
-   ```bash
-   curl -i -OJ "http://localhost:8080/api/documents/<id>/xml"
-   ```
+> Примечание: если в базе уже есть `contractor/customer`, инициализатор автоматически заменит его пароль на `${APP_SEED_DEMO_PASSWORD}`.
 
-5. Замена XML с версионированием
-   ```bash
-   curl -i -X PUT "http://localhost:8080/api/documents/<id>/replace" \
-     -F "file=@/path/to/document.xml"
-   ```
+### Как зайти
+1. Выполнить `POST /api/auth/login` с JSON:
+   - `{"username":"test","password":"test"}` (или ваши значения `APP_SEED_TEST_*`)
+   - `{"username":"contractor","password":"artwell-local-2026!"}` (или `APP_SEED_DEMO_PASSWORD`)
+   - `{"username":"customer","password":"artwell-local-2026!"}` (или `APP_SEED_DEMO_PASSWORD`)
+2. Дальше сессия хранится в cookie (используется HTTP session).
+
+## API (MVP)
+
+Полный и всегда актуальный список эндпоинтов доступен в Swagger UI:
+- http://localhost:8080/swagger-ui.html
+
+OpenAPI JSON:
+- http://localhost:8080/v3/api-docs
+
+Ниже — краткий список основных эндпоинтов (по контроллерам).
+
+### Документы (`/api/documents`)
+- `POST /api/documents` — загрузка XML (multipart), определение типа по корню, XSD‑валидация, сохранение
+- `POST /api/documents/search` — поиск документов с фильтрацией и пагинацией (JSON)
+- `GET /api/documents/{id}` — карточка документа (объект, участники, версии, кто загрузил)
+- `GET /api/documents/{documentId}/versions` — список версий документа
+- `GET /api/documents/{documentId}/versions/latest/download` — скачать XML последней версии документа
+- `GET /api/documents/{documentId}/versions/{versionId}/download` — скачать XML конкретной версии документа
+- `GET /api/documents/{id}/xml` — скачать исходный XML по id версии
+- `GET /api/documents/{documentId}/history` — история событий аудита по документу
+- `PUT /api/documents/{id}/replace` — замена XML: новая версия при совпадении типа и номера документа
+
+### Аутентификация (`/api/auth`)
+- `POST /api/auth/login` — логин
+- `POST /api/auth/logout` — логаут
+- `GET /api/auth/me` — текущий пользователь
+
+### Администрирование пользователей (`/api/admin/users`, только ADMIN)
+- `GET /api/admin/users` — список пользователей (фильтр по роли + пагинация)
+- `GET /api/admin/users/{id}` — получить пользователя по ID
+- `POST /api/admin/users` — создать пользователя
+- `PUT /api/admin/users/{id}` — обновить пользователя
+- `DELETE /api/admin/users/{id}` — удалить пользователя (мягкое удаление)
+- `POST /api/admin/users/{id}/reset-password` — сброс пароля
+
+### Журнал аудита (`/api/audit-log`, только ADMIN)
+- `GET /api/audit-log` — глобальный журнал действий (пагинация)
 
 ## Схема базы данных (детальная)
 
