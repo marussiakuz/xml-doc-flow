@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Артвелл - Система управления исполнительной документацией</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div id="app" class="flex h-screen">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-white border-r border-gray-200 flex flex-col">
+            <div class="p-6 border-b border-gray-200">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 gradient-bg rounded-lg flex items-center justify-center">
+                        <i data-lucide="building-2" class="text-white w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <h1 class="font-bold text-gray-900">Артвелл</h1>
+                        <p class="text-xs text-gray-500">Система документации</p>
+                    </div>
+                </div>
+            </div>
+            
+            <nav class="flex-1 p-4 space-y-1">
+                <a href="#" class="sidebar-item active flex items-center space-x-3 px-4 py-3 rounded-lg" data-page="documents">
+                    <i data-lucide="file-text" class="w-5 h-5"></i>
+                    <span>Документы</span>
+                </a>
+                <a href="#" class="sidebar-item flex items-center space-x-3 px-4 py-3 rounded-lg" data-page="upload">
+                    <i data-lucide="upload" class="w-5 h-5"></i>
+                    <span>Загрузка</span>
+                </a>
+                <a href="#" class="sidebar-item flex items-center space-x-3 px-4 py-3 rounded-lg hidden" data-page="audit" id="auditNavItem">
+                    <i data-lucide="clipboard-list" class="w-5 h-5"></i>
+                    <span>Журнал</span>
+                </a>
+                <a href="#" class="sidebar-item flex items-center space-x-3 px-4 py-3 rounded-lg hidden" data-page="adminUsers" id="adminUsersNavItem">
+                    <i data-lucide="users" class="w-5 h-5"></i>
+                    <span>Пользователи</span>
+                </a>
+            </nav>
+            
+            <div class="p-4 border-t border-gray-200">
+                <div class="flex items-center space-x-3 px-4 py-3">
+                    <div class="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center">
+                        <i data-lucide="user" class="w-5 h-5 text-gray-600"></i>
+                    </div>
+                    <div class="flex-1">
+                        <p class="font-medium text-gray-900 text-sm" id="userName">Иван Петров</p>
+                        <p class="text-xs text-gray-500" id="userRole">Подрядчик</p>
+                    </div>
+                    <button id="logoutBtn" class="text-xs text-blue-600 hover:text-blue-800">Выйти</button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 overflow-auto">
+            <!-- Header -->
+            <header class="bg-white border-b border-gray-200 px-8 py-4">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h2 class="text-2xl font-bold text-gray-900" id="pageTitle">Документы</h2>
+                        <p class="text-sm text-gray-500 mt-1" id="pageDescription">Список документов; версии — в карточке документа</p>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <div class="relative" id="headerDocSearch">
+                            <i data-lucide="search" class="w-5 h-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2"></i>
+                            <input type="text" placeholder="Поиск документов..." class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-64">
+                        </div>
+                        <button id="uploadBtn" class="gradient-bg text-white px-4 py-2 rounded-lg flex items-center space-x-2 hover:opacity-90 transition">
+                            <i data-lucide="upload" class="w-5 h-5"></i>
+                            <span>Загрузить документ</span>
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Content Area -->
+            <div class="p-8" id="contentArea">
+                <!-- Documents Page -->
+                <div id="documentsPage" class="page-content">
+                    <div class="bg-white rounded-xl card-shadow">
+                        <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
+                            <div class="flex items-center space-x-4">
+                                <select id="docsCategoryFilter" class="border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    <option value="">Все категории</option>
+                                    <option value="Акты">Акты</option>
+                                    <option value="Журналы">Журналы</option>
+                                    <option value="Протоколы">Протоколы</option>
+                                </select>
+                                <select id="docsValidationFilter" class="border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    <option value="">Все статусы</option>
+                                    <option value="VALID">Валидный</option>
+                                    <option value="INVALID">Ошибка</option>
+                                </select>
+                                <select id="docsObjectFilter" class="border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    <option value="">Все объекты</option>
+                                </select>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <button class="p-2 text-gray-600 hover:text-gray-900 border border-gray-300 rounded-lg">
+                                    <i data-lucide="list" class="w-5 h-5"></i>
+                                </button>
+                                <button class="p-2 text-gray-400 hover:text-gray-900 border border-gray-300 rounded-lg">
+                                    <i data-lucide="grid" class="w-5 h-5"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            <input type="checkbox" class="rounded">
+                                        </th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Документ</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Номер</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Объект</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Дата</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Статус</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Версия</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Действия</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-200" id="allDocsTable">
+                                    <!-- Документы в разметке (те же UUID, что в DataInitializer при сидировании БД); при успешном ответе API таблица подменяется из JS -->
+                                    <tr class="hover:bg-gray-50 cursor-pointer" data-doc-row="static" onclick="openDocumentModal('a0000001-0000-4000-8000-000000000001')">
+                                        <td class="px-6 py-4 whitespace-nowrap"><input type="checkbox" class="rounded" onclick="event.stopPropagation()"></td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="flex items-center">
+                                                <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mr-3"><i data-lucide="file-text" class="w-5 h-5 text-blue-600"></i></div>
+                                                <div>
+                                                    <p class="font-medium text-gray-900">АО-2024-001</p>
+                                                    <p class="text-sm text-gray-500">Акт разбивки осей</p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">АО-2024-001</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">ЖК «Северный»</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">15.01.2024</td>
+                                        <td class="px-6 py-4 whitespace-nowrap"><span class="status-badge status-valid">Валидный</span></td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">v1</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="flex items-center space-x-2">
+                                                <button type="button" class="text-blue-600 hover:text-blue-800" onclick="event.stopPropagation(); openDocumentModal('a0000001-0000-4000-8000-000000000001')"><i data-lucide="eye" class="w-5 h-5"></i></button>
+                                                <button type="button" class="text-green-600 hover:text-green-800" onclick="event.stopPropagation(); downloadDocumentFromList('a0000001-0000-4000-8000-000000000001')"><i data-lucide="download" class="w-5 h-5"></i></button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50 cursor-pointer" data-doc-row="static" onclick="openDocumentModal('a0000002-0000-4000-8000-000000000002')">
+                                        <td class="px-6 py-4 whitespace-nowrap"><input type="checkbox" class="rounded" onclick="event.stopPropagation()"></td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="flex items-center">
+                                                <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mr-3"><i data-lucide="file-text" class="w-5 h-5 text-blue-600"></i></div>
+                                                <div>
+                                                    <p class="font-medium text-gray-900">АОСР-2024-015</p>
+                                                    <p class="text-sm text-gray-500">Акт освидетельствования скрытых работ</p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">АОСР-2024-015</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">ТЦ «Плаза»</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">14.01.2024</td>
+                                        <td class="px-6 py-4 whitespace-nowrap"><span class="status-badge status-valid">Валидный</span></td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">v1</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="flex items-center space-x-2">
+                                                <button type="button" class="text-blue-600 hover:text-blue-800" onclick="event.stopPropagation(); openDocumentModal('a0000002-0000-4000-8000-000000000002')"><i data-lucide="eye" class="w-5 h-5"></i></button>
+                                                <button type="button" class="text-green-600 hover:text-green-800" onclick="event.stopPropagation(); downloadDocumentFromList('a0000002-0000-4000-8000-000000000002')"><i data-lucide="download" class="w-5 h-5"></i></button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50 cursor-pointer" data-doc-row="static" onclick="openDocumentModal('a0000003-0000-4000-8000-000000000003')">
+                                        <td class="px-6 py-4 whitespace-nowrap"><input type="checkbox" class="rounded" onclick="event.stopPropagation()"></td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="flex items-center">
+                                                <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mr-3"><i data-lucide="file-text" class="w-5 h-5 text-blue-600"></i></div>
+                                                <div>
+                                                    <p class="font-medium text-gray-900">ЖБР-2024-003</p>
+                                                    <p class="text-sm text-gray-500">Журнал бетонных работ</p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">ЖБР-2024-003</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Школа №15</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">13.01.2024</td>
+                                        <td class="px-6 py-4 whitespace-nowrap"><span class="status-badge status-invalid">Ошибка</span></td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">v1</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="flex items-center space-x-2">
+                                                <button type="button" class="text-blue-600 hover:text-blue-800" onclick="event.stopPropagation(); openDocumentModal('a0000003-0000-4000-8000-000000000003')"><i data-lucide="eye" class="w-5 h-5"></i></button>
+                                                <button type="button" class="text-green-600 hover:text-green-800" onclick="event.stopPropagation(); downloadDocumentFromList('a0000003-0000-4000-8000-000000000003')"><i data-lucide="download" class="w-5 h-5"></i></button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50 cursor-pointer" data-doc-row="static" onclick="openDocumentModal('a0000004-0000-4000-8000-000000000004')">
+                                        <td class="px-6 py-4 whitespace-nowrap"><input type="checkbox" class="rounded" onclick="event.stopPropagation()"></td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="flex items-center">
+                                                <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mr-3"><i data-lucide="file-text" class="w-5 h-5 text-blue-600"></i></div>
+                                                <div>
+                                                    <p class="font-medium text-gray-900">ПО-2024-008</p>
+                                                    <p class="text-sm text-gray-500">Протокол осмотра</p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">ПО-2024-008</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">ЖК «Северный»</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">12.01.2024</td>
+                                        <td class="px-6 py-4 whitespace-nowrap"><span class="status-badge status-valid">Валидный</span></td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">v1</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="flex items-center space-x-2">
+                                                <button type="button" class="text-blue-600 hover:text-blue-800" onclick="event.stopPropagation(); openDocumentModal('a0000004-0000-4000-8000-000000000004')"><i data-lucide="eye" class="w-5 h-5"></i></button>
+                                                <button type="button" class="text-green-600 hover:text-green-800" onclick="event.stopPropagation(); downloadDocumentFromList('a0000004-0000-4000-8000-000000000004')"><i data-lucide="download" class="w-5 h-5"></i></button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="px-6 py-4 border-t border-gray-200 flex items-center justify-between flex-wrap gap-2">
+                            <p class="text-sm text-gray-500" id="listPageInfo">Список загружается с сервера…</p>
+                            <div class="flex items-center space-x-2">
+                                <button type="button" id="paginationPrev" class="px-4 py-2 border border-gray-300 rounded-lg text-sm text-gray-600 hover:bg-gray-50">Назад</button>
+                                <button type="button" id="paginationNext" class="px-4 py-2 border border-gray-300 rounded-lg text-sm text-gray-600 hover:bg-gray-50">Вперед</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Upload Page -->
+                <div id="uploadPage" class="page-content hidden">
+                    <div class="max-w-4xl mx-auto">
+                        <div class="bg-white rounded-xl card-shadow p-8 mb-6">
+                            <h3 class="text-xl font-semibold text-gray-900 mb-2">Загрузка XML-документа</h3>
+                            <p class="text-gray-500 mb-6">Загрузите исполнительную документацию в формате XML для валидации по схемам Минстроя России</p>
+                            
+                            <div class="upload-zone rounded-xl p-12 text-center cursor-pointer" id="uploadZone">
+                                <div class="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <i data-lucide="upload-cloud" class="w-10 h-10 text-blue-600"></i>
+                                </div>
+                                <p class="text-lg font-medium text-gray-900 mb-2">Перетащите файл сюда или нажмите для выбора</p>
+                                <p class="text-sm text-gray-500 mb-4">Поддерживаемые форматы: XML (макс. 20 МБ)</p>
+                                <input type="file" id="fileInput" accept=".xml" class="hidden">
+                                <button class="gradient-bg text-white px-6 py-3 rounded-lg font-medium hover:opacity-90 transition">
+                                    Выбрать файл
+                                </button>
+                            </div>
+                            
+                            <div class="mt-6 p-4 bg-blue-50 rounded-lg">
+                                <div class="flex items-start space-x-3">
+                                    <i data-lucide="info" class="w-5 h-5 text-blue-600 mt-0.5"></i>
+                                    <div class="text-sm text-blue-800">
+                                        <p class="font-medium mb-1">Поддерживаемые типы документов:</p>
+                                        <ul class="list-disc list-inside space-y-1 text-blue-700">
+                                            <li>Акты разбивки осей, освидетельствования работ</li>
+                                            <li>Журналы бетонных работ, авторского надзора</li>
+                                            <li>Протоколы осмотра, акты проверок</li>
+                                            <li>И другие документы по стандартам Минстроя</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Upload Progress -->
+                        <div id="uploadProgress" class="bg-white rounded-xl card-shadow p-8 mb-6 hidden">
+                            <h3 class="text-xl font-semibold text-gray-900 mb-4">Загрузка файла</h3>
+                            <div class="mb-4">
+                                <div class="flex items-center justify-between mb-2">
+                                    <p class="text-sm font-medium text-gray-700" id="uploadFileName">document.xml</p>
+                                    <p class="text-sm text-gray-500" id="uploadPercent">0%</p>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2">
+                                    <div class="progress-bar gradient-bg h-2 rounded-full" id="progressBar" style="width: 0%"></div>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-2 text-sm text-gray-500">
+                                <i data-lucide="loader" class="w-4 h-4 animate-spin"></i>
+                                <span>Валидация по XSD-схеме...</span>
+                            </div>
+                        </div>
+
+                        <!-- Validation Result -->
+                        <div id="validationResult" class="bg-white rounded-xl card-shadow p-8 mb-6 hidden">
+                            <div class="flex items-center justify-between mb-6">
+                                <h3 class="text-xl font-semibold text-gray-900">Результат валидации</h3>
+                                <span class="status-badge status-valid" id="validationStatus">Валидный документ</span>
+                            </div>
+                            <ul id="validationMessagesList" class="mb-6 text-sm text-gray-700 space-y-1 hidden list-disc list-inside"></ul>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                                <div class="p-4 bg-gray-50 rounded-lg">
+                                    <p class="text-sm text-gray-500 mb-1">Номер документа</p>
+                                    <p class="font-medium text-gray-900" id="docNumber">АО-2024-001</p>
+                                </div>
+                                <div class="p-4 bg-gray-50 rounded-lg">
+                                    <p class="text-sm text-gray-500 mb-1">Дата</p>
+                                    <p class="font-medium text-gray-900" id="docDate">15.01.2024</p>
+                                </div>
+                                <div class="p-4 bg-gray-50 rounded-lg">
+                                    <p class="text-sm text-gray-500 mb-1">Объект строительства</p>
+                                    <p class="font-medium text-gray-900" id="docObject">ЖК "Северный"</p>
+                                </div>
+                                <div class="p-4 bg-gray-50 rounded-lg">
+                                    <p class="text-sm text-gray-500 mb-1">Тип документа</p>
+                                    <p class="font-medium text-gray-900" id="docType">Акт разбивки осей</p>
+                                </div>
+                            </div>
+                            <p id="uploadMetaLoadHint" class="hidden mb-6 text-sm text-amber-800 bg-amber-50 border border-amber-200 rounded-lg px-4 py-3" role="status"></p>
+                            
+                            <div class="flex items-center space-x-4">
+                                <button type="button" id="uploadGoToListBtn" class="gradient-bg text-white px-6 py-3 rounded-lg font-medium hover:opacity-90 transition">
+                                    К списку документов
+                                </button>
+                                <button type="button" id="uploadAnotherSuccessBtn" class="border border-gray-300 text-gray-700 px-6 py-3 rounded-lg font-medium hover:bg-gray-50 transition">
+                                    Загрузить другой
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Validation Error -->
+                        <div id="validationError" class="bg-white rounded-xl card-shadow p-8 mb-6 hidden">
+                            <div class="flex items-center justify-between mb-6">
+                                <h3 class="text-xl font-semibold text-gray-900">Ошибка валидации</h3>
+                                <span class="status-badge status-invalid">Ошибка валидации</span>
+                            </div>
+                            
+                            <div class="p-4 bg-red-50 border border-red-200 rounded-lg mb-6">
+                                <div class="flex items-start space-x-3">
+                                    <i data-lucide="alert-circle" class="w-5 h-5 text-red-600 mt-0.5"></i>
+                                    <div>
+                                        <p class="font-medium text-red-800 mb-2">Документ не соответствует XSD-схеме</p>
+                                        <p class="text-sm text-red-700" id="errorMessage">Элемент 'constructionObject' обязателен, но не найден в документе</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center space-x-4">
+                                <button type="button" id="uploadAnotherErrorBtn" class="gradient-bg text-white px-6 py-3 rounded-lg font-medium hover:opacity-90 transition">
+                                    Загрузить другой файл
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Audit Log Page -->
+                <div id="auditPage" class="page-content hidden">
+                    <div class="bg-white rounded-xl card-shadow">
+                        <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
+                            <h3 class="font-semibold text-gray-900">Журнал действий</h3>
+                            <span id="auditPageInfo" class="text-sm text-gray-500"></span>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Дата и время</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Пользователь</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Действие</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Объект</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">IP-адрес</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="auditLogTable" class="bg-white divide-y divide-gray-200"></tbody>
+                            </table>
+                        </div>
+                        <div class="px-6 py-4 border-t border-gray-200 flex items-center justify-between">
+                            <div class="flex items-center space-x-2">
+                                <button id="auditPaginationPrev" class="px-3 py-1 border border-gray-300 rounded text-sm text-gray-600 hover:bg-gray-50 disabled:opacity-40" disabled>← Назад</button>
+                                <button id="auditPaginationNext" class="px-3 py-1 border border-gray-300 rounded text-sm text-gray-600 hover:bg-gray-50 disabled:opacity-40" disabled>Вперёд →</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Admin Users Page -->
+                <div id="adminUsersPage" class="page-content hidden">
+                    <div class="bg-white rounded-xl card-shadow">
+                        <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between flex-wrap gap-3">
+                            <div>
+                                <h3 class="font-semibold text-gray-900">Пользователи</h3>
+                                <span id="adminUsersPageInfo" class="text-sm text-gray-500"></span>
+                            </div>
+                            <div class="flex items-center gap-2 flex-wrap">
+                                <select id="adminUsersRoleFilter" class="border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    <option value="">Все роли</option>
+                                    <option value="ADMIN">ADMIN</option>
+                                    <option value="CONTRACTOR">CONTRACTOR</option>
+                                    <option value="CUSTOMER">CUSTOMER</option>
+                                </select>
+                                <button type="button" id="adminUsersCreateBtn" class="gradient-bg text-white px-4 py-2 rounded-lg text-sm font-medium hover:opacity-90 transition flex items-center gap-2">
+                                    <i data-lucide="user-plus" class="w-4 h-4"></i>
+                                    <span>Создать</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Логин</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ФИО</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Роль</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Активен</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Действия</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="adminUsersTable" class="bg-white divide-y divide-gray-200"></tbody>
+                            </table>
+                        </div>
+                        <div class="px-6 py-4 border-t border-gray-200 flex items-center justify-between">
+                            <div class="flex items-center space-x-2">
+                                <button id="adminUsersPaginationPrev" class="px-3 py-1 border border-gray-300 rounded text-sm text-gray-600 hover:bg-gray-50 disabled:opacity-40" disabled>← Назад</button>
+                                <button id="adminUsersPaginationNext" class="px-3 py-1 border border-gray-300 rounded text-sm text-gray-600 hover:bg-gray-50 disabled:opacity-40" disabled>Вперёд →</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal-overlay fixed inset-0 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden animate-fade-in">
+            <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between bg-white">
+                <h3 class="text-xl font-semibold text-gray-900">Вход</h3>
+            </div>
+            <div class="p-6">
+                <p class="text-sm text-gray-500 mb-6">Войдите, чтобы работать с документами.</p>
+                <form id="loginForm" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Логин</label>
+                        <input id="loginUsername" type="text" placeholder="contractor / customer" class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500" autocomplete="off">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Пароль</label>
+                        <input id="loginPassword" type="password" placeholder="см. APP_SEED_DEMO_PASSWORD" class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500" autocomplete="off">
+                    </div>
+                    <div id="loginError" class="hidden text-sm text-red-700 bg-red-50 border border-red-200 rounded-lg p-3"></div>
+                    <button type="submit" class="w-full gradient-bg text-white px-6 py-3 rounded-lg font-medium hover:opacity-90 transition">
+                        Войти
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Document Detail Modal -->
+    <div id="documentModal" class="modal-overlay fixed inset-0 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-auto animate-fade-in">
+            <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between sticky top-0 bg-white">
+                <h3 class="text-xl font-semibold text-gray-900" id="modalDocTitle">Документ</h3>
+                <button class="p-2 text-gray-400 hover:text-gray-600" id="closeModal">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+            </div>
+            
+            <div class="p-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div>
+                        <p class="text-sm text-gray-500 mb-1">Номер документа</p>
+                        <p class="font-medium text-gray-900" id="modalDocNumber">АО-2024-001</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500 mb-1">Дата</p>
+                        <p class="font-medium text-gray-900" id="modalDocDate">15.01.2024</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500 mb-1">Тип документа</p>
+                        <p class="font-medium text-gray-900" id="modalDocType">Акт разбивки осей</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500 mb-1">Статус валидации</p>
+                        <span class="status-badge status-valid" id="modalDocStatus">Валидный</span>
+                    </div>
+                    <div class="md:col-span-2">
+                        <p class="text-sm text-gray-500 mb-1">Объект строительства</p>
+                        <p class="font-medium text-gray-900" id="modalDocObject">ЖК "Северный"</p>
+                    </div>
+                    <div class="md:col-span-2">
+                        <p class="text-sm text-gray-500 mb-1">Загрузил</p>
+                        <p class="text-gray-700" id="modalUploadedBy">—</p>
+                    </div>
+                </div>
+
+                <div id="workVolumesPanel" class="hidden mb-4 border border-gray-200 rounded-xl p-4 bg-gray-50">
+                    <h4 class="font-semibold text-gray-900 mb-3">Объёмы работ</h4>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm">
+                            <thead>
+                                <tr class="text-left text-gray-500 border-b border-gray-200">
+                                    <th class="pb-2 pr-4 font-medium">Наименование</th>
+                                    <th class="pb-2 font-medium text-right">Количество</th>
+                                </tr>
+                            </thead>
+                            <tbody id="workVolumesList"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="versionsPanel" class="hidden mb-4 border border-gray-200 rounded-xl p-4 bg-gray-50">
+                    <h4 class="font-semibold text-gray-900 mb-3">Версии</h4>
+                    <div class="space-y-4" id="versionsList">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <div id="historyPanel" class="hidden mb-4 border border-gray-200 rounded-xl p-4 bg-gray-50">
+                    <h4 class="font-semibold text-gray-900 mb-3">История событий</h4>
+                    <div class="divide-y divide-gray-100" id="historyList">
+                        <!-- Populated by JS -->
+                    </div>
+                    <div class="flex items-center justify-between mt-3 pt-3 border-t border-gray-200">
+                        <span id="historyPageInfo" class="text-xs text-gray-400"></span>
+                        <div class="flex space-x-2">
+                            <button id="historyPrev" class="text-xs px-2 py-1 border border-gray-300 rounded hover:bg-gray-100 disabled:opacity-40" disabled>← Назад</button>
+                            <button id="historyNext" class="text-xs px-2 py-1 border border-gray-300 rounded hover:bg-gray-100 disabled:opacity-40" disabled>Вперёд →</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex items-center space-x-4 flex-wrap gap-y-3">
+                    <button type="button" id="modalDownloadBtn" class="gradient-bg text-white px-6 py-3 rounded-lg font-medium hover:opacity-90 transition flex items-center space-x-2">
+                        <i data-lucide="download" class="w-5 h-5"></i>
+                        <span>Скачать XML</span>
+                    </button>
+                    <button type="button" id="toggleVersionsBtn" class="border border-gray-300 text-gray-700 px-6 py-3 rounded-lg font-medium hover:bg-gray-50 transition flex items-center space-x-2">
+                        <i data-lucide="layers" class="w-5 h-5"></i>
+                        <span id="toggleVersionsBtnLabel">Показать версии</span>
+                    </button>
+                    <button type="button" id="toggleHistoryBtn" class="border border-gray-300 text-gray-700 px-6 py-3 rounded-lg font-medium hover:bg-gray-50 transition flex items-center space-x-2">
+                        <i data-lucide="clock" class="w-5 h-5"></i>
+                        <span id="toggleHistoryBtnLabel">История</span>
+                    </button>
+                    <button type="button" id="modalNewVersionBtn" class="border border-gray-300 text-gray-700 px-6 py-3 rounded-lg font-medium hover:bg-gray-50 transition flex items-center space-x-2">
+                        <i data-lucide="upload" class="w-5 h-5"></i>
+                        <span>Новая версия</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin User Modal -->
+    <div id="adminUserModal" class="modal-overlay fixed inset-0 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full overflow-hidden animate-fade-in">
+            <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between bg-white">
+                <h3 class="text-xl font-semibold text-gray-900" id="adminUserModalTitle">Пользователь</h3>
+                <button class="p-2 text-gray-400 hover:text-gray-600" id="adminUserModalClose">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+            </div>
+            <div class="p-6">
+                <form id="adminUserForm" class="space-y-4">
+                    <input type="hidden" id="adminUserId" value="">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Логин</label>
+                            <input id="adminUserUsername" type="text" class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500" autocomplete="off">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Пароль (только при создании)</label>
+                            <input id="adminUserPassword" type="password" class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500" autocomplete="new-password">
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">ФИО</label>
+                            <input id="adminUserFullName" type="text" class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Роль</label>
+                            <select id="adminUserRole" class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option value="ADMIN">ADMIN</option>
+                                <option value="CONTRACTOR">CONTRACTOR</option>
+                                <option value="CUSTOMER">CUSTOMER</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                            <input id="adminUserEmail" type="email" class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <label class="flex items-center gap-2 text-sm text-gray-700">
+                            <input id="adminUserActive" type="checkbox" class="rounded" checked>
+                            Активен
+                        </label>
+                    </div>
+                    <div id="adminUserFormError" class="hidden text-sm text-red-700 bg-red-50 border border-red-200 rounded-lg p-3"></div>
+                    <div class="flex items-center justify-between flex-wrap gap-3 pt-2">
+                        <button type="button" id="adminUserResetPasswordBtn" class="border border-gray-300 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-50 transition hidden">
+                            Сбросить пароль
+                        </button>
+                        <div class="flex items-center gap-2">
+                            <button type="button" id="adminUserCancelBtn" class="border border-gray-300 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-50 transition">
+                                Отмена
+                            </button>
+                            <button type="submit" class="gradient-bg text-white px-5 py-2 rounded-lg text-sm font-medium hover:opacity-90 transition">
+                                Сохранить
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-4 right-4 bg-gray-900 text-white px-6 py-3 rounded-lg shadow-lg hidden toast">
+        <div class="flex items-center space-x-3">
+            <span id="toastIcon"><i data-lucide="check-circle" class="w-5 h-5 text-green-400"></i></span>
+            <span id="toastMessage">Документ успешно загружен</span>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/data.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

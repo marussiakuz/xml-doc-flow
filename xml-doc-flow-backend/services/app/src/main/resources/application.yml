@@ -1,0 +1,41 @@
+server:
+  port: ${PORT:8080}
+
+app:
+  time-zone: Europe/Moscow
+  cors:
+    allowed-origins: ${APP_ALLOWED_ORIGINS:http://localhost:8888,http://127.0.0.1:8888,http://localhost:5500,http://127.0.0.1:5500,http://localhost:8080,http://127.0.0.1:8080,http://localhost:3000,http://localhost:3001,http://localhost:3002,http://localhost:3003}
+  seed:
+    test-username: ${APP_SEED_TEST_USERNAME:test}
+    test-password: ${APP_SEED_TEST_PASSWORD:test}
+    demo-password: ${APP_SEED_DEMO_PASSWORD:artwell-local-2026!}
+    organization-inn: ${APP_SEED_ORG_INN:0000000000}
+
+spring:
+  jackson:
+    time-zone: ${app.time-zone:Europe/Moscow}
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 20MB
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/xml_doc_flow}
+    username: ${SPRING_DATASOURCE_USERNAME:postgres}
+    password: ${SPRING_DATASOURCE_PASSWORD:iamroot}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    open-in-view: false
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        jdbc:
+          lob:
+            non_contextual_creation: true
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+

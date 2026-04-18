@@ -1,0 +1,9 @@
+artwell-frontend/
+├── index.html              # Основная страница
+├── css/
+│   └── styles.css          # Стили приложения
+├── js/
+│   ├── app.js              # Навигация, таблицы, загрузка, модалка
+│   ├── api.js              # Заготовка запросов к бэкенду (без module)
+│   └── data.js             # Mock-данные и currentUser
+└── README.md
