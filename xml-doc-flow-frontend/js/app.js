@@ -13,6 +13,7 @@ var docsFilters = { category: '', validation: '', objectName: '' };
 
 window.__modalDocumentId = null;
 window.__replaceBaseVersionId = null;
+window.__modalCurrentVersionId = null;
 
 function reportClientError(err, context) {
     try {
@@ -102,6 +103,9 @@ function initializeNavigation() {
             auditState.page = 0;
             loadAuditLog();
         }
+        if (page === 'upload') {
+            window.__replaceBaseVersionId = null;
+        }
         if (page === 'adminUsers') {
             adminUsersState.page = 0;
             loadAdminUsers();
@@ -109,6 +113,7 @@ function initializeNavigation() {
     });
 
     document.getElementById('uploadBtn').addEventListener('click', function () {
+        window.__replaceBaseVersionId = null;
         navigateTo('upload');
     });
 }
@@ -647,7 +652,7 @@ async function showUploadSuccess(result) {
         metaHint.classList.add('hidden');
     }
     try {
-        if (result && result.documentId != null && typeof getDocumentById === 'function') {
+        if (result && result.documentId != null && status !== 'INVALID_CONFLICT' && typeof getDocumentById === 'function') {
             var doc = await getDocumentById(String(result.documentId));
             if (doc) {
                 document.getElementById('docDate').textContent = formatDateRu(doc.documentDate);
@@ -695,12 +700,13 @@ async function showUploadSuccess(result) {
     var msgList = document.getElementById('validationMessagesList');
     if (messages.length > 0) {
         msgList.classList.remove('hidden');
+        var liClass = status === 'INVALID_CONFLICT' ? ' class="text-red-600 font-medium"' : '';
         msgList.innerHTML = messages
             .map(function (m) {
                 var line =
                     (m.lineNumber != null ? 'стр. ' + m.lineNumber + (m.columnNumber != null ? ', кол. ' + m.columnNumber : '') + ': ' : '') +
                     (m.message || '');
-                return '<li>' + escapeHtml(line) + '</li>';
+                return '<li' + liClass + '>' + escapeHtml(line) + '</li>';
             })
             .join('');
     } else {
@@ -709,21 +715,49 @@ async function showUploadSuccess(result) {
     }
 
     document.getElementById('validationResult').classList.remove('hidden');
-    showToast(window.__replaceBaseVersionId ? 'Новая версия сохранена' : 'Документ сохранён');
+    if (status !== 'INVALID_CONFLICT') {
+        showToast(window.__replaceBaseVersionId ? 'Новая версия сохранена' : 'Документ сохранён');
+    }
     window.__replaceBaseVersionId = null;
 }
 
 function showUploadFailure(err) {
     var body = err.body || {};
-    var main = err.message || 'Ошибка валидации';
+    var status = body.validationStatus || '';
+    var firstValidationMessage = body.validationErrors && body.validationErrors.length > 0
+        ? body.validationErrors[0].message
+        : null;
+
+    var titleEl = document.getElementById('errorTitle');
+    if (titleEl) {
+        if (status === 'INVALID_CONFLICT') {
+            var conflictMsg = firstValidationMessage || '';
+            titleEl.textContent =
+                conflictMsg.indexOf('другим подрядчиком') !== -1
+                    ? 'Документ уже загружен'
+                    : 'Несовместимый тип документа';
+        } else if (status === 'INVALID_SCHEMA') {
+            titleEl.textContent = 'Документ не соответствует XSD-схеме';
+        } else if (status === 'INVALID_XML') {
+            titleEl.textContent = 'Файл не является корректным XML';
+        } else if (status === 'INVALID_UNKNOWN_DOCUMENT_TYPE') {
+            titleEl.textContent = 'Неизвестный тип документа';
+        } else if (status === 'INVALID_DOCUMENT_ROOT') {
+            titleEl.textContent = 'Недопустимый корневой элемент';
+        } else {
+            titleEl.textContent = 'Ошибка загрузки документа';
+        }
+    }
+
+    var text = firstValidationMessage || err.message || 'Неизвестная ошибка';
     var details = body.details;
-    var text = main;
     if (details && details.length) {
         text += '\n' + details.join('\n');
     }
+
     document.getElementById('errorMessage').textContent = text;
     document.getElementById('validationError').classList.remove('hidden');
-    showToast('Ошибка валидации', 'error');
+    showToast('Ошибка загрузки', 'error');
 }
 
 // ─── История событий документа ───────────────────────────────────────────────
@@ -1108,7 +1142,7 @@ async function loadVersionsIntoModal(documentId) {
         var current = versions.find(function (v) {
             return !!v.isCurrent;
         });
-        window.__replaceBaseVersionId = current ? current.versionId : null;
+        window.__modalCurrentVersionId = current ? current.versionId : null;
         listEl.innerHTML = versions
             .map(function (v, idx) {
                 var isFirst = idx === 0;
@@ -1198,6 +1232,7 @@ function initializeModal() {
     });
 
     document.getElementById('modalNewVersionBtn').addEventListener('click', function () {
+        window.__replaceBaseVersionId = window.__modalCurrentVersionId || null;
         document.getElementById('documentModal').classList.add('hidden');
         setVersionsPanelVisible(false);
         setHistoryPanelVisible(false);
@@ -1258,7 +1293,7 @@ window.openDocumentModal = async function (docId) {
         var current = (doc.versions || []).find(function (v) {
             return !!v.isCurrent;
         });
-        window.__replaceBaseVersionId = current ? current.versionId : null;
+        window.__modalCurrentVersionId = current ? current.versionId : null;
 
         var volumes = doc.workVolumes || [];
         var volumesPanel = document.getElementById('workVolumesPanel');

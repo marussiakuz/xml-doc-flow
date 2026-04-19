@@ -132,7 +132,16 @@ async function uploadDocument(file) {
     });
     const data = await parseJsonBody(response);
     if (!response.ok) {
-        var err = new Error((data && data.message) || 'Ошибка загрузки (HTTP ' + response.status + ')');
+        var fromValidation =
+            data &&
+            data.validationErrors &&
+            data.validationErrors[0] &&
+            data.validationErrors[0].message;
+        var err = new Error(
+            (data && data.message) ||
+                fromValidation ||
+                'Ошибка загрузки (HTTP ' + response.status + ')'
+        );
         err.status = response.status;
         err.body = data;
         throw err;

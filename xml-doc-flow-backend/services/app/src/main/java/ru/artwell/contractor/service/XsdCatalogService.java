@@ -308,7 +308,7 @@ public class XsdCatalogService {
                 log.warn("XSD resolver: нет контента для {}", classpathPath);
                 return null;
             }
-            return new StringLSInput(publicId, absolute.toString(), text);
+            return new StringLSInput(publicId, "classpath:/" + classpathPath, text);
         } catch (Exception e) {
             log.warn("XSD resolver: {}", e.getMessage());
             return null;

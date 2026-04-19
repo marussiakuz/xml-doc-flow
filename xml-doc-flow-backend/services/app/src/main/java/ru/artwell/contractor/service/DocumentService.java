@@ -186,7 +186,15 @@ public class DocumentService {
 
         documentDate = xmlMetadataExtractor.extractDocumentDate(doc);
 
-        Schema schema = xsdCatalogService.getSchema(mapping);
+        Schema schema;
+        try {
+            schema = xsdCatalogService.getSchema(mapping);
+        } catch (IllegalStateException e) {
+            apiStatus = DocumentValidationStatus.INVALID_SCHEMA;
+            storedErrors = "Ошибка компиляции XSD-схемы: " + e.getMessage();
+            responseErrors = List.of(new ValidationErrorDto(storedErrors, null, null));
+            return saveUploaded(now, xmlBytes, fileLabel, docTypeCode, businessNumber, documentDate, apiStatus, storedErrors, responseErrors, doc, uploader);
+        }
         List<XmlValidator.ValidationError> errors = xmlValidator.validateXml(xml, schema);
         boolean valid = errors.isEmpty();
         if (valid) {
@@ -225,6 +233,11 @@ public class DocumentService {
                 .findByDocumentType_TypeCodeAndDocumentNumber(docTypeCode, businessDocumentNumber)
                 .orElse(null);
 
+        if (document != null && isDocumentOwnedByAnotherContractor(document, actor)) {
+            throw new ConflictException(
+                    "Документ с номером «" + businessDocumentNumber + "» уже был загружен другим подрядчиком.");
+        }
+
         DocumentVersionEntity previousVersion = null;
         int nextVersion;
         if (document == null) {
@@ -242,7 +255,17 @@ public class DocumentService {
                     "active"
             ));
         } else {
-            ensureCanView(actor, document);
+            try {
+                ensureCanView(actor, document);
+            } catch (AccessDeniedException e) {
+                String msg = "Документ № " + businessDocumentNumber + " уже загружен другим пользователем.";
+                return new UploadDocumentResponse(null, document.getId(),
+                        document.getDocumentType().getTypeCode(),
+                        document.getDocumentType().getTypeName(),
+                        document.getDocumentNumber(), 0, now, false,
+                        DocumentValidationStatus.INVALID_CONFLICT,
+                        List.of(new ValidationErrorDto(msg, null, null)));
+            }
             document.setConstructionObject(object);
             previousVersion = documentVersionRepository
                     .findTopByDocument_IdOrderByVersionNumberDesc(document.getId())
@@ -318,13 +341,19 @@ public class DocumentService {
             documentDate = xmlMetadataExtractor.extractDocumentDate(xmlDoc);
 
             if (!doc.getDocumentType().getTypeCode().equals(mapping.documentType())) {
-                apiStatus = DocumentValidationStatus.INVALID_CONFLICT;
-                storedErrors = "Новый XML имеет другой тип документа. Текущий: " + doc.getDocumentType().getTypeCode() + ", новый: " + mapping.documentType();
-                responseErrors = List.of(new ValidationErrorDto(storedErrors, null, null));
+                String msg = "Нельзя заменить документ типа «" + doc.getDocumentType().getTypeCode()
+                        + "» файлом типа «" + mapping.documentType() + "». Загрузите файл того же типа.";
+                return new UploadDocumentResponse(null, doc.getId(), doc.getDocumentType().getTypeCode(),
+                        doc.getDocumentType().getTypeName(), doc.getDocumentNumber(), latest.getVersionNumber(),
+                        now, false, DocumentValidationStatus.INVALID_CONFLICT,
+                        List.of(new ValidationErrorDto(msg, null, null)));
             } else if (!doc.getDocumentNumber().equals(newDocumentNumber)) {
-                apiStatus = DocumentValidationStatus.INVALID_CONFLICT;
-                storedErrors = "Новый XML имеет другой номер документа. Текущий: " + doc.getDocumentNumber() + ", новый: " + newDocumentNumber;
-                responseErrors = List.of(new ValidationErrorDto(storedErrors, null, null));
+                String msg = "Нельзя заменить документ № " + doc.getDocumentNumber()
+                        + " файлом с номером № " + newDocumentNumber + ". Номер документа должен совпадать.";
+                return new UploadDocumentResponse(null, doc.getId(), doc.getDocumentType().getTypeCode(),
+                        doc.getDocumentType().getTypeName(), doc.getDocumentNumber(), latest.getVersionNumber(),
+                        now, false, DocumentValidationStatus.INVALID_CONFLICT,
+                        List.of(new ValidationErrorDto(msg, null, null)));
             } else {
                 Schema schema = xsdCatalogService.getSchema(mapping);
                 List<XmlValidator.ValidationError> errors = xmlValidator.validateXml(xml, schema);
@@ -382,6 +411,26 @@ public class DocumentService {
 
     private static String buildTitle(String originalFileName, String businessNumber) {
         return "Документ № " + businessNumber + " (" + originalFileName + ")";
+    }
+
+    /**
+     * Документ с тем же типом и номером уже есть; изначально загружен пользователем другой организации
+     * (подрядчика). Сравнение только если у обоих пользователей задана организация.
+     */
+    private boolean isDocumentOwnedByAnotherContractor(DocumentEntity document, UserEntity actor) {
+        if (actor == null || document == null) {
+            return false;
+        }
+        UserEntity originalUploader = document.getUploadedBy();
+        if (originalUploader == null || originalUploader.getId().equals(actor.getId())) {
+            return false;
+        }
+        OrganizationEntity actorOrg = actor.getOrganization();
+        OrganizationEntity originalOrg = originalUploader.getOrganization();
+        if (actorOrg == null || originalOrg == null) {
+            return false;
+        }
+        return !actorOrg.getId().equals(originalOrg.getId());
     }
 
     private void checkUploadPermission(UserEntity user, String documentTypeCode) {
