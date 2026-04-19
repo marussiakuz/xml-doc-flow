@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<arooksnm xmlns="http://idActs/AROOKSNM.xsd"
+          xmlns:bd="http://types/BaseDocument.xsd"
+          xmlns:ct="http://types/CommonTypes.xsd"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://idActs/AROOKSNM.xsd AROOKSNM.xsd
+                              http://types/BaseDocument.xsd BaseDocument.xsd
+                              http://types/CommonTypes.xsd CommonTypes.xsd"
+          schemaVersion="draft.1">
+
+    <bd:uuid>10203040-1111-1111-8abc-102030405060</bd:uuid>
+    <bd:permanentObjectUUID>20304050-2222-1222-8abc-203040506070</bd:permanentObjectUUID>
+    <bd:edition>1</bd:edition>
+
+    <actInfo id="actInfo">
+
+        <ct:permanentObjectInfo>
+            <ct:permanentObjectName>Жилой комплекс «Лесной квартал», корпус 7</ct:permanentObjectName>
+            <ct:permanentObjectAddress>
+                <ct:postalAddress>
+                    <ct:detalizedAddress>
+                        <ct:country>Российская Федерация</ct:country>
+                        <ct:entityOfFederation>Московская область</ct:entityOfFederation>
+                        <ct:districtOrRegionCode>Одинцовский район</ct:districtOrRegionCode>
+                        <ct:oktmo>46641101001</ct:oktmo>
+                    </ct:detalizedAddress>
+                </ct:postalAddress>
+            </ct:permanentObjectAddress>
+            <ct:permanentObjectId>20304050-2222-1222-8abc-203040506070</ct:permanentObjectId>
+        </ct:permanentObjectInfo>
+
+        <ct:developer>
+            <ct:participantId>30405060-3333-1333-8abc-304050607080</ct:participantId>
+            <ct:organization>
+                <ct:legalEntity>
+                    <ct:name>ООО «ЛесСтрой Девелопмент»</ct:name>
+                    <ct:ogrn>1025001234567</ct:ogrn>
+                    <ct:inn>502123456789</ct:inn>
+                    <ct:address>
+                        <ct:detalizedAddress>
+                            <ct:country>Российская Федерация</ct:country>
+                            <ct:entityOfFederation>Московская область</ct:entityOfFederation>
+                            <ct:districtOrRegionCode>Одинцовский район</ct:districtOrRegionCode>
+                            <ct:oktmo>46641101001</ct:oktmo>
+                        </ct:detalizedAddress>
+                    </ct:address>
+                </ct:legalEntity>
+            </ct:organization>
+        </ct:developer>
+
+        <ct:buildingContractor>
+            <ct:organizationInfo>
+                <ct:legalEntity>
+                    <ct:name>АО «РазбивкаОсей-Строй»</ct:name>
+                    <ct:ogrn>1057750123456</ct:ogrn>
+                    <ct:inn>775012345678</ct:inn>
+                    <ct:address>
+                        <ct:detalizedAddress>
+                            <ct:country>Российская Федерация</ct:country>
+                            <ct:entityOfFederation>Москва</ct:entityOfFederation>
+                            <ct:districtOrRegionCode>ЦАО</ct:districtOrRegionCode>
+                            <ct:oktmo>45375000000</ct:oktmo>
+                        </ct:detalizedAddress>
+                    </ct:address>
+                </ct:legalEntity>
+            </ct:organizationInfo>
+            <ct:participantId>40506070-4444-1444-8abc-405060708090</ct:participantId>
+        </ct:buildingContractor>
+
+        <ct:projectDocumentationContractor>
+            <ct:organizationInfo>
+                <ct:legalEntity>
+                    <ct:name>ООО «ИнжПроект»</ct:name>
+                    <ct:ogrn>1047712345678</ct:ogrn>
+                    <ct:inn>771234567892</ct:inn>
+                    <ct:address>
+                        <ct:detalizedAddress>
+                            <ct:country>Российская Федерация</ct:country>
+                            <ct:entityOfFederation>Москва</ct:entityOfFederation>
+                            <ct:districtOrRegionCode>ВАО</ct:districtOrRegionCode>
+                            <ct:oktmo>45263000000</ct:oktmo>
+                        </ct:detalizedAddress>
+                    </ct:address>
+                </ct:legalEntity>
+            </ct:organizationInfo>
+            <ct:participantId>50607080-5555-1555-8abc-506070809000</ct:participantId>
+        </ct:projectDocumentationContractor>
+
+        <ct:documentInfo>
+            <ct:name>Акт разбивки осей объекта капитального строительства на местности</ct:name>
+            <ct:docId>60708090-6666-1666-8abc-607080900010</ct:docId>
+            <ct:number>АРООКСНИМ-2026-001</ct:number>
+            <ct:date>2026-04-19</ct:date>
+            <ct:edition>1</ct:edition>
+        </ct:documentInfo>
+
+        <ct:buildingContractorRepresentative>
+            <ct:lastName>Кузнецов</ct:lastName>
+            <ct:firstName>Михаил</ct:firstName>
+            <ct:middleName>Андреевич</ct:middleName>
+            <ct:position>Производитель работ</ct:position>
+            <ct:personId>ccddeeff-9999-1999-8abc-ccddeeff0011</ct:personId>
+            <ct:administrativeDocument>
+                <ct:name>Приказ о назначении</ct:name>
+                <ct:number>18-р</ct:number>
+                <ct:date>2026-02-01</ct:date>
+            </ct:administrativeDocument>
+        </ct:buildingContractorRepresentative>
+
+        <ct:constructionManagementRepresentative>
+            <ct:lastName>Орлов</ct:lastName>
+            <ct:firstName>Денис</ct:firstName>
+            <ct:middleName>Викторович</ct:middleName>
+            <ct:position>Специалист по организации строительства</ct:position>
+            <ct:personId>ddeeff00-aaaa-1aaa-8abc-ddeeff001122</ct:personId>
+            <ct:administrativeDocument>
+                <ct:name>Приказ о назначении</ct:name>
+                <ct:number>22-р</ct:number>
+                <ct:date>2026-02-05</ct:date>
+            </ct:administrativeDocument>
+            <ct:specialistIdNumber>9988776655</ct:specialistIdNumber>
+        </ct:constructionManagementRepresentative>
+
+        <inspectionObject>
+            <permanentObjectName>Жилой комплекс «Лесной квартал», корпус 7</permanentObjectName>
+            <permanentObjectId>20304050-2222-1222-8abc-203040506070</permanentObjectId>
+            <workAndControlJournalsRecords>
+                <ct:generalWorkJournalRecordsIdsList>
+                    <ct:generalWorkJournalRecordsIdsListItem>
+                        <ct:generalWorkJournalRecordId>70809000-7777-1777-8abc-708090001020</ct:generalWorkJournalRecordId>
+                    </ct:generalWorkJournalRecordsIdsListItem>
+                </ct:generalWorkJournalRecordsIdsList>
+            </workAndControlJournalsRecords>
+            <axes>
+                <obligatoryLiteralAxesList>
+                    <literalAxesList>
+                        <literalAxesListItem>А</literalAxesListItem>
+                        <literalAxesListItem>Б</literalAxesListItem>
+                        <literalAxesListItem>В</literalAxesListItem>
+                        <literalAxesListItem>Г</literalAxesListItem>
+                    </literalAxesList>
+                </obligatoryLiteralAxesList>
+            </axes>
+        </inspectionObject>
+
+        <workAndProjectDocumentationsList>
+            <workAndProjectDocumentationsListItem>
+                <workAndProjectDocumentation>
+                    <ct:obligatoryProjectDocumentation>
+                        <ct:projectDocumentationSectionsList>
+                            <ct:projectDocumentationSectionsListItem>
+                                <ct:projectDocumentationSectionCode>КР</ct:projectDocumentationSectionCode>
+                                <ct:projectDocumentationSectionName>Конструктивные решения</ct:projectDocumentationSectionName>
+                            </ct:projectDocumentationSectionsListItem>
+                        </ct:projectDocumentationSectionsList>
+                    </ct:obligatoryProjectDocumentation>
+                </workAndProjectDocumentation>
+                <organization>
+                    <fullOrganizationInfo>
+                        <ct:organizationInfo>
+                            <ct:legalEntity>
+                                <ct:name>ООО «ИнжПроект»</ct:name>
+                                <ct:ogrn>1047712345678</ct:ogrn>
+                                <ct:inn>771234567892</ct:inn>
+                                <ct:address>
+                                    <ct:detalizedAddress>
+                                        <ct:country>Российская Федерация</ct:country>
+                                        <ct:entityOfFederation>Москва</ct:entityOfFederation>
+                                        <ct:districtOrRegionCode>ВАО</ct:districtOrRegionCode>
+                                        <ct:oktmo>45263000000</ct:oktmo>
+                                    </ct:detalizedAddress>
+                                </ct:address>
+                            </ct:legalEntity>
+                        </ct:organizationInfo>
+                        <ct:participantId>50607080-5555-1555-8abc-506070809000</ct:participantId>
+                    </fullOrganizationInfo>
+                </organization>
+            </workAndProjectDocumentationsListItem>
+        </workAndProjectDocumentationsList>
+
+        <axesFixingMethodDescription>Металлические штыри диаметром 16 мм, забитые в грунт на глубину 0,5 м, с установкой деревянных обносок</axesFixingMethodDescription>
+
+        <axesLayoutRequirementsDocs>
+            <workAndProjectDocumentationsList>
+                <workAndProjectDocumentationsListItem>
+                    <workAndProjectDocumentation>
+                        <ct:obligatoryProjectDocumentation>
+                            <ct:projectDocumentationSectionsList>
+                                <ct:projectDocumentationSectionsListItem>
+                                    <ct:projectDocumentationSectionCode>КР</ct:projectDocumentationSectionCode>
+                                    <ct:projectDocumentationSectionName>Конструктивные решения</ct:projectDocumentationSectionName>
+                                </ct:projectDocumentationSectionsListItem>
+                            </ct:projectDocumentationSectionsList>
+                        </ct:obligatoryProjectDocumentation>
+                    </workAndProjectDocumentation>
+                    <organization>
+                        <fullOrganizationInfo>
+                            <ct:organizationInfo>
+                                <ct:legalEntity>
+                                    <ct:name>ООО «ИнжПроект»</ct:name>
+                                    <ct:ogrn>1047712345678</ct:ogrn>
+                                    <ct:inn>771234567892</ct:inn>
+                                    <ct:address>
+                                        <ct:detalizedAddress>
+                                            <ct:country>Российская Федерация</ct:country>
+                                            <ct:entityOfFederation>Москва</ct:entityOfFederation>
+                                            <ct:districtOrRegionCode>ВАО</ct:districtOrRegionCode>
+                                            <ct:oktmo>45263000000</ct:oktmo>
+                                        </ct:detalizedAddress>
+                                    </ct:address>
+                                </ct:legalEntity>
+                            </ct:organizationInfo>
+                            <ct:participantId>50607080-5555-1555-8abc-506070809000</ct:participantId>
+                        </fullOrganizationInfo>
+                    </organization>
+                </workAndProjectDocumentationsListItem>
+            </workAndProjectDocumentationsList>
+            <ntd>
+                <ct:technicalRegulationDetailsList>
+                    <ct:technicalRegulationDetailsListItem>
+                        <ct:name>СП 126.13330.2017 Геодезические работы в строительстве</ct:name>
+                        <ct:number>СП 126.13330.2017</ct:number>
+                    </ct:technicalRegulationDetailsListItem>
+                </ct:technicalRegulationDetailsList>
+            </ntd>
+        </axesLayoutRequirementsDocs>
+
+    </actInfo>
+
+    <actsServiceAttributes>
+        <ct:status>
+            <ct:docStatus>Signed</ct:docStatus>
+        </ct:status>
+        <ct:senderId>30405060-3333-1234-8abc-304050607080</ct:senderId>
+    </actsServiceAttributes>
+
+</arooksnm>

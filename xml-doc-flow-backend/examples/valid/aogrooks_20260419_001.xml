@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aogrooks xmlns="http://idActs/AOGROOKS.xsd"
+          xmlns:bd="http://types/BaseDocument.xsd"
+          xmlns:ct="http://types/CommonTypes.xsd"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://idActs/AOGROOKS.xsd AOGROOKS.xsd
+                              http://types/BaseDocument.xsd BaseDocument.xsd
+                              http://types/CommonTypes.xsd CommonTypes.xsd"
+          schemaVersion="draft.1">
+
+    <bd:uuid>a1b2c3d4-1111-1111-8abc-a1b2c3d4e5f6</bd:uuid>
+    <bd:permanentObjectUUID>b2c3d4e5-2222-1222-8abc-b2c3d4e5f6a7</bd:permanentObjectUUID>
+    <bd:edition>1</bd:edition>
+
+    <actInfo id="actInfo">
+
+        <ct:permanentObjectInfo>
+            <ct:permanentObjectName>Административно-деловой центр «Горизонт»</ct:permanentObjectName>
+            <ct:permanentObjectAddress>
+                <ct:postalAddress>
+                    <ct:detalizedAddress>
+                        <ct:country>Российская Федерация</ct:country>
+                        <ct:entityOfFederation>Москва</ct:entityOfFederation>
+                        <ct:districtOrRegionCode>ЮЗАО</ct:districtOrRegionCode>
+                        <ct:oktmo>45296000000</ct:oktmo>
+                    </ct:detalizedAddress>
+                </ct:postalAddress>
+            </ct:permanentObjectAddress>
+            <ct:permanentObjectId>b2c3d4e5-2222-1222-8abc-b2c3d4e5f6a7</ct:permanentObjectId>
+        </ct:permanentObjectInfo>
+
+        <ct:developer>
+            <ct:participantId>c3d4e5f6-3333-1333-8abc-c3d4e5f6a7b8</ct:participantId>
+            <ct:organization>
+                <ct:legalEntity>
+                    <ct:name>ООО «Строй-Горизонт-Инвест»</ct:name>
+                    <ct:ogrn>1027700234567</ct:ogrn>
+                    <ct:inn>770223456789</ct:inn>
+                    <ct:address>
+                        <ct:detalizedAddress>
+                            <ct:country>Российская Федерация</ct:country>
+                            <ct:entityOfFederation>Москва</ct:entityOfFederation>
+                            <ct:districtOrRegionCode>ЮЗАО</ct:districtOrRegionCode>
+                            <ct:oktmo>45296000000</ct:oktmo>
+                        </ct:detalizedAddress>
+                    </ct:address>
+                </ct:legalEntity>
+            </ct:organization>
+        </ct:developer>
+
+        <ct:buildingContractor>
+            <ct:organizationInfo>
+                <ct:legalEntity>
+                    <ct:name>АО «ГеоСтройМонтаж»</ct:name>
+                    <ct:ogrn>1057712345699</ct:ogrn>
+                    <ct:inn>771234567891</ct:inn>
+                    <ct:address>
+                        <ct:detalizedAddress>
+                            <ct:country>Российская Федерация</ct:country>
+                            <ct:entityOfFederation>Москва</ct:entityOfFederation>
+                            <ct:districtOrRegionCode>ЦАО</ct:districtOrRegionCode>
+                            <ct:oktmo>45375000000</ct:oktmo>
+                        </ct:detalizedAddress>
+                    </ct:address>
+                </ct:legalEntity>
+            </ct:organizationInfo>
+            <ct:participantId>d4e5f6a7-4444-1444-8abc-d4e5f6a7b8c9</ct:participantId>
+        </ct:buildingContractor>
+
+        <ct:projectDocumentationContractor>
+            <ct:organizationInfo>
+                <ct:legalEntity>
+                    <ct:name>ООО «ГеоПроект»</ct:name>
+                    <ct:ogrn>1047709876544</ct:ogrn>
+                    <ct:inn>770987654322</ct:inn>
+                    <ct:address>
+                        <ct:detalizedAddress>
+                            <ct:country>Российская Федерация</ct:country>
+                            <ct:entityOfFederation>Москва</ct:entityOfFederation>
+                            <ct:districtOrRegionCode>ЗАО</ct:districtOrRegionCode>
+                            <ct:oktmo>45375000000</ct:oktmo>
+                        </ct:detalizedAddress>
+                    </ct:address>
+                </ct:legalEntity>
+            </ct:organizationInfo>
+            <ct:participantId>e5f6a7b8-5555-1555-8abc-e5f6a7b8c9d0</ct:participantId>
+        </ct:projectDocumentationContractor>
+
+        <ct:documentInfo>
+            <ct:name>Акт освидетельствования геодезической разбивочной основы объекта капитального строительства</ct:name>
+            <ct:docId>f6a7b8c9-6666-1666-8abc-f6a7b8c9d0e1</ct:docId>
+            <ct:number>АОГРООКС-2026-001</ct:number>
+            <ct:date>2026-04-19</ct:date>
+            <ct:edition>1</ct:edition>
+        </ct:documentInfo>
+
+        <ct:buildingContractorRepresentative>
+            <ct:lastName>Смирнов</ct:lastName>
+            <ct:firstName>Павел</ct:firstName>
+            <ct:middleName>Дмитриевич</ct:middleName>
+            <ct:position>Производитель работ</ct:position>
+            <ct:personId>aabbccdd-7777-1777-8abc-aabbcceeddff</ct:personId>
+            <ct:administrativeDocument>
+                <ct:name>Приказ о назначении</ct:name>
+                <ct:number>41-г</ct:number>
+                <ct:date>2026-01-10</ct:date>
+            </ct:administrativeDocument>
+        </ct:buildingContractorRepresentative>
+
+        <ct:constructionManagementRepresentative>
+            <ct:lastName>Егоров</ct:lastName>
+            <ct:firstName>Илья</ct:firstName>
+            <ct:middleName>Сергеевич</ct:middleName>
+            <ct:position>Специалист по организации строительства</ct:position>
+            <ct:personId>bbccddee-8888-1888-8abc-bbccddeeff00</ct:personId>
+            <ct:administrativeDocument>
+                <ct:name>Приказ о назначении</ct:name>
+                <ct:number>12-г</ct:number>
+                <ct:date>2026-01-14</ct:date>
+            </ct:administrativeDocument>
+            <ct:specialistIdNumber>1122334455</ct:specialistIdNumber>
+        </ct:constructionManagementRepresentative>
+
+        <inspectionObject>
+            <permanentObjectName>Административно-деловой центр «Горизонт»</permanentObjectName>
+            <permanentObjectId>b2c3d4e5-2222-1222-8abc-b2c3d4e5f6a7</permanentObjectId>
+            <workAndControlJournalsRecords>
+                <ct:generalWorkJournalRecordsIdsList>
+                    <ct:generalWorkJournalRecordsIdsListItem>
+                        <ct:generalWorkJournalRecordId>a7b8c9d0-7777-1777-8abc-a7b8c9d0e1f2</ct:generalWorkJournalRecordId>
+                    </ct:generalWorkJournalRecordsIdsListItem>
+                </ct:generalWorkJournalRecordsIdsList>
+            </workAndControlJournalsRecords>
+        </inspectionObject>
+
+        <geodeticSurveyMarkersInspection>
+            <workAndProjectDocumentationsList>
+                <workAndProjectDocumentationsListItem>
+                    <workAndProjectDocumentation>
+                        <ct:obligatoryProjectDocumentation>
+                            <ct:projectDocumentationSectionsList>
+                                <ct:projectDocumentationSectionsListItem>
+                                    <ct:projectDocumentationSectionCode>ГОР</ct:projectDocumentationSectionCode>
+                                    <ct:projectDocumentationSectionName>Технология производства геодезических работ</ct:projectDocumentationSectionName>
+                                </ct:projectDocumentationSectionsListItem>
+                            </ct:projectDocumentationSectionsList>
+                        </ct:obligatoryProjectDocumentation>
+                    </workAndProjectDocumentation>
+                    <organization>
+                        <fullOrganizationInfo>
+                            <ct:organizationInfo>
+                                <ct:legalEntity>
+                                    <ct:name>ООО «ГеоПроект»</ct:name>
+                                    <ct:ogrn>1047709876544</ct:ogrn>
+                                    <ct:inn>770987654322</ct:inn>
+                                    <ct:address>
+                                        <ct:detalizedAddress>
+                                            <ct:country>Российская Федерация</ct:country>
+                                            <ct:entityOfFederation>Москва</ct:entityOfFederation>
+                                            <ct:districtOrRegionCode>ЗАО</ct:districtOrRegionCode>
+                                            <ct:oktmo>45375000000</ct:oktmo>
+                                        </ct:detalizedAddress>
+                                    </ct:address>
+                                </ct:legalEntity>
+                            </ct:organizationInfo>
+                            <ct:participantId>e5f6a7b8-5555-1555-8abc-e5f6a7b8c9d0</ct:participantId>
+                        </fullOrganizationInfo>
+                    </organization>
+                </workAndProjectDocumentationsListItem>
+            </workAndProjectDocumentationsList>
+            <ntd>
+                <ct:technicalRegulationDetailsList>
+                    <ct:technicalRegulationDetailsListItem>
+                        <ct:name>СП 47.13330.2016 Инженерные изыскания для строительства</ct:name>
+                        <ct:number>СП 47.13330.2016</ct:number>
+                    </ct:technicalRegulationDetailsListItem>
+                </ct:technicalRegulationDetailsList>
+            </ntd>
+        </geodeticSurveyMarkersInspection>
+
+    </actInfo>
+
+    <actsServiceAttributes>
+        <ct:status>
+            <ct:docStatus>Signed</ct:docStatus>
+        </ct:status>
+        <ct:senderId>c3d4e5f6-3333-1234-8abc-c3d4e5f6a7b8</ct:senderId>
+    </actsServiceAttributes>
+
+</aogrooks>
